@@ -14,8 +14,8 @@ package fr.escape.resources.scenario;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.game.entity.ships.Ship;
 
 /**
@@ -36,8 +36,8 @@ final class ScenarioConfiguration {
 	ScenarioConfiguration() {
 		id = 0;
 		time = 0;
-		ships = new HashMap<>();
-		script = new LinkedList<>();
+		ships = new HashMap<Integer, Ship>();
+		script = new LinkedList<String>();
 	}
 	
 	/**

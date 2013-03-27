@@ -12,7 +12,6 @@
 package fr.escape.game;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -22,6 +21,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
+import fr.escape.Objects;
 import fr.escape.app.Game;
 import fr.escape.app.Input;
 import fr.escape.app.Overlay;
@@ -380,7 +380,7 @@ public final class Escape extends Game implements LifeListener {
 	 */
 	private void createGestures() {
 		
-		ArrayList<Gesture> gestures = new ArrayList<>();
+		ArrayList<Gesture> gestures = new ArrayList<Gesture>();
 		
 		gestures.add(new Drift());
 		gestures.add(new Slide());

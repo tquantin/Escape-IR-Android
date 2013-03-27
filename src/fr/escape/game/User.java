@@ -13,8 +13,8 @@ package fr.escape.game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.entity.weapons.Weapon;

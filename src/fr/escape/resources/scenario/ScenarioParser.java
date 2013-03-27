@@ -16,8 +16,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.entity.ships.ShipFactory;
 import fr.escape.game.scenario.Scenario;

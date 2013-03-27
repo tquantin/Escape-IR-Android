@@ -13,8 +13,8 @@ package fr.escape.game.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.app.Input;
 import fr.escape.app.Overlay;
 
@@ -36,7 +36,7 @@ public final class IngameUI extends AbstractOverlay {
 	 * Default Constructor
 	 */
 	public IngameUI() {
-		overlays = new ArrayList<>();
+		overlays = new ArrayList<Overlay>();
 	}
 	
 	/**

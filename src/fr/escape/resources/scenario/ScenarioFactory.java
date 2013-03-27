@@ -14,9 +14,9 @@ package fr.escape.resources.scenario;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Map.Entry;
 
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.ships.Ship;
@@ -54,7 +54,7 @@ final class ScenarioFactory {
 			private final int id = scenario.getID();
 			private final int start = scenario.getTime();
 			private final HashMap<Integer, Ship> ships = scenario.getShip();
-			private final HashSet<Integer> spawns = new HashSet<>();
+			private final HashSet<Integer> spawns = new HashSet<Integer>();
 			private final String[] script = scenario.getScript();
 			
 			private EntityContainer container;

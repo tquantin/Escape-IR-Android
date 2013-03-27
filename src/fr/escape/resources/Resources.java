@@ -15,8 +15,8 @@ import java.awt.Font;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.game.entity.ships.ShipFactory;
 import fr.escape.game.scenario.Scenario;

@@ -11,8 +11,7 @@
 
 package fr.escape.resources.scenario;
 
-import java.util.Objects;
-
+import fr.escape.Objects;
 import fr.escape.game.entity.ships.ShipFactory;
 import fr.escape.game.scenario.Scenario;
 import fr.escape.resources.ResourcesLoader;
