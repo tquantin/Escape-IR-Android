@@ -1,0 +1,60 @@
+%%
+3
+%%
+25
+%%
+0 0 5.0 0.0
+2 2 0.0 5.0
+10 0 5.0 10.0
+12 2 10.0 5.0
+%%
+25 spawn 0
+25 spawn 10
+25 spawn 2
+25 spawn 12
+25 move 0 5.0 5.0
+25 move 2 5.0 5.0
+25 move 10 5.0 5.0
+25 move 12 5.0 5.0
+25 fire 0
+25 fire 10
+25 fire 2
+25 fire 12
+26 fire 0
+26 fire 10
+26 fire 2
+26 fire 12
+27 fire 0
+27 fire 10
+27 fire 2
+27 fire 12
+27 move 0 0.0 5.0
+27 move 10 10.0 5.0
+27 move 2 5.0 10.0
+27 move 12 5.0 0.0
+28 fire 0
+28 fire 10
+28 fire 2
+28 fire 12
+29 fire 0
+29 fire 10
+29 fire 2
+29 fire 12
+29 move 0 0.0 5.0
+29 move 10 10.0 5.0
+29 move 2 5.0 10.0
+29 move 12 5.0 0.0
+30 move 0 0.0 13.0
+30 move 10 10.0 13.0
+30 move 2 5.0 13.0
+30 move 12 5.0 13.0
+31 move 0 0.0 13.0
+31 move 10 10.0 13.0
+31 move 2 5.0 13.0
+31 move 12 5.0 13.0
+32 move 0 0.0 13.0
+32 move 10 10.0 13.0
+32 move 2 5.0 13.0
+32 move 12 5.0 13.0
+32 move 0 5.0 13.0
+%%

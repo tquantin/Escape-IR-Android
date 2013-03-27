@@ -1,0 +1,161 @@
+%%
+2
+%%
+17
+%%
+0 2 0.0 1.0
+1 2 10.0 1.0
+2 2 0.0 1.0
+3 2 10.0 1.0
+4 2 0.0 1.0
+5 2 10.0 1.0
+10 0 0.0 4.0
+11 0 10.0 4.0
+12 0 0.0 4.0
+13 0 10.0 4.0
+14 0 0.0 4.0
+15 0 10.0 4.0
+30 1 5.0 0.0
+31 1 5.0 0.0
+32 1 5.0 0.0
+33 1 5.0 0.0
+%%
+17 spawn 30
+17 move 30 5.0 13.0
+17 fire 30
+17 spawn 0
+17 move 0 4.0 1.0
+17 fire 0
+17 spawn 1
+17 move 1 6.0 1.0
+17 fire 1
+18 move 30 5.0 13.0
+18 fire 30
+18 move 0 4.0 1.0
+18 fire 0
+18 move 1 6.0 1.0
+18 fire 1
+18 spawn 10
+18 move 10 2.0 4.0
+18 spawn 11
+18 move 11 8.0 4.0
+19 move 30 5.0 13.0
+19 fire 30
+19 move 0 4.0 3.0
+19 fire 0
+19 move 1 6.0 3.0
+19 fire 1
+19 move 10 4.0 5.0
+19 fire 10
+19 move 11 6.0 5.0
+19 fire 11
+20 move 30 5.0 13.0
+20 fire 30
+20 move 0 -3.0 3.0
+20 fire 0
+20 spawn 2
+20 move 2 4.0 1.0
+20 fire 2
+20 move 1 13.0 3.0
+20 fire 1
+20 spawn 3
+20 move 3 6.0 1.0
+20 fire 3
+20 move 10 2.0 6.0
+20 fire 10
+20 move 11 8.0 6.0
+20 fire 11
+20 spawn 31
+20 move 31 5.0 13.0
+20 fire 31
+21 move 2 4.0 1.0
+21 fire 2
+21 move 3 6.0 1.0
+21 fire 3
+21 move 10 -3.0 6.0
+21 fire 10
+21 move 11 13.0 6.0
+21 fire 11
+21 move 31 5.0 13.0
+21 fire 31
+22 move 2 4.0 3.0
+22 fire 2
+22 move 3 6.0 3.0
+22 fire 3
+22 spawn 12
+22 move 12 2.0 4.0
+22 spawn 13
+22 move 13 8.0 4.0
+22 move 31 5.0 13.0
+22 fire 31
+23 move 2 -3.0 3.0
+23 fire 2
+23 spawn 4
+23 move 4 4.0 1.0
+23 fire 4
+23 move 3 13.0 3.0
+23 fire 3
+23 spawn 5
+23 move 5 6.0 1.0
+23 fire 5
+23 move 12 4.0 5.0
+23 fire 12
+23 move 13 6.0 5.0
+23 fire 13
+23 move 31 5.0 13.0
+23 fire 31
+23 spawn 32
+23 move 32 5.0 13.0
+23 fire 32
+24 move 4 4.0 1.0
+24 fire 4
+24 move 5 6.0 1.0
+24 fire 5
+24 move 12 2.0 6.0
+24 fire 12
+24 move 13 8.0 6.0
+24 fire 13
+24 move 32 5.0 13.0
+24 fire 32
+25 move 4 4.0 3.0
+25 fire 4
+25 move 5 6.0 3.0
+25 fire 5
+25 move 12 -3.0 6.0
+25 fire 12
+25 move 13 13.0 6.0
+25 fire 13
+25 move 32 5.0 13.0
+25 fire 32
+26 move 4 -3.0 3.0
+26 fire 4
+26 move 5 13.0 3.0
+26 fire 5
+26 spawn 14
+26 move 14 2.0 4.0
+26 spawn 15
+26 move 15 8.0 4.0
+26 move 32 5.0 13.0
+26 fire 32
+26 spawn 33
+26 move 33 5.0 13.0
+26 fire 33
+27 move 14 4.0 5.0
+27 fire 14
+27 move 15 6.0 5.0
+27 fire 15
+27 move 33 5.0 13.0
+27 fire 33
+28 move 14 2.0 6.0
+28 fire 14
+28 move 15 8.0 6.0
+28 fire 15
+28 move 33 5.0 13.0
+28 fire 33
+29 move 14 -3.0 6.0
+29 fire 14
+29 move 15 13.0 6.0
+29 fire 15
+29 move 33 5.0 13.0
+29 fire 33
+%%
