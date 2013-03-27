@@ -158,7 +158,7 @@ public final class Graphics {
 	 * Core Engine for Rendering.
 	 * 
 	 * <p>
-	 * Called by {@link Activity} at each loop.
+	 * Called by {@link CoreOld} at each loop.
 	 * 
 	 * @param context ApplicationContext used in Zen2 library.
 	 */

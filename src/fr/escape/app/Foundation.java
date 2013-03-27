@@ -18,14 +18,16 @@ import fr.escape.resources.Resources;
  * Foundation is a Wrapper which contains all Core Components for the Game
  * 
  * <p>
- * All Components are accessible anywhere after {@link Activity} is created.
+ * All Components are accessible anywhere after {@link CoreOld} is created.
+ * 
+ * @deprecated
  */
 public class Foundation {
 	
 	/**
 	 * Game Activity
 	 */
-	public static Activity ACTIVITY;
+	public static CoreOld ACTIVITY;
 	
 	/**
 	 * Game Graphics

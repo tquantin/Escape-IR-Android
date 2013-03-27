@@ -11,7 +11,7 @@
 
 package fr.escape;
 
-import fr.escape.app.Activity;
+import fr.escape.app.CoreOld;
 import fr.escape.game.Escape;
 
 /**
@@ -29,7 +29,7 @@ public final class Launcher {
 	public static void main(String[] args) {
 		
 		// Create Activity with a Game
-		Activity activity = new Activity(new Escape());
+		CoreOld activity = new CoreOld(new Escape());
 		
 		// Launch Activity
 		//activity.setLogLevel(Activity.LOG_DEBUG);

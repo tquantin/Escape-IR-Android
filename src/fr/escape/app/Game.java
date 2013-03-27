@@ -40,7 +40,7 @@ public abstract class Game implements RenderListener, EventListener {
 	private World world;
 	
 	/**
-	 * Called when {@link Activity} start
+	 * Called when {@link CoreOld} start
 	 */
 	public abstract void create();
 	
@@ -77,11 +77,11 @@ public abstract class Game implements RenderListener, EventListener {
 	}
 	
 	/**
-	 * Return the {@link Activity} which created this Game.
+	 * Return the {@link CoreOld} which created this Game.
 	 * 
-	 * @return {@link Activity}.
+	 * @return {@link CoreOld}.
 	 */
-	public Activity getActivity() {
+	public CoreOld getActivity() {
 		return Foundation.ACTIVITY;
 	}
 	

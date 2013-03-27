@@ -23,6 +23,9 @@ import fr.escape.Objects;
  */
 public final class Input {
 	
+	/**
+	 * Delta to apply on filter.
+	 */
 	private static final int DELTA_FILTER = 4;
 	
 	/**
@@ -36,9 +39,19 @@ public final class Input {
 	private final int y;
 	
 	/**
+	 * User Input X Velocity.
+	 */
+	private final float xv;
+	
+	/**
+	 * User Input Y Velocity.
+	 */
+	private final float yv;
+	
+	/**
 	 * User Input Kind
 	 */
-	private final Kind kind;
+	private final Kind k;
 	
 	/**
 	 * Default Constructor
@@ -46,12 +59,19 @@ public final class Input {
 	 * @param event Mouse Input Event
 	 */
 	public Input(MotionEvent event) {
+		this(event, 0.0f, 0.0f);
+	}
+	
+	public Input(MotionEvent event, float x, float y) {
+		
 		Objects.requireNonNull(event);
 		this.x = (int) event.getX();
 		this.y = (int) event.getY();
-		this.kind = Kind.create(event.getAction());
+		this.xv = x;
+		this.yv = y;
+		this.k = Kind.create(event.getAction());
 	}
-	
+
 	/**
 	 * Get Mouse Input X Coordinate.
 	 * 
@@ -71,12 +91,30 @@ public final class Input {
 	}
 	
 	/**
+	 * Get Mouse Input X Velocity.
+	 * 
+	 * @return X velocity
+	 */
+	public float getXVelocity() {
+		return xv;
+	}
+	
+	/**
+	 * Get Mouse Input Y Velocity.
+	 * 
+	 * @return Y velocity
+	 */
+	public float getYVelocity() {
+		return yv;
+	}
+	
+	/**
 	 * Get Mouse Input Kind.
 	 * 
 	 * @return Mouse Kind
 	 */
 	public Kind getKind() {
-		return kind;
+		return k;
 	}
 	
 	@Override
@@ -103,7 +141,7 @@ public final class Input {
 		
 		ACTION_DOWN, ACTION_UP, ACTION_MOVE, ACTION_UNKNOWN;
 		
-		private static Kind create(int action) {
+		static Kind create(int action) {
 			switch(action) {
 				case MotionEvent.ACTION_UP: {
 					return ACTION_UP;

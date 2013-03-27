@@ -1,22 +1,69 @@
+/*****************************************************************************
+ * 
+ * Copyright 2012-2013 See AUTHORS file.
+ * 
+ * This file is part of Escape-IR.
+ * 
+ * Escape-IR is free software: you can redistribute it and/or modify
+ * it under the terms of the zlib license. See the COPYING file.
+ * 
+ *****************************************************************************/
+
 package fr.escape.android;
 
 import android.os.Bundle;
+import android.view.Display;
+import android.view.MotionEvent;
+import android.view.Window;
+import android.view.WindowManager;
 import android.app.Activity;
-import android.view.Menu;
 
-public class EscapeActivity extends Activity {
+public abstract class EscapeActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.escape);
+		
+		// Configure Window Options
+		configureWindow();
+		
+		// Retrieve Display Components
+		Display display = getWindowManager().getDefaultDisplay();
+		
+		// Ignore deprecation for API Lower than 13
+		@SuppressWarnings("deprecation")
+		int width = display.getWidth();
+		
+		// Ignore deprecation for API Lower than 13 
+		@SuppressWarnings("deprecation")
+		int height = display.getHeight();
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.escape, menu);
-		return true;
-	}
+	public boolean onTouchEvent(MotionEvent event) {
+        return ((EscapeApplication) getApplication()).onTouchEvent(event);
+    }
+	
+	/**
+	 * Configure Activity and Application Window.
+	 */
+	private void configureWindow() {
 
+		/**
+		 * Remove Action Bar
+		 */
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		/**
+		 * Launch Activity in Fullscreen.
+		 */
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+		/**
+		 * Disable Keyguard
+		 */
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+		
+	}
+	
 }

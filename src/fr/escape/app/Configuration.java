@@ -13,7 +13,7 @@ package fr.escape.app;
 
 /**
  * <p>
- * Configuration Object for {@link Graphics} and {@link Activity}.
+ * Configuration Object for {@link Graphics} and {@link CoreOld}.
  * 
  */
 public final class Configuration {
@@ -110,4 +110,5 @@ public final class Configuration {
 	public int getFps() {
 		return fps;
 	}
+	
 }
