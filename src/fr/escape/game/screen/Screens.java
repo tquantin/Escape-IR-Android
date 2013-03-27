@@ -16,8 +16,8 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.app.Graphics;
 import fr.escape.app.Input;
 import fr.escape.graphics.Shapes;

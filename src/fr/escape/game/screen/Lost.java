@@ -2,8 +2,8 @@ package fr.escape.game.screen;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.app.Input;
 import fr.escape.app.Screen;
 import fr.escape.game.Escape;

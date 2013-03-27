@@ -16,8 +16,8 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.app.Game;
 import fr.escape.app.Input;
 import fr.escape.game.entity.weapons.Weapon;
@@ -84,7 +84,7 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 		this.y = OVERLAY_TOP_MARGING;
 		this.x = this.width - (Weapons.getDrawableWidth() + ITEM_LEFT_MARGING + ITEM_RIGHT_MARGING);
 		
-		this.touchArea = new LinkedList<>();
+		this.touchArea = new LinkedList<Rectangle>();
 		
 		int offset = this.y;
 		for(int i = 0; i < weapons.size(); i++) {

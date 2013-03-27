@@ -19,8 +19,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.graphics.RenderListener;
 import fr.escape.graphics.Texture;
 import fr.escape.graphics.TextureOperator;

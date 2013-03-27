@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.app.Input;
 import fr.escape.app.Screen;
 import fr.escape.game.Escape;
@@ -61,7 +61,7 @@ public abstract class AbstractStage implements Screen {
 		
 		this.game = Objects.requireNonNull(game);
 		this.star = new RepeatableScrollingTexture(game.getResources().getTexture(TextureLoader.OVERLAY_STAR), true);
-        this.events = new LinkedList<>();
+        this.events = new LinkedList<Input>();
         
 	}
 	

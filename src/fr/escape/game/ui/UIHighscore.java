@@ -13,8 +13,8 @@ package fr.escape.game.ui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.app.Game;
 import fr.escape.game.User;
 import fr.escape.game.message.Receiver;

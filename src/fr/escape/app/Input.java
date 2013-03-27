@@ -11,10 +11,8 @@
 
 package fr.escape.app;
 
-import java.util.Objects;
-
-import fr.umlv.zen2.MotionEvent;
-import fr.umlv.zen2.MotionEvent.Kind;
+import android.view.MotionEvent;
+import fr.escape.Objects;
 
 /**
  * <p>
@@ -28,9 +26,19 @@ public final class Input {
 	private static final int DELTA_FILTER = 4;
 	
 	/**
-	 * Mouse Input.
+	 * User Input X Coordinate.
 	 */
-	private final MotionEvent event;
+	private final int x;
+	
+	/**
+	 * User Input Y Coordinate.
+	 */
+	private final int y;
+	
+	/**
+	 * User Input Kind
+	 */
+	private final Kind kind;
 	
 	/**
 	 * Default Constructor
@@ -39,7 +47,9 @@ public final class Input {
 	 */
 	public Input(MotionEvent event) {
 		Objects.requireNonNull(event);
-		this.event = event;
+		this.x = (int) event.getX();
+		this.y = (int) event.getY();
+		this.kind = event.getActionMasked();
 	}
 	
 	/**
@@ -48,7 +58,7 @@ public final class Input {
 	 * @return X coordinate.
 	 */
 	public int getX() {
-		return event.getX();
+		return x;
 	}
 	
 	/**
@@ -57,7 +67,7 @@ public final class Input {
 	 * @return Y coordinate.
 	 */
 	public int getY() {
-		return event.getY();
+		return y;
 	}
 	
 	/**
@@ -66,7 +76,7 @@ public final class Input {
 	 * @return Mouse Kind
 	 */
 	public Kind getKind() {
-		return event.getKind();
+		return kind;
 	}
 	
 	@Override
