@@ -49,7 +49,7 @@ public final class Input {
 		Objects.requireNonNull(event);
 		this.x = (int) event.getX();
 		this.y = (int) event.getY();
-		this.kind = event.getActionMasked();
+		this.kind = Kind.create(event.getAction());
 	}
 	
 	/**
@@ -97,6 +97,29 @@ public final class Input {
 		}
 		
 		return false;
+	}
+	
+	public enum Kind {
+		
+		ACTION_DOWN, ACTION_UP, ACTION_MOVE, ACTION_UNKNOWN;
+		
+		private static Kind create(int action) {
+			switch(action) {
+				case MotionEvent.ACTION_UP: {
+					return ACTION_UP;
+				}
+				case MotionEvent.ACTION_DOWN: {
+					return ACTION_DOWN;
+				}
+				case MotionEvent.ACTION_MOVE: {
+					return ACTION_MOVE;
+				}
+				default: {
+					return ACTION_UNKNOWN;
+				}
+			}
+		}
+		
 	}
 	
 }

@@ -12,11 +12,11 @@
 package fr.escape.app;
 
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.Queue;
 
 import org.jbox2d.dynamics.World;
 
+import fr.escape.Objects;
 import fr.escape.graphics.Texture;
 import fr.escape.input.EventListener;
 import fr.escape.resources.Resources;
@@ -57,7 +57,7 @@ public final class Activity {
 	
 	private final Game game;
 	private final Graphics graphics;
-	private final Queue<Runnable> runnables = new LinkedList<>();
+	private final Queue<Runnable> runnables = new LinkedList<Runnable>();
 	private final String title;
 	
 	private int worldUpdateLeft;
@@ -385,7 +385,7 @@ public final class Activity {
 			}
 			case ACTION_UP: {
 				
-				if(lastEvent.getKind() == Kind.ACTION_DOWN) {
+				if(lastEvent.getKind() == fr.escape.app.Input.Kind.ACTION_DOWN) {
 					
 					post(new Runnable() {
 						
