@@ -11,10 +11,9 @@
 
 package fr.escape.game.scenario;
 
-import java.util.Objects;
-
 import org.jbox2d.dynamics.World;
 
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.game.entity.Entity;
 import fr.escape.game.entity.EntityContainer;

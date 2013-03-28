@@ -11,72 +11,43 @@
 
 package fr.escape.game.scenario;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.TreeMap;
-
 import org.jbox2d.dynamics.World;
 
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.ships.Boss;
 import fr.escape.game.entity.ships.Ship;
+import fr.escape.game.entity.ships.ShipFactory;
 
 /**
  * This class provide a skeletal implementation of any {@link Ship} in the game.
  */
 public abstract class AbstractStage implements Stage {
-
-	private static final String TAG = AbstractStage.class.getSimpleName();
+	private static final float BOSS_SPAWN_X = 5.0f;
+	private static final float BOSS_SPAWN_Y = 0.0f;
 	
-	private final List<Scenario> active;
-	private final List<Scenario> scenarios;
-	private final TreeMap<Integer, Scenario> waiting;
+	private final Boss boss;
+	
+	private final Scenario scenario;
+	
 	private final EntityContainer container;
 	private final World world;
 	
+	private final int duration;
 	private int lastTime;
 	private boolean spawn;
 	
-	public AbstractStage(World world, EntityContainer container) {
+	public AbstractStage(World world, EntityContainer container, String scenario, ShipFactory factory, int duration) {
 		this.world = Objects.requireNonNull(world);
 		this.container = Objects.requireNonNull(container);
-		this.active = new LinkedList<>();
-		this.scenarios = new LinkedList<>();
-		this.waiting = new TreeMap<>();
+		//TODO : create a generic createBoss method
+		this.boss = Objects.requireNonNull(factory.createEarthBoss(BOSS_SPAWN_X, BOSS_SPAWN_Y));;
+		//TODO : Remove reference to Foundation
+		this.scenario = Foundation.RESOURCES.getScenario(scenario, factory);
+		this.duration = duration;
 		this.lastTime = -1;
 		this.spawn = false;
-	}
-	
-	/**
-	 * Get a List of active Scenario
-	 * 
-	 * @return Active Scenario
-	 */
-	private List<Scenario> getActiveScenario() {
-		return active;
-	}
-	
-	/**
-	 * Add a Scenario on Stage
-	 * 
-	 * @param scenario Scenario to add on Stage
-	 * @return True if successful
-	 */
-	protected boolean add(Scenario scenario) {
-		return this.scenarios.add(Objects.requireNonNull(scenario));
-	}
-	
-	/**
-	 * Get All Waiting Scenario
-	 * 
-	 * @return Waiting Scenario
-	 */
-	private TreeMap<Integer, Scenario> getWaitingScenario() {
-		return waiting;
 	}
 	
 	/**
@@ -99,32 +70,14 @@ public abstract class AbstractStage implements Stage {
 	
 	@Override
 	public void start() {
-		
-		Foundation.ACTIVITY.debug(TAG, "Start Stage");
-		
-		for(Scenario scenario : scenarios) {
-			Foundation.ACTIVITY.debug(TAG, "Add "+scenario+" on Waiting Scenario");
-			getWaitingScenario().put(Integer.valueOf(scenario.getStart()), scenario);
-		}
+		//TODO : nothing
 	}
 	
 	@Override
 	public void update(int time) {
 		if(time != getLastUpdateTime()) {
-		
-			fetchActivableScenario(time);
-			
-			Iterator<Scenario> it = getActiveScenario().iterator();
-			
-			while(it.hasNext()) {
-				
-				Scenario sc = it.next();
-				
-				if(sc.hasFinished()) {
-					it.remove();
-				} else {
-					sc.action(time);
-				}
+			if(!scenario.hasFinished()) {
+				scenario.action(time);
 			}
 			
 			if((time >= getEstimatedScenarioTime()) && !spawn) {
@@ -136,57 +89,19 @@ public abstract class AbstractStage implements Stage {
 	}
 	
 	/**
-	 * Perform a query on Waiting Scenario for retrieving activable Scenario
-	 * for the given Stage Time.
-	 * 
-	 * @param time Stage Time
-	 * @return Scenario
-	 */
-	private Collection<Scenario> getListOfActivableScenario(int time) {
-		return waiting.headMap(Integer.valueOf(time), true).values();
-	}
-	
-	/**
-	 * Fetch Waiting Scenario which can be active.
-	 * 
-	 * @param time Stage Time
-	 */
-	private void fetchActivableScenario(int time) {
-
-		Iterator<Scenario> it = getListOfActivableScenario(time).iterator();
-		
-		while(it.hasNext()) {
-			Scenario scenario = it.next();
-			scenario.setContainer(container);
-			active.add(scenario);
-			it.remove();
-		}
-		
-	}
-	
-	/**
 	 * <p>
 	 * This method is called by {@link AbstractStage#reset()}
 	 * 
 	 */
-	public abstract void resetBoss();
+	public void resetBoss() {
+		boss.reset(BOSS_SPAWN_X, BOSS_SPAWN_Y);
+	}
 	
 	@Override
 	public void reset() {
-		
-		Foundation.ACTIVITY.debug(TAG, "Reset Stage");
-		
 		spawn = false;
 		
-		
-		
-		getActiveScenario().clear();
-		getWaitingScenario().clear();
-		
-		for(Scenario scenario : scenarios) {
-			scenario.reset();
-		}
-		
+		scenario.reset();
 	}
 	
 	@Override
@@ -200,8 +115,7 @@ public abstract class AbstractStage implements Stage {
 	}
 	
 	@Override
-	public void spawn() {
-		
+	public void spawn() {	
 		Boss boss = Objects.requireNonNull(getBoss());
 		
 		boss.createBody(world);
@@ -210,11 +124,18 @@ public abstract class AbstractStage implements Stage {
 		spawn = true;
 	}
 	
+	@Override
+	public long getEstimatedScenarioTime() {
+		return duration;
+	}
+	
 	/**
 	 * Get the {@link Boss} of the Stage
 	 * 
 	 * @return Boss of the Stage
 	 */
-	protected abstract Boss getBoss();
+	protected Boss getBoss() {
+		return boss;
+	}
 	
 }
