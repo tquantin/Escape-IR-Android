@@ -1,6 +1,6 @@
 /*****************************************************************************
  * 
- * Copyright 2012 See AUTHORS file.
+ * Copyright 2012-2013 See AUTHORS file.
  * 
  * This file is part of Escape-IR.
  * 
@@ -11,56 +11,63 @@
 
 package fr.escape.app;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Stroke;
-import java.awt.image.BufferedImage;
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
+import android.util.Log;
 
 import fr.escape.Objects;
+import fr.escape.android.GraphicsView;
 import fr.escape.graphics.Font;
 import fr.escape.graphics.RenderListener;
 import fr.escape.graphics.Shape;
-import fr.escape.graphics.Paths;
+import fr.escape.graphics.Stroke;
 import fr.escape.graphics.Texture;
 import fr.escape.graphics.TextureOperator;
-import fr.umlv.zen2.ApplicationContext;
-import fr.umlv.zen2.ApplicationRenderCode;
 
 /**
  * <p>
- * This class is a layer for AWT and Zen2 Library.
+ * This class is a layer for Android rendering.
  * 
  * <p>
  * This class auto-tune herself for sleep with the requested FPS.
  * 
  * <p>
- * Use an Buffer in Rendering Phase and flush it when it's 
- * done to the {@link Graphics2D} used for User Screen.
+ * Use a buffer in Rendering Phase and flush it when it's 
+ * done to the {@link Canvas} used for User Screen.
  * 
  */
 public final class Graphics {
 	
+	/**
+	 * Graphics default values
+	 */
 	private final static int MINIMUM_WAKEUP_TIME = 0;
 	private final static int MAXIMUM_WAKEUP_TIME = 32;
 	private final static Font DEFAULT_FONT = new Font();
 	private final static int DEFAULT_COLOR = Color.BLACK;
-	private final static Stroke DEFAULT_STROKE = new BasicStroke(1);
+	private final static Stroke DEFAULT_STROKE = new Stroke();
 	
+	/**
+	 * Graphics Properties
+	 */
 	private final RenderListener listener;
-	private final int width;
-	private final int height;
 	private final int displayFps;
-	private final Canvas buffer;
-	private final Bitmap bitmap;
 	private final Paint paint;
+	private final Object lock;
 	
+	/**
+	 * Render Properties
+	 */
+	private int width;
+	private int height;
+	private Canvas buffer;
+	private Bitmap bitmap;
+	
+	/**
+	 * Graphics Value
+	 */
 	private long lastRender;
 	private int rawFps;
 	private int smoothFps;
@@ -84,6 +91,7 @@ public final class Graphics {
 		this.smoothFps = 0;
 		this.wakeUp = 25;
 		this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		this.lock = new Object();
 		
 	}
 	
@@ -129,31 +137,8 @@ public final class Graphics {
 		return wakeUp;
 	}
 	
-	/**
-	 * Return render listener for Drawing.
-	 * 
-	 * @return {@link RenderListener}
-	 */
-	RenderListener getRenderListener() {
-		return listener;
-	}
-	
-	/**
-	 * Return Buffered Image as Frame.
-	 * 
-	 * @return {@link BufferedImage}
-	 */
-	BufferedImage getBufferedImage() {
-		return gBuffer;
-	}
-	
-	/**
-	 * Return Buffered Graphics for Frame.
-	 * 
-	 * @return {@link Graphics2D}
-	 */
-	Graphics2D getBufferedGraphics() {
-		return g2d;
+	public void setView(GraphicsView view, int width, int height) {
+		Log.w("Graphics", view.getWidth()+":"+view.getHeight()+" / "+width+":"+height);
 	}
 	
 	/**
@@ -163,27 +148,50 @@ public final class Graphics {
 	 * <p>
 	 * Called by {@link Engine} at each loop.
 	 * 
+	 * <p>
+	 * <em>This method is Thread-Safe</em>
+	 * 
+	 * <p>
+	 * <b>Thread: Engine</b>
+	 * 
+	 */
+	public void render() {
+		synchronized (lock) {
+			
+			// Flush and clear previous drawing
+			buffer.drawColor(Color.WHITE);
+			
+			// Start Game Rendering
+			listener.render();
+			
+			// Update Render Timing
+			updateRender(System.currentTimeMillis());
+			
+		}
+	}
+	
+	/**
+	 * <p>
+	 * Flush the {@link Graphics} Buffer into the given {@link Canvas}
+	 * for rendering.
+	 * 
+	 * <p>
+	 * <em>This method is Thread-Safe</em>
+	 * 
+	 * <p>
+	 * <b>Thread: Main</b>
+	 * 
 	 * @param canvas Canvas used with Android.
 	 */
-	public void render(Canvas canvas) {
-
-		// NOTE: May need to do this operation in another thread
-		// NOTE: May need to use a Callback for Render Operation
-		
-		// Flush and clear previous drawing
-		buffer.drawColor(Color.WHITE);
-		
-		// Start Game Rendering
-		getRenderListener().render();
-		
-		// END NOTE
-		
-		// Draw Graphics
-		canvas.drawBitmap(bitmap, 0.0f, 0.0f, null);
-		
-		// Update Render Timing
-		updateRender(System.currentTimeMillis());
-		
+	public void flush(Canvas canvas) {
+		synchronized (lock) {
+			
+			// TODO Remove this Log
+			Log.w(Thread.currentThread().getName(), "Call Graphics.flush(Canvas)");
+			
+			// Draw Graphics
+			canvas.drawBitmap(bitmap, 0.0f, 0.0f, null);
+		}
 	}
 	
 	/**
@@ -191,7 +199,7 @@ public final class Graphics {
 	 * 
 	 * @param currentRender Last Rendering Timestamp
 	 */
-	void updateRender(long currentRender) {
+	private void updateRender(long currentRender) {
 		
 		rawFps++;
 		
@@ -381,7 +389,7 @@ public final class Graphics {
 	 * @param angle Rotation to apply on Texture in Degree
 	 */
 	public void draw(final Texture texture, final int x, final int y, final int width, final int height, final int srcX, final int srcY, final int srcWidth, final int srcHeight, final double angle) {
-		texture.draw(g2d, x, y, width, height, srcX, srcY, srcWidth, srcHeight, angle);
+		texture.draw(buffer, x, y, width, height, srcX, srcY, srcWidth, srcHeight, angle);
 	}
 	
 	/**
@@ -410,7 +418,7 @@ public final class Graphics {
 	 * @param angle Rotation to apply on Texture in Degree (Optional)
 	 */
 	public void draw(final TextureOperator textureOp, final int x, final int y, final int width, final int height, final double angle) {
-		textureOp.draw(g2d, x, y, width, height, angle);
+		textureOp.draw(buffer, x, y, width, height, angle);
 	}
 	
 	/**
@@ -485,7 +493,7 @@ public final class Graphics {
 	 * @param shape Shape to draw
 	 * @param color Color to use
 	 */
-	public void draw(final Shape shape, final Color color) {
+	public void draw(final Shape shape, final int color) {
 		draw(shape, color, DEFAULT_STROKE);
 	}
 	
@@ -499,7 +507,11 @@ public final class Graphics {
 	public void draw(final Shape shape, final int color, final Stroke stroke) {
 		
 		paint.setColor(color);
-		buffer.drawPath(shape.getPath(), paint);
+		paint.setStrokeWidth(stroke.getWidth());
+		paint.setStyle(stroke.getStyle());
+		paint.setStrokeJoin(stroke.getJoin());
+		paint.setStrokeCap(stroke.getCap());
+		shape.draw(buffer, paint);
 		
 	}
 	

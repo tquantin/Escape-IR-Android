@@ -1,6 +1,6 @@
 /*****************************************************************************
  * 
- * Copyright 2012 See AUTHORS file.
+ * Copyright 2012-2013 See AUTHORS file.
  * 
  * This file is part of Escape-IR.
  * 
@@ -22,7 +22,10 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
 import fr.escape.Objects;
-import fr.escape.app.Game;
+import fr.escape.app.CoreOld;
+import fr.escape.app.Engine;
+import fr.escape.app.Foundation;
+import fr.escape.app.Graphics;
 import fr.escape.app.Input;
 import fr.escape.app.Overlay;
 import fr.escape.app.Screen;
@@ -46,12 +49,15 @@ import fr.escape.game.ui.IngameUI;
 import fr.escape.game.ui.UIHighscore;
 import fr.escape.game.ui.UIArmorLife;
 import fr.escape.game.ui.UIWeapons;
+import fr.escape.graphics.RenderListener;
 import fr.escape.graphics.ScrollingTexture;
 import fr.escape.input.Booster;
 import fr.escape.input.Drift;
+import fr.escape.input.EventListener;
 import fr.escape.input.Gesture;
 import fr.escape.input.Loop;
 import fr.escape.input.Slide;
+import fr.escape.resources.Resources;
 import fr.escape.resources.scenario.ScenarioLoader;
 import fr.escape.resources.texture.TextureLoader;
 
@@ -60,15 +66,34 @@ import fr.escape.resources.texture.TextureLoader;
  * Escape Game
  * 
  * <p>
- * This class is a huge Controller that link many components together.
+ * This class is the main Controller of the Game that link many components together.
+ * 
+ * <p>
+ * A class which delegates rendering to a {@link Screen}.
+ * Allowing multiple screens for a Game.
  * 
  */
-public final class Escape extends Game implements LifeListener {
+public final class Escape implements LifeListener, RenderListener, EventListener {
 	
 	/**
 	 * Player Model
 	 */
 	private final User user;
+	
+	/**
+	 * Engine Reference
+	 */
+	private Engine engine;
+	
+	/**
+	 * Current Screen
+	 */
+	private Screen screen;
+	
+	/**
+	 * Game's World
+	 */
+	private World world;
 	
 	/**
 	 * Screen
@@ -112,15 +137,17 @@ public final class Escape extends Game implements LifeListener {
 	 * Default Constructor for the Game.
 	 */
 	public Escape() {
-		user = new User(this);
+		this.user = new User(this);
 	}
-	
+
 	/**
-	 * @see Game#create()
+	 * Called when {@link Engine} start
 	 */
-	@Override
-	public void create() {
+	public void create(Engine engine) {
 		try {
+			
+			// Set Engine
+			setEngine(engine);
 			
 			// Create World
 			World world = new World(new Vec2(0.0f,0.0f), true);
@@ -162,12 +189,12 @@ public final class Escape extends Game implements LifeListener {
 			
 		} catch(Exception e) {
 			error = new Error(this);
-			getActivity().error("Escape", "Exception raised during create()", e);
+			getEngine().error("Escape", "Exception raised during create()", e);
 			setScreen(error);
 		}
 		
 	}
-	
+
 	/**
 	 * Create a Hidden Wall for User Ship
 	 * 
@@ -203,12 +230,11 @@ public final class Escape extends Game implements LifeListener {
 		body.createFixture(fixture);
 	}
 
-	/**
-	 * @see Game#render()
-	 */
 	@Override
 	public void render() {
-		super.render();
+		if(screen != null) {
+			screen.render(getGraphics().getDeltaTime());
+		}
 		if(ingameUI != null) {
 			ingameUI.render(getGraphics().getDeltaTime());
 		}
@@ -253,6 +279,85 @@ public final class Escape extends Game implements LifeListener {
 	 */
 	public User getUser() {
 		return user;
+	}
+	
+	/**
+	 * Set a new active {@link Screen}.
+	 * 
+	 * @param screen {@link Screen} to display.
+	 */
+	public void setScreen(Screen screen) {
+		
+		if(this.screen != null) {
+			this.screen.hide();
+		}
+		
+		this.screen = screen;
+		
+		screen.show();
+	}
+
+	/**
+	 * Return the current active {@link Screen}.
+	 *
+	 * @return active {@link Screen}.
+	 */
+	public Screen getScreen() {
+		return screen;
+	}
+	
+	/**
+	 * Set the Game's {@link Engine}.
+	 * 
+	 * @param engine The Game's Engine
+	 */
+	private void setEngine(Engine engine) {
+		this.engine = engine;
+	}
+	
+	/**
+	 * Return the {@link Engine} which created this Game.
+	 * 
+	 * @return {@link Engine}.
+	 */
+	public Engine getEngine() {
+		return engine;
+	}
+	
+	/**
+	 * Return the {@link Graphics} for the Game.
+	 * 
+	 * @return {@link Graphics}
+	 */
+	public Graphics getGraphics() {
+		return getEngine().getGraphics();
+	}
+
+	/**
+	 * Return the {@link Resources} for the Game.
+	 * 
+	 * @return {@link Resources}
+	 */
+	public Resources getResources() {
+		return getEngine().getResources();
+	}
+	
+	/**
+	 * Return the Game's {@link World}
+	 * 
+	 * @return {@link World}
+	 */
+	public World getWorld() {
+		return world;
+	}
+	
+	/**
+	 * Set the Game's {@link World}
+	 * 
+	 * @param world Game's World
+	 */
+	public void setWorld(World world) {
+		this.world = world;
 	}
 
 	@Override

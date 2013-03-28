@@ -11,9 +11,11 @@
 
 package fr.escape.graphics;
 
-import java.awt.Graphics2D;
 import java.util.NoSuchElementException;
-import java.util.Objects;
+
+import android.graphics.Canvas;
+
+import fr.escape.Objects;
 
 /**
  * <p>
@@ -125,12 +127,11 @@ public final class AnimationTexture implements TextureOperator {
 	}
 	
 	@Override
-	public void draw(Graphics2D graphics, int x, int y, int width, int height, double angle) {
+	public void draw(Canvas canvas, int x, int y, int width, int height, double angle) {
 	
-		Objects.requireNonNull(graphics);
-		
 		Texture texture = textures[index];
-		texture.draw(graphics, x, y, width, height, 0, 0, texture.getWidth(), texture.getHeight(), angle);
+		texture.draw(Objects.requireNonNull(canvas), x, y, width, height, 0, 0, texture.getWidth(), texture.getHeight(), angle);
+		
 	}
 
 }

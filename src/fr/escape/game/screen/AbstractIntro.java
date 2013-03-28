@@ -68,7 +68,7 @@ public abstract class AbstractIntro implements Screen {
 		game.getGraphics().draw(drawable, x, y);
 		
 		if(time > WAIT) {
-			game.getActivity().post(next);
+			game.getEngine().post(next);
 		}
 		
 	}

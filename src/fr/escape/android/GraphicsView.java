@@ -18,7 +18,7 @@ public final class GraphicsView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		graphics.render(canvas);
+		graphics.flush(canvas);
 	}
 	
 }

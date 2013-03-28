@@ -49,7 +49,7 @@ public class Error implements Screen {
 			fallbackFont = false;
 		} catch(NoSuchElementException e) {
 			fallbackFont = true;
-			game.getActivity().error(TAG, "Cannot create Font", e);
+			game.getEngine().error(TAG, "Cannot create Font", e);
 		}
 		
 		try {
@@ -57,7 +57,7 @@ public class Error implements Screen {
 			fallbackBackground = false;
 		} catch(NoSuchElementException e) {
 			fallbackBackground = true;
-			game.getActivity().error(TAG, "Cannot create RepeatableScrollingTexture", e);
+			game.getEngine().error(TAG, "Cannot create RepeatableScrollingTexture", e);
 		}
 		
 		this.message = new ArrayList<>(4);

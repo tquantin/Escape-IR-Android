@@ -1,6 +1,6 @@
 /*****************************************************************************
  * 
- * Copyright 2012 See AUTHORS file.
+ * Copyright 2012-2013 See AUTHORS file.
  * 
  * This file is part of Escape-IR.
  * 
@@ -11,61 +11,64 @@
 
 package fr.escape.graphics;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
-
-import android.graphics.Path;
-import android.graphics.Path.Direction;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 
 /**
  * <p>
  * A static class that help to create simple Shape
  * 
  */
-public final class Paths {
+public final class Shapes {
 
 	/**
-	 * Create a Circle Path
+	 * Create a Circle Shape
 	 * 
 	 * @param centerX Center in X axis for Circle.
 	 * @param centerY Center in Y axis for Circle.
 	 * @param radius Radius of the Circle.
-	 * @return A Circle Path
+	 * @return A Circle Shape
 	 */
-	public static Path createCircle(int centerX, int centerY, float radius) {
-		Path circle = new Path();
-		circle.addCircle(centerX, centerY, radius, Direction.CW);
-		return circle;
+	public static Shape createCircle(final int centerX, final int centerY, final float radius) {
+		return new Shape() {
+			
+			@Override
+			public void draw(Canvas canvas, Paint paint) {
+				canvas.drawCircle(centerX, centerY, radius, paint);
+			}
+			
+		};
 	}
 	
 	/**
-	 * Create a Rectangle Path
+	 * Create a Rectangle Shape
 	 * 
 	 * @param x Bottom Right Corner in X Axis for Rectangle
 	 * @param y Bottom Right Corner in Y Axis for Rectangle
-	 * @return A Rectangle Path
+	 * @return A Rectangle Shape
 	 */
-	public static Path createRectangle(int x, int y) {
-		Path rectangle = new Path();
-		rectangle.addRect(0, 0, x, y, Direction.CW);
-		return rectangle;
+	public static Shape createRectangle(int x, int y) {
+		return createRectangle(0, 0, x, y);
 	}
 	
 	/**
-	 * Create a Rectangle Path
+	 * Create a Rectangle Shape
 	 * 
 	 * @param x Top Left Corner in X Axis for Rectangle
 	 * @param y Top Left Corner in Y Axis for Rectangle
 	 * @param width Bottom Right Corner in X Axis for Rectangle
 	 * @param height Bottom Right Corner in Y Axis for Rectangle
-	 * @return A Rectangle Path
+	 * @return A Rectangle Shape
 	 */
-	public static Path createRectangle(int x, int y, int width, int height) {
-		Path rectangle = new Path();
-		rectangle.addRect(x, y, width, height, Direction.CW);
-		return rectangle;
+	public static Shape createRectangle(final int x, final int y, final int width, final int height) {
+		return new Shape() {
+			
+			@Override
+			public void draw(Canvas canvas, Paint paint) {
+				canvas.drawRect(x, y, width, height, paint);
+			}
+			
+		};
 	}
 	
 	/**
@@ -77,9 +80,15 @@ public final class Paths {
 	 * @param y2 Y Axis for Point B
 	 * @return A Line Shape
 	 */
-	public static Shape createLine(int x1, int y1, int x2, int y2) {
-		Shape line = new Line2D.Double(x1, y1, x2, y2);
-		return line;
+	public static Shape createLine(final int x1, final int y1, final int x2, final int y2) {
+		return new Shape() {
+			
+			@Override
+			public void draw(Canvas canvas, Paint paint) {
+				canvas.drawLine(x1, x2, y1, y2, paint);
+			}
+			
+		};
 	}
 	
 }

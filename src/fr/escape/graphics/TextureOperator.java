@@ -1,6 +1,6 @@
 /*****************************************************************************
  * 
- * Copyright 2012 See AUTHORS file.
+ * Copyright 2012-2013 See AUTHORS file.
  * 
  * This file is part of Escape-IR.
  * 
@@ -11,11 +11,11 @@
 
 package fr.escape.graphics;
 
-import java.awt.Graphics2D;
+import android.graphics.Canvas;
 
 /**
  * <p>
- * An interface for drawing complicated Texture
+ * An interface for drawing complex Texture
  * 
  */
 public interface TextureOperator {
@@ -27,12 +27,12 @@ public interface TextureOperator {
 	 * <p>
 	 * The portion of the Texture is defined by the implementation of this interface.
 	 * 
-	 * @param graphics Use this Graphics2D for drawing.
+	 * @param canvas Use this Canvas for drawing.
 	 * @param x Starting Position X in Display Screen.
 	 * @param y Starting Position Y in Display Screen.
 	 * @param width Ending Position X in Display Screen.
 	 * @param height Ending Position Y in Display Screen.
 	 * @param angle Rotation to apply on Texture in Degree (Optional)
 	 */
-	public void draw(final Graphics2D graphics, final int x, final int y, final int width, final int height, final double angle);
+	public void draw(final Canvas canvas, final int x, final int y, final int width, final int height, final double angle);
 }

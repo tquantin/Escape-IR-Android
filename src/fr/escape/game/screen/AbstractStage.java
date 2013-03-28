@@ -104,7 +104,7 @@ public abstract class AbstractStage implements Screen {
 		}
 		
 		game.getEntityContainer().flush();
-		game.getActivity().post(new Runnable() {
+		game.getEngine().post(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -182,7 +182,7 @@ public abstract class AbstractStage implements Screen {
 		if((i.getX() > x - errorX && i.getX() < x + errorX) && (i.getY() > y - errorY && i.getY() < y + errorY)) {
 			
 			if(ship.loadWeapon()) {
-				game.getActivity().debug(TAG, "Weapon Gesture Accept : Load");
+				game.getEngine().debug(TAG, "Weapon Gesture Accept : Load");
 			}
 			
 			return true;
@@ -216,7 +216,7 @@ public abstract class AbstractStage implements Screen {
 						float[] weaponVelocity = new float[3];
 						
 						if(wg.accept(start, events, i, weaponVelocity) && ship.isWeaponLoaded()) {
-							game.getActivity().debug(TAG, "Weapon Gesture Accept : Fire");
+							game.getEngine().debug(TAG, "Weapon Gesture Accept : Fire");
 							ship.fireWeapon(weaponVelocity);
 							accept = true;
 						}

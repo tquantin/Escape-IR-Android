@@ -11,7 +11,6 @@
 
 package fr.escape.graphics;
 
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -20,9 +19,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.util.Objects;
-
 import javax.imageio.ImageIO;
+
+import fr.escape.Objects;
+
+import android.graphics.Canvas;
 
 /**
  * <p>
@@ -45,8 +46,7 @@ public final class Texture {
 	 * @throws IOException If we cannot create a Texture from this {@link File}
 	 */
 	public Texture(InputStream stream) throws IOException {
-		Objects.requireNonNull(stream);
-		image = ImageIO.read(stream);
+		image = ImageIO.read(Objects.requireNonNull(stream));
 	}
 	
 	/**
@@ -78,39 +78,39 @@ public final class Texture {
 
 	/**
 	 * <p>
-	 * Draw this Texture on the given {@link Graphics2D}.
+	 * Draw this Texture on the given {@link Canvas}.
 	 * 
 	 * <p>
 	 * Draw from the top left corner at x,y to the bottom right corner at width,height in
-	 * the {@link Graphics2D}.
+	 * the {@link Canvas}.
 	 * 
 	 * <p>
 	 * We use the rectangle in the Texture located from the top left corner at srcX,srcY to
 	 * the bottom right corner at srcWidth,srcHeight.
 	 * 
-	 * @param graphics {@link Graphics2D} used for drawing.
-	 * @param x Starting Position X in {@link Graphics2D}
-	 * @param y Starting Position Y in {@link Graphics2D}
-	 * @param width Ending Position X in {@link Graphics2D}
-	 * @param height Ending Position Y in {@link Graphics2D}
+	 * @param graphics {@link Canvas} used for drawing.
+	 * @param x Starting Position X in {@link Canvas}
+	 * @param y Starting Position Y in {@link Canvas}
+	 * @param width Ending Position X in {@link Canvas}
+	 * @param height Ending Position Y in {@link Canvas}
 	 * @param srcX Starting Position X in {@link Texture}
 	 * @param srcY Starting Position Y in {@link Texture}
 	 * @param srcWidth Ending Position X in {@link Texture}
 	 * @param srcHeight Ending Position Y in {@link Texture}
 	 */
-	public void draw(Graphics2D graphics, int x, int y, int width, int height,
+	public void draw(Canvas canvas, int x, int y, int width, int height,
 			int srcX, int srcY, int srcWidth, int srcHeight) {
 		
-		draw(graphics, x, y, width, height, srcX, srcY, srcWidth, srcHeight, 0.);
+		draw(canvas, x, y, width, height, srcX, srcY, srcWidth, srcHeight, 0.);
 	}
 	
 	/**
 	 * <p>
-	 * Draw this Texture on the given {@link Graphics2D}.
+	 * Draw this Texture on the given {@link Canvas}.
 	 * 
 	 * <p>
 	 * Draw from the top left corner at x,y to the bottom right corner at width,height in
-	 * the {@link Graphics2D}.
+	 * the {@link Canvas}.
 	 * 
 	 * <p>
 	 * We use the rectangle in the Texture located from the top left corner at srcX,srcY to
@@ -119,21 +119,21 @@ public final class Texture {
 	 * <p>
 	 * Apply a rotation with the given Angle in Degree.
 	 * 
-	 * @param graphics {@link Graphics2D} used for drawing.
-	 * @param x Starting Position X in {@link Graphics2D}
-	 * @param y Starting Position Y in {@link Graphics2D}
-	 * @param width Ending Position X in {@link Graphics2D}
-	 * @param height Ending Position Y in {@link Graphics2D}
+	 * @param graphics {@link Canvas} used for drawing.
+	 * @param x Starting Position X in {@link Canvas}
+	 * @param y Starting Position Y in {@link Canvas}
+	 * @param width Ending Position X in {@link Canvas}
+	 * @param height Ending Position Y in {@link Canvas}
 	 * @param srcX Starting Position X in {@link Texture}
 	 * @param srcY Starting Position Y in {@link Texture}
 	 * @param srcWidth Ending Position X in {@link Texture}
 	 * @param srcHeight Ending Position Y in {@link Texture}
 	 * @param angle Rotation to apply on Texture in Degree.
 	 */
-	public void draw(Graphics2D graphics, int x, int y, int width, int height,
+	public void draw(Canvas canvas, int x, int y, int width, int height,
 			int srcX, int srcY, int srcWidth, int srcHeight, double angle) {
 
-		Objects.requireNonNull(graphics);
+		Objects.requireNonNull(canvas);
 		
 		AffineTransform transformMatrix = null;
 		boolean updateMatrix = false;
