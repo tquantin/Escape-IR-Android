@@ -38,11 +38,10 @@ public abstract class AbstractStage implements Stage {
 	private int lastTime;
 	private boolean spawn;
 	
-	public AbstractStage(World world, EntityContainer container, String scenario, ShipFactory factory, int duration) {
+	public AbstractStage(World world, EntityContainer container, String scenario, ShipFactory factory, int duration, int bossType) {
 		this.world = Objects.requireNonNull(world);
 		this.container = Objects.requireNonNull(container);
-		//TODO : create a generic createBoss method
-		this.boss = Objects.requireNonNull(factory.createEarthBoss(BOSS_SPAWN_X, BOSS_SPAWN_Y));;
+		this.boss = Objects.requireNonNull(factory.createBoss(BOSS_SPAWN_X, BOSS_SPAWN_Y, bossType));
 		//TODO : Remove reference to Foundation
 		this.scenario = Foundation.RESOURCES.getScenario(scenario, factory);
 		this.duration = duration;
@@ -70,7 +69,7 @@ public abstract class AbstractStage implements Stage {
 	
 	@Override
 	public void start() {
-		//TODO : nothing
+		//TODO : nothing (remove ?)
 	}
 	
 	@Override

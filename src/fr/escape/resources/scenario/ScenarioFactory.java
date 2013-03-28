@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.scenario.Scenario;
@@ -81,7 +80,7 @@ final class ScenarioFactory {
 					Entry<Integer, Ship> row = it.next();
 
 					if(spawns.contains(row.getKey()) && !getContainer().contains(row.getValue())) {
-						Foundation.ACTIVITY.debug(toString(), "Remove "+row.getValue());
+						//Foundation.ACTIVITY.debug(toString(), "Remove "+row.getValue());
 						spawns.remove(row.getKey());
 					}
 
@@ -150,7 +149,7 @@ final class ScenarioFactory {
 					}
 
 				} catch(Exception e) {
-					Foundation.ACTIVITY.error(toString(), "An error has occurred", e);
+					//Foundation.ACTIVITY.error(toString(), "An error has occurred", e);
 				}
 				
 				return true;

@@ -12,8 +12,8 @@
 package fr.escape.input;
 
 import java.util.List;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.app.Input;
 import fr.escape.game.entity.CoordinateConverter;

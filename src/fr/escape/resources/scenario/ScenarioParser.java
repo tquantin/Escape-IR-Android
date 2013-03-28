@@ -63,56 +63,57 @@ public final class ScenarioParser {
 	 * @throws IOException
 	 */
 	public static Scenario parse(ShipFactory factory, InputStream inputStream) throws FileNotFoundException, IOException {
-
 		Objects.requireNonNull(factory);
 		Objects.requireNonNull(inputStream);
 		
-		try(InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
-			try(BufferedReader reader = new BufferedReader(inputStreamReader)) {
+		InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+		BufferedReader reader = new BufferedReader(inputStreamReader);
 				
-				String line;
-				int section = 0;
-				ScenarioConfiguration config = new ScenarioConfiguration();
+		try {			
+			String line;
+			int section = 0;
+			ScenarioConfiguration config = new ScenarioConfiguration();
+				
+			while((line = reader.readLine()) != null) {
+				
+				if(line.equals("%%")) {
 					
-				while((line = reader.readLine()) != null) {
+					section++;
 					
-					if(line.equals("%%")) {
-						
-						section++;
-						
-						if(section == END_SECTION) {
-							return ScenarioFactory.create(config);
+					if(section == END_SECTION) {
+						return ScenarioFactory.create(config);
+					}
+					
+				} else {
+					
+					switch(section) {
+						case 1: {
+							section1(line, config);
+							break;
 						}
-						
-					} else {
-						
-						switch(section) {
-							case 1: {
-								section1(line, config);
-								break;
-							}
-							case 2: {
-								section2(line, config);
-								break;
-							}
-							case 3: {
-								section3(line, config, factory);
-								break;
-							}
-							case 4: {
-								section4(line, config);
-								break;
-							}
-							default: {
-								throw new IOException(EXCEPTION_MESSAGE+": Unknown Section %%"+section);
-							}
+						case 2: {
+							section2(line, config);
+							break;
 						}
-						
+						case 3: {
+							section3(line, config, factory);
+							break;
+						}
+						case 4: {
+							section4(line, config);
+							break;
+						}
+						default: {
+							throw new IOException(EXCEPTION_MESSAGE+": Unknown Section %%"+section);
+						}
 					}
 					
 				}
 				
 			}
+		} finally {
+			try { inputStreamReader.close(); } catch(IOException e) { /*Do nothing*/}
+			try { reader.close(); } catch(IOException e) { /*Do nothing*/}
 		}
 		
 		throw new IOException(EXCEPTION_MESSAGE+": Information for Scenario are missing");
@@ -129,7 +130,7 @@ public final class ScenarioParser {
 		try {
 			configuration.setID(Integer.parseInt(line));
 		} catch(Exception e) {
-			throw new IOException(EXCEPTION_MESSAGE, e);
+			throw new IOException(EXCEPTION_MESSAGE);
 		}
 	}
 	
@@ -144,7 +145,7 @@ public final class ScenarioParser {
 		try {
 			configuration.setTime(Integer.parseInt(line));
 		} catch(Exception e) {
-			throw new IOException(EXCEPTION_MESSAGE, e);
+			throw new IOException(EXCEPTION_MESSAGE);
 		}
 	}
 	
@@ -171,7 +172,7 @@ public final class ScenarioParser {
 			configuration.addShip(shipID, ship);
 			
 		} catch(Exception e) {
-			throw new IOException(EXCEPTION_MESSAGE, e);
+			throw new IOException(EXCEPTION_MESSAGE);
 		}
 	}
 	
@@ -186,7 +187,7 @@ public final class ScenarioParser {
 		try {
 			configuration.addScript(line);
 		} catch(Exception e) {
-			throw new IOException(EXCEPTION_MESSAGE, e);
+			throw new IOException(EXCEPTION_MESSAGE);
 		}
 	}
 	

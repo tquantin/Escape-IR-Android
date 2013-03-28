@@ -12,7 +12,6 @@
 package fr.escape.game.entity.ships;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -22,6 +21,9 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
+import android.R.anim;
+
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
@@ -36,9 +38,12 @@ import fr.escape.game.entity.weapons.shot.MoonShot;
 import fr.escape.game.entity.weapons.shot.Shot;
 import fr.escape.game.entity.weapons.shot.Shot.ShotContext;
 import fr.escape.game.entity.weapons.shot.ShotFactory;
+import fr.escape.game.scenario.Earth;
 import fr.escape.game.scenario.Scenario;
+import fr.escape.game.scenario.Stage;
 import fr.escape.graphics.AnimationTexture;
 import fr.escape.graphics.Texture;
+import fr.escape.input.Booster;
 import fr.escape.resources.texture.TextureLoader;
 
 /**
@@ -693,5 +698,31 @@ public class ShipFactory {
 			}
 			
 		};
+	}
+
+	/**
+	 * Create the {@link Boss} for {@link Scenario} Earth.
+	 * 
+	 * @param bossSpawnX : Coordinate on X axis.
+	 * @param bossSpawnY : Coordinate on Y axis.
+	 * <p>
+	 * @param bossType : Integer representing the boss type ID.<br/>
+	 * 0 : Jupiter Boss<br/>
+	 * 1 : Moon Boss<br/>
+	 * 2 : Earth Boss
+	 * </p>
+	 * @return Return the {@link Boss} of a {@link Stage}.
+	 */
+	public Boss createBoss(float bossSpawnX, float bossSpawnY, int bossType) {
+		Boss boss = null;
+		
+		switch(bossType) {
+			case 0	: boss = this.createJupiterBoss(bossSpawnX, bossSpawnY); break;
+			case 1	: boss = this.createMoonBoss(bossSpawnX, bossSpawnY); break;
+			case 2	: boss = this.createEarthBoss(bossSpawnX, bossSpawnY); break;
+			default	: throw new IllegalStateException("Invalid Boss ID");
+		}
+		
+		return boss;
 	}
 }
