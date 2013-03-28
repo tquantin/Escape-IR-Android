@@ -17,6 +17,7 @@ import fr.escape.game.Escape;
 /**
  * Default Launcher/Main for Escape-IR
  */
+@Deprecated
 public final class Launcher {
 
 	private static final String TAG = Launcher.class.getSimpleName();

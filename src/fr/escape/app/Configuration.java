@@ -1,6 +1,6 @@
 /*****************************************************************************
  * 
- * Copyright 2012 See AUTHORS file.
+ * Copyright 2012-2013 See AUTHORS file.
  * 
  * This file is part of Escape-IR.
  * 
@@ -13,7 +13,7 @@ package fr.escape.app;
 
 /**
  * <p>
- * Configuration Object for {@link Graphics} and {@link CoreOld}.
+ * Configuration Object for {@link Graphics} and {@link Engine}.
  * 
  */
 public final class Configuration {
@@ -27,79 +27,21 @@ public final class Configuration {
 	/**
 	 * Environment Configuration
 	 */
-	private final int width;
-	private final int height;
-	private final String title;
 	private final int fps;
 	
 	/**
 	 * Default Constructor 
 	 */
 	public Configuration() {
-		this(400, 600);
+		this(Integer.MAX_VALUE);
 	}
-	
-	/**
-	 * Constructor with a given width and height
-	 * 
-	 * @param width Window Width
-	 * @param height Window Height
-	 */
-	public Configuration(int width, int height) {
-		this(width, height, Integer.MAX_VALUE);
-	}
-	
 	/**
 	 * Constructor with a given width, height and requested fps.
 	 * 
-	 * @param width Window Width
-	 * @param height Window Height
 	 * @param fps Requested Frame per second
 	 */
-	public Configuration(int width, int height, int fps) {
-		this("Escape-IR", width, height, fps);
-	}
-	
-	/**
-	 * Constructor with a given width, height, requested fps and title.
-	 * 
-	 * @param title Window Title
-	 * @param width Window Width
-	 * @param height Window Height
-	 * @param fps Requested Frame per second
-	 */
-	public Configuration(String title, int width, int height, int fps) {
-		this.title = title;
-		this.width = width;
-		this.height = height;
+	public Configuration(int fps) {
 		this.fps = Math.min(Math.max(fps, MIN_FPS), MAX_FPS);
-	}
-	
-	/**
-	 * Get Window Width
-	 * 
-	 * @return Window Width
-	 */
-	public int getWidth() {
-		return width;
-	}
-
-	/**
-	 * Get Window Height
-	 * 
-	 * @return Window Height
-	 */
-	public int getHeight() {
-		return height;
-	}
-
-	/**
-	 * Get Window Title
-	 * 
-	 * @return Window Title
-	 */
-	public String getTitle() {
-		return title;
 	}
 
 	/**

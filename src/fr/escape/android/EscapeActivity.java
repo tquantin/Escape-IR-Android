@@ -11,6 +11,9 @@
 
 package fr.escape.android;
 
+import fr.escape.app.Engine;
+import fr.escape.app.Graphics;
+
 import android.os.Bundle;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -20,9 +23,38 @@ import android.app.Activity;
 
 public abstract class EscapeActivity extends Activity {
 
+	/**
+	 * Class TAG
+	 */
+	private static final String TAG = EscapeActivity.class.getSimpleName();
+	
+	/**
+	 * Drawable window Width
+	 */
+	private int width;
+	
+	/**
+	 * Drawable window Height
+	 */
+	private int height;
+	
+	/**
+	 * View used by {@link Graphics} for rendering
+	 */
+	private GraphicsView view;
+	
+	/**
+	 * Escape Engine 
+	 */
+	private Engine engine;
+	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		this.engine = ((EscapeApplication) getApplication()).getEngine();
+		this.engine.debug(TAG, "onCreate");
 		
 		// Configure Window Options
 		configureWindow();
@@ -31,12 +63,15 @@ public abstract class EscapeActivity extends Activity {
 		Display display = getWindowManager().getDefaultDisplay();
 		
 		// Ignore deprecation for API Lower than 13
-		@SuppressWarnings("deprecation")
-		int width = display.getWidth();
+		this.width = display.getWidth();
 		
 		// Ignore deprecation for API Lower than 13 
-		@SuppressWarnings("deprecation")
-		int height = display.getHeight();
+		this.height = display.getHeight();
+		
+		setContentView(R.layout.escape);
+		
+		this.view = (GraphicsView) findViewById(R.id.gview);
+		
 	}
 
 	@Override
@@ -64,6 +99,14 @@ public abstract class EscapeActivity extends Activity {
 		 */
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 		
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
 	}
 	
 }

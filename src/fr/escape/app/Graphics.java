@@ -12,16 +12,22 @@
 package fr.escape.app;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+
 import fr.escape.Objects;
+import fr.escape.graphics.Font;
 import fr.escape.graphics.RenderListener;
+import fr.escape.graphics.Shape;
+import fr.escape.graphics.Paths;
 import fr.escape.graphics.Texture;
 import fr.escape.graphics.TextureOperator;
 import fr.umlv.zen2.ApplicationContext;
@@ -43,16 +49,17 @@ public final class Graphics {
 	
 	private final static int MINIMUM_WAKEUP_TIME = 0;
 	private final static int MAXIMUM_WAKEUP_TIME = 32;
-	private final static Font DEFAULT_FONT = new Font("Arial", Font.PLAIN, 14);
-	private final static Color DEFAULT_COLOR = Color.BLACK;
+	private final static Font DEFAULT_FONT = new Font();
+	private final static int DEFAULT_COLOR = Color.BLACK;
 	private final static Stroke DEFAULT_STROKE = new BasicStroke(1);
 	
 	private final RenderListener listener;
 	private final int width;
 	private final int height;
 	private final int displayFps;
-	private final BufferedImage gBuffer;
-	private final Graphics2D g2d;
+	private final Canvas buffer;
+	private final Bitmap bitmap;
+	private final Paint paint;
 	
 	private long lastRender;
 	private int rawFps;
@@ -70,17 +77,13 @@ public final class Graphics {
 		Objects.requireNonNull(listener);
 		Objects.requireNonNull(configuration);
 		
-		this.width = configuration.getWidth();
-		this.height = configuration.getHeight();
 		this.displayFps = configuration.getFps();
-		this.gBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		this.g2d = this.gBuffer.createGraphics();
-		
 		this.listener = listener;
 		this.lastRender = System.currentTimeMillis();
 		this.rawFps = 0;
 		this.smoothFps = 0;
 		this.wakeUp = 25;
+		this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		
 	}
 	
@@ -158,31 +161,28 @@ public final class Graphics {
 	 * Core Engine for Rendering.
 	 * 
 	 * <p>
-	 * Called by {@link CoreOld} at each loop.
+	 * Called by {@link Engine} at each loop.
 	 * 
-	 * @param context ApplicationContext used in Zen2 library.
+	 * @param canvas Canvas used with Android.
 	 */
-	public void render(final ApplicationContext context) {
+	public void render(Canvas canvas) {
 
-		Objects.requireNonNull(context).render(new ApplicationRenderCode() {
-			
-			@Override
-			public void render(Graphics2D graphics) {
-				
-				// Flush and clear previous drawing
-				getBufferedGraphics().fill(new Rectangle(0, 0, getWidth(), getHeight()));
-				
-				// Start Game Rendering
-				getRenderListener().render();
-				
-				// Draw Graphics
-				graphics.drawImage(getBufferedImage(), 0, 0, null);
-				
-				// Update Render Timing
-				updateRender(System.currentTimeMillis());
-			}
-			
-		});
+		// NOTE: May need to do this operation in another thread
+		// NOTE: May need to use a Callback for Render Operation
+		
+		// Flush and clear previous drawing
+		buffer.drawColor(Color.WHITE);
+		
+		// Start Game Rendering
+		getRenderListener().render();
+		
+		// END NOTE
+		
+		// Draw Graphics
+		canvas.drawBitmap(bitmap, 0.0f, 0.0f, null);
+		
+		// Update Render Timing
+		updateRender(System.currentTimeMillis());
 		
 	}
 	
@@ -447,7 +447,7 @@ public final class Graphics {
 	 * @param y Bottom Position Y in Display Screen
 	 * @param color Color used for rendering
 	 */
-	public void draw(String message, int x, int y, Color color) {
+	public void draw(String message, int x, int y, int color) {
 		draw(message, x, y, DEFAULT_FONT, color);
 	}
 	
@@ -461,17 +461,13 @@ public final class Graphics {
 	 * @param font Font used for rendering
 	 * @param color Color used for rendering
 	 */
-	public void draw(final String message, final int x, final int y, final Font font, final Color color) {
+	public void draw(final String message, final int x, final int y, final Font font, final int color) {
 		
-		Font f = g2d.getFont();
-		Color c = g2d.getColor();
+		paint.setColor(color);
+		paint.setTypeface(font.getTypeface());
+		paint.setTextSize(font.getSize());
+		buffer.drawText(message, x, y, paint);
 		
-		g2d.setColor(color);
-		g2d.setFont(font);
-		g2d.drawString(message, x, y);
-		
-		g2d.setPaint(c);
-		g2d.setFont(f);
 	}
 	
 	/**
@@ -500,17 +496,11 @@ public final class Graphics {
 	 * @param color Color to use
 	 * @param stroke Stroke to use
 	 */
-	public void draw(final Shape shape, final Color color, final Stroke stroke) {
-
-		Color c = g2d.getColor();
-		Stroke s = g2d.getStroke();
+	public void draw(final Shape shape, final int color, final Stroke stroke) {
 		
-		g2d.setColor(color);
-		g2d.setStroke(stroke);
-		g2d.draw(shape);
+		paint.setColor(color);
+		buffer.drawPath(shape.getPath(), paint);
 		
-		g2d.setColor(c);
-		g2d.setStroke(s);
 	}
 	
 }

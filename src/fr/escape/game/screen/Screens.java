@@ -20,7 +20,7 @@ import java.util.List;
 import fr.escape.Objects;
 import fr.escape.app.Graphics;
 import fr.escape.app.Input;
-import fr.escape.graphics.Shapes;
+import fr.escape.graphics.Paths;
 
 /**
  * <p>
@@ -76,7 +76,7 @@ public final class Screens {
 				
 				Input input = it.next();
 
-				graphics.draw(Shapes.createLine(lastInput.getX(), lastInput.getY(), input.getX(), input.getY()), color);
+				graphics.draw(Paths.createLine(lastInput.getX(), lastInput.getY(), input.getX(), input.getY()), color);
 				lastInput = input;
 				array.add(lastInput);
 			}
