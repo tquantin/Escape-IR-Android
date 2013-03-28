@@ -1,6 +1,6 @@
 /*****************************************************************************
  * 
- * Copyright 2012 See AUTHORS file.
+ * Copyright 2012-2013 See AUTHORS file.
  * 
  * This file is part of Escape-IR.
  * 
@@ -11,7 +11,6 @@
 
 package fr.escape.game.entity.bonus;
 
-import java.util.Objects;
 import java.util.Random;
 
 import org.jbox2d.collision.shapes.PolygonShape;
@@ -21,11 +20,12 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
-import fr.escape.app.Foundation;
+import fr.escape.Objects;
 import fr.escape.game.entity.Collisionable;
 import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.weapons.Weapons;
+import fr.escape.resources.Resources;
 import fr.escape.resources.texture.TextureLoader;
 
 /**
@@ -53,19 +53,21 @@ public final class BonusFactory {
 	/**
 	 * Create a Bonus (or not) depending on the Luck of the User.
 	 * 
+	 * @param resources Resources Loader
 	 * @param world Game World
 	 * @param x Spawn at X Position
 	 * @param y Spawn at Y Position
 	 * @param econtainer Game EntityContainer
 	 * @return A Bonus if the User have luck, <b>null</b> otherwise.
 	 */
-	public static Bonus createBonus(World world, float x, float y, EntityContainer econtainer) {
+	public static Bonus createBonus(Resources resources, World world, float x, float y, EntityContainer econtainer) {
 		
+		Objects.requireNonNull(resources);
 		Objects.requireNonNull(world);
 		Objects.requireNonNull(econtainer);
 		
-		float shapeX = CoordinateConverter.toMeterX(Foundation.RESOURCES.getTexture(TextureLoader.BONUS_WEAPON_MISSILE).getWidth() / 2);
-		float shapeY = CoordinateConverter.toMeterY(Foundation.RESOURCES.getTexture(TextureLoader.BONUS_WEAPON_MISSILE).getHeight() / 2);
+		float shapeX = CoordinateConverter.toMeterX(resources.getTexture(TextureLoader.BONUS_WEAPON_MISSILE).getWidth() / 2);
+		float shapeY = CoordinateConverter.toMeterY(resources.getTexture(TextureLoader.BONUS_WEAPON_MISSILE).getHeight() / 2);
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.set(x, y);
@@ -88,7 +90,7 @@ public final class BonusFactory {
 		Bonus bonus;
 		if(isBlackHoleBonus()) {
 		
-			bonus = new AbstractBonus(body, Foundation.RESOURCES.getTexture(TextureLoader.BONUS_WEAPON_BLACKHOLE), econtainer, econtainer, COLLISION_BEHAVIOR) {
+			bonus = new AbstractBonus(body, resources.getTexture(TextureLoader.BONUS_WEAPON_BLACKHOLE), econtainer, econtainer, COLLISION_BEHAVIOR) {
 				
 				@Override
 				public int getWeapon() {
@@ -104,7 +106,7 @@ public final class BonusFactory {
 			
 		} else if(isFireballBonus()) {
 			
-			bonus = new AbstractBonus(body, Foundation.RESOURCES.getTexture(TextureLoader.BONUS_WEAPON_FIREBALL), econtainer, econtainer, COLLISION_BEHAVIOR) {
+			bonus = new AbstractBonus(body, resources.getTexture(TextureLoader.BONUS_WEAPON_FIREBALL), econtainer, econtainer, COLLISION_BEHAVIOR) {
 				
 				@Override
 				public int getWeapon() {
@@ -120,7 +122,7 @@ public final class BonusFactory {
 			
 		} else if(isShiboleetBonus()) {
 			
-			bonus = new AbstractBonus(body, Foundation.RESOURCES.getTexture(TextureLoader.BONUS_WEAPON_SHIBOLEET), econtainer, econtainer, COLLISION_BEHAVIOR) {
+			bonus = new AbstractBonus(body, resources.getTexture(TextureLoader.BONUS_WEAPON_SHIBOLEET), econtainer, econtainer, COLLISION_BEHAVIOR) {
 				
 				@Override
 				public int getWeapon() {
@@ -136,7 +138,7 @@ public final class BonusFactory {
 			
 		} else if(isMissileBonus()) {
 			
-			bonus = new AbstractBonus(body, Foundation.RESOURCES.getTexture(TextureLoader.BONUS_WEAPON_MISSILE), econtainer, econtainer, COLLISION_BEHAVIOR) {
+			bonus = new AbstractBonus(body, resources.getTexture(TextureLoader.BONUS_WEAPON_MISSILE), econtainer, econtainer, COLLISION_BEHAVIOR) {
 				
 				@Override
 				public int getWeapon() {

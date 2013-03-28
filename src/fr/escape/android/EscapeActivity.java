@@ -53,8 +53,8 @@ public abstract class EscapeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		this.engine = ((EscapeApplication) getApplication()).getEngine();
-		this.engine.debug(TAG, "onCreate");
+		engine = ((EscapeApplication) getApplication()).getEngine();
+		engine.debug(TAG, "onCreate");
 		
 		// Configure Window Options
 		configureWindow();
@@ -63,15 +63,16 @@ public abstract class EscapeActivity extends Activity {
 		Display display = getWindowManager().getDefaultDisplay();
 		
 		// Ignore deprecation for API Lower than 13
-		this.width = display.getWidth();
+		width = display.getWidth();
 		
 		// Ignore deprecation for API Lower than 13 
-		this.height = display.getHeight();
+		height = display.getHeight();
 		
 		setContentView(R.layout.escape);
 		
-		this.view = (GraphicsView) findViewById(R.id.gview);
+		view = (GraphicsView) findViewById(R.id.gview);
 		
+		engine.getGraphics().setView(view, width, height);
 	}
 
 	@Override

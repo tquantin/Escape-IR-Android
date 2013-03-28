@@ -11,13 +11,12 @@
 
 package fr.escape.game.ui;
 
-import java.awt.Color;
-import java.awt.Font;
-
+import android.graphics.Color;
 import fr.escape.Objects;
-import fr.escape.app.Game;
+import fr.escape.game.Escape;
 import fr.escape.game.User;
 import fr.escape.game.message.Receiver;
+import fr.escape.graphics.Font;
 import fr.escape.resources.font.FontLoader;
 
 /**
@@ -35,9 +34,9 @@ public final class UIHighscore extends AbstractOverlay implements Receiver {
 	private static final int TOP_PADDING = 20;
 	private static final int LEFT_MARGIN = 10;
 	
-	private final Game game;
+	private final Escape game;
 	private final Font font;
-	private final Color color;
+	private final int color;
 	
 	/**
 	 * Highscore to show
@@ -47,9 +46,9 @@ public final class UIHighscore extends AbstractOverlay implements Receiver {
 	/**
 	 * Default Constructor
 	 * 
-	 * @param game Game
+	 * @param game Escape Game
 	 */
-	public UIHighscore(Game game) {
+	public UIHighscore(Escape game) {
 		this.game = Objects.requireNonNull(game);
 		this.font = game.getResources().getFont(FontLoader.VISITOR_ID);
 		this.color = Color.WHITE;

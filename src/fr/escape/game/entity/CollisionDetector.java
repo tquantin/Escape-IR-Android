@@ -48,12 +48,18 @@ public final class CollisionDetector implements ContactListener {
 	}
 
 	@Override
-	public void endContact(Contact arg0) {}
+	public void endContact(Contact arg0) {
+		// Nothing to do
+	}
 
 	@Override
-	public void postSolve(Contact arg0, ContactImpulse arg1) {}
+	public void postSolve(Contact arg0, ContactImpulse arg1) {
+		// Nothing to do
+	}
 
 	@Override
-	public void preSolve(Contact arg0, Manifold arg1) {}
+	public void preSolve(Contact arg0, Manifold arg1) {
+		// Nothing to do
+	}
 
 }

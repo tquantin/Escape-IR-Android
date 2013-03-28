@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
+import fr.escape.app.Engine;
 import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.entity.weapons.Weapon;
 import fr.escape.game.message.Receiver;
@@ -66,6 +66,7 @@ public final class User implements Receiver, Sender {
 		this.highscore = 0;
 		this.ship = null;
 		this.life = INITIAL_LIFE;
+		
 	}
 
 	/**
@@ -93,8 +94,8 @@ public final class User implements Receiver, Sender {
 	 * @param score Score to add
 	 */
 	public void addScore(final int score) {
-		Foundation.ACTIVITY.log(TAG, "Add "+score+" to Highscore");
-		Foundation.ACTIVITY.post(new Runnable() {
+		Engine.log(TAG, "Add "+score+" to Highscore");
+		getEngine().post(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -112,12 +113,16 @@ public final class User implements Receiver, Sender {
 	 * @return True if successful
 	 */
 	public boolean reset(float x, float y) {
-		Foundation.ACTIVITY.log(TAG, "User: Reset Requested");
+		
+		Engine.log(TAG, "User: Reset Requested");
+		
 		this.highscore = 0;
 		this.life = INITIAL_LIFE;
+		
 		if(!this.ship.reset(x,y)) {
 			throw new IllegalStateException();
 		}
+		
 		return true;
 	}
 
@@ -149,7 +154,7 @@ public final class User implements Receiver, Sender {
 	 */
 	@Override
 	public void receive(int weaponID) {
-		Foundation.ACTIVITY.debug("User", "Weapons: "+weaponID);
+		Engine.debug("User", "Weapons: "+weaponID);
 		assert ship != null;
 		ship.setActiveWeapon(weaponID);
 	}
@@ -185,7 +190,7 @@ public final class User implements Receiver, Sender {
 	 * 
 	 * @return List of Gesture
 	 */
-	public ArrayList<Gesture> getGestures() {
+	public List<Gesture> getGestures() {
 		return gestures;
 	}
 	
@@ -212,14 +217,10 @@ public final class User implements Receiver, Sender {
 	 */
 	public void removeOneLife() {
 		
-		Foundation.ACTIVITY.debug(TAG, "Remove One Life for User");
 		this.life -= 1;
 		
-		if(this.life <= 0) {
-			Foundation.ACTIVITY.post(stop);
-		} else {
-			Foundation.ACTIVITY.post(restart);
-		}
+		Engine.debug(TAG, "Remove One Life for User");
+		getEngine().post((this.life <= 0)?stop:restart);
 	}
 	
 	/**
@@ -229,7 +230,7 @@ public final class User implements Receiver, Sender {
 	 * @param number How many ammunition
 	 */
 	public void addBonus(int weapon, int number) {
-		Foundation.ACTIVITY.debug(TAG, "Bonus loaded in Player {"+weapon+", "+number+"}");
+		Engine.debug(TAG, "Bonus loaded in Player {"+weapon+", "+number+"}");
 		getShip().reloadWeapon(weapon, number);
 	}
 	
@@ -258,6 +259,15 @@ public final class User implements Receiver, Sender {
 	 */
 	public LifeListener getLifeListener() {
 		return game;
+	}
+	
+	/**
+	 * Get the Engine linked to the Game
+	 * 
+	 * @return {@link Engine}
+	 */
+	private Engine getEngine() {
+		return game.getEngine();
 	}
 	
 	/**

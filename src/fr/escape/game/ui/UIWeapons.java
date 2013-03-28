@@ -11,15 +11,16 @@
 
 package fr.escape.game.ui;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.graphics.Color;
+
 import fr.escape.Objects;
-import fr.escape.app.Game;
+import fr.escape.app.Engine;
 import fr.escape.app.Input;
+import fr.escape.game.Escape;
 import fr.escape.game.entity.weapons.Weapon;
 import fr.escape.game.entity.weapons.Weapons;
 import fr.escape.game.message.Receiver;
@@ -44,9 +45,9 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 	private final static int ITEM_RIGHT_MARGING = 3;
 	private final static int OVERLAY_TOP_MARGING = 50;
 	private final static float FONT_SIZE = 10.0f;
-	private final static Color FONT_COLOR = Color.WHITE;
+	private final static int FONT_COLOR = Color.WHITE;
 	
-	private final Game game;
+	private final Escape game;
 	private final Font font;
 	private final List<Weapon> weapons;
 	private final List<Rectangle> touchArea;
@@ -59,7 +60,15 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 	private int width;
 	private Weapon activeWeapon;
 	
-	public<L extends List<Weapon>, RandomAccess> UIWeapons(Game game, Receiver receiver, L weapons, Weapon activeWeapon) {
+	/**
+	 * Default Constructor 
+	 * 
+	 * @param game Escape Game
+	 * @param receiver Receiver for Weapons selections
+	 * @param weapons List of Weapons
+	 * @param activeWeapon Current/Active/Default Weapon
+	 */
+	public<L extends List<Weapon>, RandomAccess> UIWeapons(Escape game, Receiver receiver, L weapons, Weapon activeWeapon) {
 		
 		if(Objects.requireNonNull(weapons).isEmpty()) {
 			throw new IllegalArgumentException("weapons");
@@ -151,7 +160,9 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 	}
 
 	@Override
-	public void register(Receiver receiver) {}
+	public void register(Receiver receiver) {
+		throw new IllegalStateException("A Receiver is already set with the Constructor.");
+	}
 	
 	/**
 	 * Render a Weapon Icon.

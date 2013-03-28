@@ -1,6 +1,6 @@
 /*****************************************************************************
  * 
- * Copyright 2012 See AUTHORS file.
+ * Copyright 2012-2013 See AUTHORS file.
  * 
  * This file is part of Escape-IR.
  * 
@@ -19,7 +19,8 @@ import fr.escape.Objects;
  * A Wrapper for User Input.
  * 
  * <p>
- * This class can handle input such as Mouse, Network and/or Keyboard.
+ * This class can handle User Input with various information.
+ * 
  */
 public final class Input {
 	
@@ -41,17 +42,17 @@ public final class Input {
 	/**
 	 * User Input X Velocity.
 	 */
-	private final float xv;
+	private final float velocityX;
 	
 	/**
 	 * User Input Y Velocity.
 	 */
-	private final float yv;
+	private final float velocityY;
 	
 	/**
 	 * User Input Kind
 	 */
-	private final Kind k;
+	private final Action action;
 	
 	/**
 	 * Default Constructor
@@ -62,14 +63,21 @@ public final class Input {
 		this(event, 0.0f, 0.0f);
 	}
 	
+	/**
+	 * Constructor with Velocity Information.
+	 * 
+	 * @param event Mouse Input Event
+	 * @param x X Velocity
+	 * @param y Y Velocity
+	 */
 	public Input(MotionEvent event, float x, float y) {
 		
 		Objects.requireNonNull(event);
 		this.x = (int) event.getX();
 		this.y = (int) event.getY();
-		this.xv = x;
-		this.yv = y;
-		this.k = Kind.create(event.getAction());
+		this.velocityX = x;
+		this.velocityY = y;
+		this.action = Action.create(event.getAction());
 	}
 
 	/**
@@ -96,7 +104,7 @@ public final class Input {
 	 * @return X velocity
 	 */
 	public float getXVelocity() {
-		return xv;
+		return velocityX;
 	}
 	
 	/**
@@ -105,21 +113,21 @@ public final class Input {
 	 * @return Y velocity
 	 */
 	public float getYVelocity() {
-		return yv;
+		return velocityY;
 	}
 	
 	/**
-	 * Get Mouse Input Kind.
+	 * Get Mouse Input Action.
 	 * 
-	 * @return Mouse Kind
+	 * @return Mouse Action
 	 */
-	public Kind getKind() {
-		return k;
+	public Action getAction() {
+		return action;
 	}
 	
 	@Override
 	public String toString() {
-		return getX()+" "+getY()+": "+getKind();
+		return getX()+" "+getY()+": "+getAction();
 	}
 	
 	/**
@@ -137,11 +145,14 @@ public final class Input {
 		return false;
 	}
 	
-	public enum Kind {
+	/**
+	 * Filter for MotionEvent Action: Keep it simple.
+	 */
+	public enum Action {
 		
 		ACTION_DOWN, ACTION_UP, ACTION_MOVE, ACTION_UNKNOWN;
 		
-		static Kind create(int action) {
+		static Action create(int action) {
 			switch(action) {
 				case MotionEvent.ACTION_UP: {
 					return ACTION_UP;

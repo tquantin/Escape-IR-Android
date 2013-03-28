@@ -22,4 +22,6 @@ package fr.escape.app;
  */
 public interface Overlay extends Screen {
 	
+	// Flag Interface
+	
 }

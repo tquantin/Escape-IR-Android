@@ -1,6 +1,6 @@
 /*****************************************************************************
  * 
- * Copyright 2012 See AUTHORS file.
+ * Copyright 2012-2013 See AUTHORS file.
  * 
  * This file is part of Escape-IR.
  * 
@@ -11,9 +11,7 @@
 
 package fr.escape.game.entity.bonus;
 
-import java.util.Objects;
-
-import fr.escape.app.Foundation;
+import fr.escape.Objects;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.Collisionable;

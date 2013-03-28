@@ -22,9 +22,7 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
 import fr.escape.Objects;
-import fr.escape.app.CoreOld;
 import fr.escape.app.Engine;
-import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 import fr.escape.app.Input;
 import fr.escape.app.Overlay;
@@ -189,7 +187,7 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 			
 		} catch(Exception e) {
 			error = new Error(this);
-			getEngine().error("Escape", "Exception raised during create()", e);
+			Engine.error("Escape", "Exception raised during create()", e);
 			setScreen(error);
 		}
 		

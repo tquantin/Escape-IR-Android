@@ -28,7 +28,7 @@ public final class Engine implements Runnable {
 	 * Engine Properties
 	 */
 	private final Escape game;
-	//private final Graphics graphics;
+	private final Graphics graphics;
 	private final Thread thread;
 	private final Resources resources;
 	private final Queue<Runnable> runnables;
@@ -55,7 +55,7 @@ public final class Engine implements Runnable {
 	 */
 	public Engine(Escape game, Configuration configuration) {
 		
-		//this.graphics = new Graphics(Objects.requireNonNull(game), Objects.requireNonNull(configuration));
+		this.graphics = new Graphics(Objects.requireNonNull(game), Objects.requireNonNull(configuration));
 		this.game = game;
 		this.thread = new Thread(this);
 		this.resources = new Resources();
@@ -72,49 +72,48 @@ public final class Engine implements Runnable {
 		
 		thread.setName("Engine Looper");
 		thread.start();
-		
-		//initialize();
+
 	}
 	
 	/** 
 	 * Logs a message to the console.
 	 */
-	public void log(String tag, String message) {
+	public static void log(String tag, String message) {
 		Log.i(tag, message);
 	}
 
 	/**
 	 * Logs a message to the console.
 	 */
-	public void log(String tag, String message, Exception exception) {
+	public static void log(String tag, String message, Exception exception) {
 		Log.i(tag, message, exception);
 	}
 
 	/** 
 	 * Logs an error message to the console.
 	 */
-	public void error(String tag, String message) {
+	public static void error(String tag, String message) {
 		Log.e(tag, message);
 	}
 
 	/** 
 	 * Logs an error message to the console.
 	 */
-	public void error(String tag, String message, Throwable exception) {
+	public static void error(String tag, String message, Throwable exception) {
 		Log.e(tag, message, exception);
 	}
 
 	/** 
 	 * Logs a debug message to the console.
 	 */
-	public void debug(String tag, String message) {
+	public static void debug(String tag, String message) {
 		Log.d(tag, message);
 	}
 
 	/** 
 	 * Logs a debug message to the console.
 	 */
-	public void debug(String tag, String message, Throwable exception) {
+	public static void debug(String tag, String message, Throwable exception) {
 		Log.d(tag, message, exception);
 	}
 	
@@ -206,8 +205,7 @@ public final class Engine implements Runnable {
 	 * @return Graphics Engine 
 	 */
 	public Graphics getGraphics() {
-		return null;
-		//return graphics;
+		return graphics;
 	}
 	
 	/**

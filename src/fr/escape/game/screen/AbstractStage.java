@@ -198,7 +198,7 @@ public abstract class AbstractStage implements Screen {
 		LinkedList<Input> events = this.events;
 		ArrayList<Gesture> gestures = game.getUser().getGestures();
 		
-		switch(i.getKind()) {
+		switch(i.getAction()) {
 			case ACTION_UP: {
 				
 				Iterator<Input> it = events.iterator();

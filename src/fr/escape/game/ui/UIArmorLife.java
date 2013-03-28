@@ -11,13 +11,12 @@
 
 package fr.escape.game.ui;
 
-import java.awt.Color;
-import java.awt.Font;
-
+import android.graphics.Color;
 import fr.escape.Objects;
-import fr.escape.app.Game;
+import fr.escape.game.Escape;
 import fr.escape.game.User;
 import fr.escape.game.entity.ships.Ship;
+import fr.escape.graphics.Font;
 import fr.escape.resources.font.FontLoader;
 
 /**
@@ -37,18 +36,18 @@ public final class UIArmorLife extends AbstractOverlay {
 	
 	private final Ship player;
 	private final User user;
-	private final Game game;
+	private final Escape game;
 	private final Font font;
-	private final Color color;
+	private final int color;
 	
 	/**
 	 * Default Constructor
 	 * 
-	 * @param game Game
+	 * @param game Escape Game
 	 * @param player Ship played by User
 	 * @param user User himself
 	 */
-	public UIArmorLife(Game game, Ship player, User user) {
+	public UIArmorLife(Escape game, Ship player, User user) {
 		this.game = Objects.requireNonNull(game);
 		this.user = Objects.requireNonNull(user);
 		this.player = Objects.requireNonNull(player);
