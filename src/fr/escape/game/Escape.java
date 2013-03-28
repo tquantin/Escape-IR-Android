@@ -34,9 +34,7 @@ import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.entity.ships.ShipFactory;
 import fr.escape.game.entity.weapons.shot.ShotFactory;
-import fr.escape.game.scenario.Earth;
-import fr.escape.game.scenario.Jupiter;
-import fr.escape.game.scenario.Moon;
+import fr.escape.game.scenario.GameStage;
 import fr.escape.game.scenario.Stage;
 import fr.escape.game.screen.AbstractIntro;
 import fr.escape.game.screen.Lost;
@@ -54,6 +52,7 @@ import fr.escape.input.Drift;
 import fr.escape.input.Gesture;
 import fr.escape.input.Loop;
 import fr.escape.input.Slide;
+import fr.escape.resources.scenario.ScenarioLoader;
 import fr.escape.resources.texture.TextureLoader;
 
 /**
@@ -416,8 +415,7 @@ public final class Escape extends Game implements LifeListener {
 		victory = new Victory(this);
 		
 		jupiter = new AbstractStage(this) {
-
-			private final Stage stage = new Jupiter(getWorld(), getEntityContainer(), getShipFactory());
+			private final Stage stage = new GameStage(getWorld(), getEntityContainer(), ScenarioLoader.JUPITER_1, getShipFactory(), 40, 0);
 			private final ScrollingTexture background = new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_JUPITER), true);
 			
 			@Override
@@ -438,8 +436,7 @@ public final class Escape extends Game implements LifeListener {
 		};
 		
 		moon = new AbstractStage(this) {
-			
-			private final Stage stage = new Moon(getWorld(), getEntityContainer(), getShipFactory());
+			private final Stage stage = new GameStage(getWorld(), getEntityContainer(), ScenarioLoader.JUPITER_1, getShipFactory(), 55, 1);
 			private final ScrollingTexture background = new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_MOON), true);
 			
 			@Override
@@ -460,8 +457,7 @@ public final class Escape extends Game implements LifeListener {
 		};
 		
 		earth = new AbstractStage(this) {
-			
-			private final Stage stage = new Earth(getWorld(), getEntityContainer(), getShipFactory());
+			private final Stage stage = new GameStage(getWorld(), getEntityContainer(), ScenarioLoader.JUPITER_1, getShipFactory(), 52, 2);
 			private final ScrollingTexture background = new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_EARTH), true);
 			
 			@Override

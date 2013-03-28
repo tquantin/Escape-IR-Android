@@ -38,7 +38,6 @@ import fr.escape.game.entity.weapons.shot.MoonShot;
 import fr.escape.game.entity.weapons.shot.Shot;
 import fr.escape.game.entity.weapons.shot.Shot.ShotContext;
 import fr.escape.game.entity.weapons.shot.ShotFactory;
-import fr.escape.game.scenario.Earth;
 import fr.escape.game.scenario.Scenario;
 import fr.escape.game.scenario.Stage;
 import fr.escape.graphics.AnimationTexture;

@@ -11,8 +11,7 @@
 
 package fr.escape.game.entity.ships;
 
-import java.util.Objects;
-
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
