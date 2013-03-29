@@ -54,7 +54,7 @@ public abstract class EscapeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		engine = ((EscapeApplication) getApplication()).getEngine();
-		engine.debug(TAG, "onCreate");
+		Engine.debug(TAG, "onCreate");
 		
 		// Configure Window Options
 		configureWindow();

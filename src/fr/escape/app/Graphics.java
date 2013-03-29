@@ -12,6 +12,7 @@
 package fr.escape.app;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -64,6 +65,7 @@ public final class Graphics {
 	private int height;
 	private Canvas buffer;
 	private Bitmap bitmap;
+	private GraphicsView view;
 	
 	/**
 	 * Graphics Value
@@ -139,6 +141,18 @@ public final class Graphics {
 	
 	public void setView(GraphicsView view, int width, int height) {
 		Log.w("Graphics", view.getWidth()+":"+view.getHeight()+" / "+width+":"+height);
+		
+		this.view = view;
+		this.width = width;
+		this.height = height;
+		
+		if(bitmap != null && !bitmap.isRecycled()) {
+			bitmap.recycle();
+		}
+		
+		bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+		buffer = new Canvas(bitmap);
+		
 	}
 	
 	/**
@@ -166,6 +180,9 @@ public final class Graphics {
 			
 			// Update Render Timing
 			updateRender(System.currentTimeMillis());
+			
+			// Notify the Graphics View that it need an Update
+			view.invalidate();
 			
 		}
 	}

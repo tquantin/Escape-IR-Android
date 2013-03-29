@@ -53,14 +53,14 @@ public final class EscapeApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		engine.debug(TAG, "Initialize Engine");
+		Engine.debug(TAG, "Initialize Engine");
 		engine.create();
 	}
 	
 	@Override
 	public void onLowMemory() {
 		super.onLowMemory();
-		engine.error(TAG, "onLowMemory detected");
+		Engine.error(TAG, "onLowMemory detected");
 	}
 	
 	public Engine getEngine() {
@@ -71,18 +71,17 @@ public final class EscapeApplication extends Application {
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
             	acquireVelocityTracker();
-            	// Case fall-through
+            	onTouch(event);
+            	break;
             }
             case MotionEvent.ACTION_MOVE: {
-            	tracker.addMovement(event);
-            	engine.event(new Input(event));
+            	onTouchVelocity(event);
             	break;
             }
             case MotionEvent.ACTION_UP: {
-            	tracker.addMovement(event);
-            	tracker.computeCurrentVelocity(1000);
-            	engine.event(new Input(event, tracker.getXVelocity(), tracker.getYVelocity()));
-            	// Case fall-through
+            	onTouchVelocity(event);
+            	releaseVelocityTracker();
+            	break;
             }
             case MotionEvent.ACTION_CANCEL: {
             	releaseVelocityTracker();
@@ -98,6 +97,17 @@ public final class EscapeApplication extends Application {
         } else {
             tracker.clear();
         }
+	}
+	
+	private void onTouch(MotionEvent event) {
+		tracker.addMovement(event);
+    	engine.event(new Input(event));
+	}
+	
+	private void onTouchVelocity(MotionEvent event) {
+		tracker.addMovement(event);
+    	tracker.computeCurrentVelocity(1000);
+    	engine.event(new Input(event, tracker.getXVelocity(), tracker.getYVelocity()));
 	}
 	
 	private void releaseVelocityTracker() {

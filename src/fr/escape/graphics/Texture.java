@@ -11,19 +11,15 @@
 
 package fr.escape.graphics;
 
-import java.awt.Image;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.imageio.ImageIO;
-
 import fr.escape.Objects;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 
 /**
  * <p>
@@ -37,7 +33,7 @@ public final class Texture {
 	/**
 	 * Image used for rendering
 	 */
-	private final BufferedImage image;
+	private final Drawable drawable;
 	
 	/**
 	 * Default Constructor for a Texture
@@ -45,8 +41,8 @@ public final class Texture {
 	 * @param stream Texture file
 	 * @throws IOException If we cannot create a Texture from this {@link File}
 	 */
-	public Texture(InputStream stream) throws IOException {
-		image = ImageIO.read(Objects.requireNonNull(stream));
+	public Texture(Resources resources, int id) throws IOException {
+		drawable = Objects.requireNonNull(resources).getDrawable(id));
 	}
 	
 	/**
@@ -55,7 +51,7 @@ public final class Texture {
 	 * @return Texture Width
 	 */
 	public int getWidth() {
-		return image.getWidth();
+		return drawable.getWidth();
 	}
 	
 	/**
@@ -64,7 +60,7 @@ public final class Texture {
 	 * @return Texture Height
 	 */
 	public int getHeight() {
-		return image.getHeight();
+		return drawable.getHeight();
 	}
 	
 	/**
@@ -73,7 +69,7 @@ public final class Texture {
 	 * @return Image used as Texture
 	 */
 	private Image getImage() {
-		return image;
+		return drawable;
 	}
 
 	/**
@@ -156,6 +152,8 @@ public final class Texture {
         
 		// Draw Texture on Graphics
 		graphics.drawImage(getImage(), x, y, width, height, srcX, srcY, srcWidth, srcHeight, null);
+		
+		canvas.drawBitmap(drawable, x, y,  width, height, srcX, srcY, srcWidth, srcHeight);
 		
 		// Restore Previous Matrix
 		if(updateMatrix) {
