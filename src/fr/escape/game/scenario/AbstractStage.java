@@ -14,7 +14,7 @@ package fr.escape.game.scenario;
 import org.jbox2d.dynamics.World;
 
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
+import fr.escape.app.Engine;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.ships.Boss;
 import fr.escape.game.entity.ships.Ship;
@@ -38,12 +38,11 @@ public abstract class AbstractStage implements Stage {
 	private int lastTime;
 	private boolean spawn;
 	
-	public AbstractStage(World world, EntityContainer container, String scenario, ShipFactory factory, int duration, int bossType) {
+	public AbstractStage(Engine engine, World world, EntityContainer container, String scenario, ShipFactory factory, int duration, int bossType) {
 		this.world = Objects.requireNonNull(world);
 		this.container = Objects.requireNonNull(container);
 		this.boss = Objects.requireNonNull(factory.createBoss(BOSS_SPAWN_X, BOSS_SPAWN_Y, bossType));
-		//TODO : Remove reference to Foundation
-		this.scenario = Foundation.RESOURCES.getScenario(scenario, factory);
+		this.scenario = engine.getResources().getScenario(scenario, factory);
 		this.duration = duration;
 		this.lastTime = -1;
 		this.spawn = false;

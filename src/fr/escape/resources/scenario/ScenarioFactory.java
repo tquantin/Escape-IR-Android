@@ -138,11 +138,11 @@ final class ScenarioFactory {
 					String[] commandArray = lineArray[LINE_COMMAND].split("\\s", 2);
 					String[] commandArgs = commandArray[COMMAND_ARGS].split("\\s+");
 
-					if(commandArray[COMMAND_ACTION] == "spawn") {
+					if(commandArray[COMMAND_ACTION].equals("spawn")) {
 						spawn(commandArgs);
-					} else if(commandArray[COMMAND_ACTION] == "move") {
+					} else if(commandArray[COMMAND_ACTION].equals("move")) {
 						move(commandArgs);
-					} else if(commandArray[COMMAND_ACTION] == "fire") {
+					} else if(commandArray[COMMAND_ACTION].equals("fire")) {
 						fire(commandArgs);
 					} else {
 						throw new IllegalArgumentException("Unknwon Command");

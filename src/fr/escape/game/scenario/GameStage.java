@@ -2,6 +2,7 @@ package fr.escape.game.scenario;
 
 import org.jbox2d.dynamics.World;
 
+import fr.escape.app.Engine;
 import fr.escape.game.entity.Entity;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.ships.Ship;
@@ -19,8 +20,8 @@ public class GameStage extends AbstractStage {
 	 * @param duration : Duration in seconds of the {@link Stage}.
 	 * @param bossType : Boss to use for this {@link Stage}
 	 */
-	public GameStage(World world, EntityContainer container, String scenario, ShipFactory factory, int duration, int bossType) {
-		super(world, container, scenario, factory, duration, bossType);
+	public GameStage(Engine engine, World world, EntityContainer container, String scenario, ShipFactory factory, int duration, int bossType) {
+		super(engine, world, container, scenario, factory, duration, bossType);
 	}
 
 }

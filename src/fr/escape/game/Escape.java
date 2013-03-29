@@ -512,13 +512,13 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	 * Create Screen
 	 */
 	private void createScreen() {
-		
+		final Engine engine = this.engine;
 		lost = new Lost(this);
 		menu = new Menu(this);
 		victory = new Victory(this);
 		
 		jupiter = new AbstractStage(this) {
-			private final Stage stage = new GameStage(getWorld(), getEntityContainer(), ScenarioLoader.JUPITER_1, getShipFactory(), 40, 0);
+			private final Stage stage = new GameStage(engine, getWorld(), getEntityContainer(), ScenarioLoader.JUPITER_1, getShipFactory(), 40, 0);
 			private final ScrollingTexture background = new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_JUPITER), true);
 			
 			@Override
@@ -539,7 +539,7 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 		};
 		
 		moon = new AbstractStage(this) {
-			private final Stage stage = new GameStage(getWorld(), getEntityContainer(), ScenarioLoader.JUPITER_1, getShipFactory(), 55, 1);
+			private final Stage stage = new GameStage(engine, getWorld(), getEntityContainer(), ScenarioLoader.JUPITER_1, getShipFactory(), 55, 1);
 			private final ScrollingTexture background = new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_MOON), true);
 			
 			@Override
@@ -560,7 +560,7 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 		};
 		
 		earth = new AbstractStage(this) {
-			private final Stage stage = new GameStage(getWorld(), getEntityContainer(), ScenarioLoader.JUPITER_1, getShipFactory(), 52, 2);
+			private final Stage stage = new GameStage(engine, getWorld(), getEntityContainer(), ScenarioLoader.JUPITER_1, getShipFactory(), 52, 2);
 			private final ScrollingTexture background = new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_EARTH), true);
 			
 			@Override
