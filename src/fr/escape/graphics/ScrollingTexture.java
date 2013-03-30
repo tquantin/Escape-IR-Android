@@ -12,7 +12,8 @@
 package fr.escape.graphics;
 
 import java.awt.Graphics2D;
-import java.util.Objects;
+
+import fr.escape.Objects;
 
 /**
  * <p>

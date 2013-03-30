@@ -42,7 +42,7 @@ public final class Texture {
 	 * @throws IOException If we cannot create a Texture from this {@link File}
 	 */
 	public Texture(Resources resources, int id) throws IOException {
-		drawable = Objects.requireNonNull(resources).getDrawable(id));
+		drawable = Objects.requireNonNull(resources).getDrawable(id);
 	}
 	
 	/**

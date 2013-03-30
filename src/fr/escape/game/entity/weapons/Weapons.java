@@ -13,8 +13,8 @@ package fr.escape.game.entity.weapons;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.ships.Ship;
@@ -54,7 +54,7 @@ public class Weapons {
 		Objects.requireNonNull(entityContainer);
 		Objects.requireNonNull(shotFactory);
 		
-		List<Weapon> list = new ArrayList<>(4);
+		List<Weapon> list = new ArrayList<Weapon>(4);
 		
 		Weapon wB = new AbstractWeapon(
 				Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_BLACKHOLE), 
@@ -167,7 +167,7 @@ public class Weapons {
 		Objects.requireNonNull(entityContainer);
 		Objects.requireNonNull(shotFactory);
 
-		List<Weapon> list = new ArrayList<>(3);
+		List<Weapon> list = new ArrayList<Weapon>(3);
 		
 		Weapon wF = new AbstractWeapon(
 				Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_FIREBALL), 

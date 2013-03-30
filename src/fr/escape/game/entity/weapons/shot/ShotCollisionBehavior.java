@@ -11,8 +11,8 @@
 
 package fr.escape.game.entity.weapons.shot;
 
-import java.util.Objects;
 
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;

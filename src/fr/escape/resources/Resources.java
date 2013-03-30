@@ -61,9 +61,9 @@ public final class Resources {
 	 * Don't forget to call load() after instantiation.
 	 */
 	public Resources() {
-		fontLoader = new HashMap<>();
-		textureLoader = new HashMap<>();
-		scenarioLoader = new HashMap<>();
+		fontLoader = new HashMap<String, FontLoader>();
+		textureLoader = new HashMap<String, TextureLoader>();
+		scenarioLoader = new HashMap<String, ScenarioLoader>();
 		loaded = false;
 	}
 	

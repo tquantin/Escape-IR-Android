@@ -12,10 +12,10 @@
 package fr.escape.game.entity.weapons.shot;
 
 import java.awt.Rectangle;
-import java.util.Objects;
 
 import org.jbox2d.dynamics.Body;
 
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;

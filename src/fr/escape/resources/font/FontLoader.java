@@ -11,8 +11,7 @@
 
 package fr.escape.resources.font;
 
-import java.awt.Font;
-
+import android.graphics.Typeface;
 import fr.escape.resources.ResourcesLoader;
 
 /**
@@ -20,7 +19,7 @@ import fr.escape.resources.ResourcesLoader;
  * A {@link ResourcesLoader} for {@link Font}.
  * 
  */
-public abstract class FontLoader implements ResourcesLoader<Font> {
+public abstract class FontLoader implements ResourcesLoader<Typeface> {
 	
 	public static final String VISITOR_ID = "visitor.ttf";
 	

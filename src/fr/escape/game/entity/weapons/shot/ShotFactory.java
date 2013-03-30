@@ -11,8 +11,6 @@
 
 package fr.escape.game.entity.weapons.shot;
 
-import java.util.Objects;
-
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -20,6 +18,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;

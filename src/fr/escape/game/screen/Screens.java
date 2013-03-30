@@ -20,7 +20,7 @@ import java.util.List;
 import fr.escape.Objects;
 import fr.escape.app.Graphics;
 import fr.escape.app.Input;
-import fr.escape.graphics.Paths;
+import fr.escape.graphics.Shapes;
 
 /**
  * <p>
@@ -62,7 +62,7 @@ public final class Screens {
 		Objects.requireNonNull(graphics);
 		
 		Input lastInput = null;
-		List<Input> array = new ArrayList<>(events.size());
+		List<Input> array = new ArrayList<Input>(events.size());
 		Iterator<Input> it = events.iterator();
 		
 		// Find First Input
@@ -76,7 +76,7 @@ public final class Screens {
 				
 				Input input = it.next();
 
-				graphics.draw(Paths.createLine(lastInput.getX(), lastInput.getY(), input.getX(), input.getY()), color);
+				graphics.draw(Shapes.createLine(lastInput.getX(), lastInput.getY(), input.getX(), input.getY()), color);
 				lastInput = input;
 				array.add(lastInput);
 			}

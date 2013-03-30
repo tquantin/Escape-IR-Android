@@ -15,10 +15,10 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.Objects;
 
 import org.jbox2d.dynamics.World;
 
+import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.bonus.Bonus;
@@ -55,8 +55,8 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 		
 		this.world = world;
 		this.edge = new Rectangle(-margin, -margin, Foundation.GRAPHICS.getWidth() + margin, Foundation.GRAPHICS.getHeight() + margin);
-		this.entities = new LinkedHashSet<>();
-		this.destroyed = new LinkedList<>();
+		this.entities = new LinkedHashSet<Entity>();
+		this.destroyed = new LinkedList<Entity>();
 		
 		Foundation.ACTIVITY.debug(TAG, "EntityContainer created");
 		
