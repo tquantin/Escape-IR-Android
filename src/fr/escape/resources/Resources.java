@@ -11,20 +11,18 @@
 
 package fr.escape.resources;
 
-import java.awt.Font;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
+import fr.escape.app.Engine;
 import fr.escape.game.entity.ships.ShipFactory;
 import fr.escape.game.scenario.Scenario;
 import fr.escape.graphics.Texture;
 import fr.escape.resources.font.FontLoader;
 import fr.escape.resources.scenario.ScenarioLoader;
 import fr.escape.resources.scenario.ScenarioParser;
-import fr.escape.resources.texture.TextureLoader;
 
 /**
  * <p>
@@ -45,8 +43,9 @@ public final class Resources {
 	static final String TAG = Resources.class.getSimpleName();
 	
 	private final HashMap<String, FontLoader> fontLoader;
-	private final HashMap<String, TextureLoader> textureLoader;
+	private final HashMap<Integer, TextureLoader> textureLoader;
 	private final HashMap<String, ScenarioLoader> scenarioLoader;
+	private final android.content.res.Resources nativeResources;
 	
 	/**
 	 * Is all resources loaded in memory ?
@@ -59,11 +58,14 @@ public final class Resources {
 	 * 
 	 * <p>
 	 * Don't forget to call load() after instantiation.
+	 * 
+	 * @param resources Android Native Resources Reference
 	 */
-	public Resources() {
+	public Resources(android.content.res.Resources resources) {
 		fontLoader = new HashMap<String, FontLoader>();
-		textureLoader = new HashMap<String, TextureLoader>();
+		textureLoader = new HashMap<Integer, TextureLoader>();
 		scenarioLoader = new HashMap<String, ScenarioLoader>();
+		nativeResources = resources;
 		loaded = false;
 	}
 	
@@ -237,7 +239,7 @@ public final class Resources {
 			public Font load() throws Exception {
 				if(font == null) {
 					
-					Foundation.ACTIVITY.debug(TAG, "Load Font: "+fontID);
+					Engine.debug(TAG, "Load Font: "+fontID);
 					
 					try(InputStream stream = getInputStream(getPath()+"/"+fontID)) {
 						font = Font.createFont(Font.TRUETYPE_FONT, stream);
@@ -257,7 +259,7 @@ public final class Resources {
 	 * @param textureID Texture name
 	 * @return TextureLoader which will load the Texture
 	 */
-	private TextureLoader createTextureLoader(final String textureID) {
+	private TextureLoader createTextureLoader(final int textureID) {
 		return new TextureLoader() {
 			
 			private Texture texture = null;
@@ -265,13 +267,8 @@ public final class Resources {
 			@Override
 			public Texture load() throws Exception {
 				if(texture == null) {
-					
-					Foundation.ACTIVITY.debug(TAG, "Load Texture: "+textureID);
-					
-					try(InputStream stream = getInputStream(getPath()+"/"+textureID)) {
-						texture = new Texture(stream);
-					}
-					
+					Engine.debug(TAG, "Load Texture: "+textureID);
+					texture = new Texture(getNativeResources(), textureID);
 				}
 				return texture;
 			}
@@ -294,7 +291,7 @@ public final class Resources {
 			public Scenario load() throws Exception {
 				if(scenario == null) {
 					
-					Foundation.ACTIVITY.debug(TAG, "Load Scenario: "+scenarioID);
+					Engine.debug(TAG, "Load Scenario: "+scenarioID);
 					
 					try(InputStream stream = getInputStream(getPath()+"/"+scenarioID)) {
 						scenario = ScenarioParser.parse(getShipCreator(), stream);
@@ -310,10 +307,10 @@ public final class Resources {
 	/**
 	 * Create a TextureLoader and add it for a given Texture name.
 	 * 
-	 * @param textureID Texture name
+	 * @param textureID Texture ID
 	 */
-	private void postTextureLoader(String textureID) {
-		textureLoader.put(textureID, createTextureLoader(textureID));
+	private void postTextureLoader(int textureID) {
+		textureLoader.put(Integer.valueOf(textureID), createTextureLoader(textureID));
 	}
 	
 	/**
@@ -358,4 +355,14 @@ public final class Resources {
 	InputStream getInputStream(String file) {
 		return getClass().getResourceAsStream(file);
 	}
+
+	/**
+	 * Retrieve the Android Native Resources.
+	 * 
+	 * @return Android Resources
+	 */
+	android.content.res.Resources getNativeResources() {
+		return nativeResources;
+	}
+	
 }

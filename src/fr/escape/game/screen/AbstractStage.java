@@ -29,7 +29,7 @@ import fr.escape.graphics.RepeatableScrollingTexture;
 import fr.escape.graphics.ScrollingTexture;
 import fr.escape.input.Gesture;
 import fr.escape.input.WeaponGesture;
-import fr.escape.resources.texture.TextureLoader;
+import fr.escape.resources.TextureLoader;
 
 /**
  * <p>

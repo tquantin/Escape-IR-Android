@@ -56,8 +56,8 @@ import fr.escape.input.Gesture;
 import fr.escape.input.Loop;
 import fr.escape.input.Slide;
 import fr.escape.resources.Resources;
+import fr.escape.resources.TextureLoader;
 import fr.escape.resources.scenario.ScenarioLoader;
-import fr.escape.resources.texture.TextureLoader;
 
 /**
  * <p>

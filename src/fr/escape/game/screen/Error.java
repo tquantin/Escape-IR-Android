@@ -12,8 +12,8 @@ import fr.escape.app.Input;
 import fr.escape.app.Screen;
 import fr.escape.game.Escape;
 import fr.escape.graphics.RepeatableScrollingTexture;
+import fr.escape.resources.TextureLoader;
 import fr.escape.resources.font.FontLoader;
-import fr.escape.resources.texture.TextureLoader;
 
 /**
  * This class define the {@link Screen} {@link Error}

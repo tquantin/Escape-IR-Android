@@ -26,8 +26,8 @@ import fr.escape.game.entity.weapons.Weapons;
 import fr.escape.game.message.Receiver;
 import fr.escape.game.message.Sender;
 import fr.escape.graphics.Texture;
+import fr.escape.resources.TextureLoader;
 import fr.escape.resources.font.FontLoader;
-import fr.escape.resources.texture.TextureLoader;
 
 /**
  * <p>

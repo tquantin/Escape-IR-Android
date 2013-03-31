@@ -43,7 +43,7 @@ import fr.escape.game.scenario.Stage;
 import fr.escape.graphics.AnimationTexture;
 import fr.escape.graphics.Texture;
 import fr.escape.input.Booster;
-import fr.escape.resources.texture.TextureLoader;
+import fr.escape.resources.TextureLoader;
 
 /**
  * Factory use to create {@link Ship}.

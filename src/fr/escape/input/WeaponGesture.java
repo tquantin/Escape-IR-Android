@@ -17,7 +17,7 @@ import fr.escape.Objects;
 import fr.escape.app.Foundation;
 import fr.escape.app.Input;
 import fr.escape.game.entity.CoordinateConverter;
-import fr.escape.resources.texture.TextureLoader;
+import fr.escape.resources.TextureLoader;
 
 /**
  * This class implements {@link Gesture} to provide the {@link WeaponGesture}

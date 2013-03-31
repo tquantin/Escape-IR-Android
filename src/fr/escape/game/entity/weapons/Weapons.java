@@ -21,7 +21,7 @@ import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.entity.weapons.shot.Shot;
 import fr.escape.game.entity.weapons.shot.ShotFactory;
 import fr.escape.graphics.Texture;
-import fr.escape.resources.texture.TextureLoader;
+import fr.escape.resources.TextureLoader;
 
 /**
  * Sort of factory that will create a List of Weapon use by {@link Ship}

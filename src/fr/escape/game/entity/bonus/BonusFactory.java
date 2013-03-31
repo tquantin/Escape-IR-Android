@@ -26,7 +26,7 @@ import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.weapons.Weapons;
 import fr.escape.resources.Resources;
-import fr.escape.resources.texture.TextureLoader;
+import fr.escape.resources.TextureLoader;
 
 /**
  * <p>

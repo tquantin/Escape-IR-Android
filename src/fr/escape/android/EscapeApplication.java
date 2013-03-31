@@ -47,7 +47,7 @@ public final class EscapeApplication extends Application {
 	 * Default Constructor.
 	 */
 	public EscapeApplication() {
-		this.engine = new Engine(new Escape());
+		this.engine = new Engine(this, new Escape());
 	}
 	
 	@Override

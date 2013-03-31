@@ -9,6 +9,7 @@ import fr.escape.Objects;
 import fr.escape.game.Escape;
 import fr.escape.input.EventListener;
 import fr.escape.resources.Resources;
+import android.content.Context;
 import android.util.Log;
 
 public final class Engine implements Runnable {
@@ -41,24 +42,26 @@ public final class Engine implements Runnable {
 	/**
 	 * Constructor with default Configuration and a given Game.
 	 * 
+	 * @param context Android Context
 	 * @param game The Game
 	 */
-	public Engine(Escape game) {
-		this(game, new Configuration());
+	public Engine(Context context, Escape game) {
+		this(context, game, new Configuration());
 	}
 	
 	/**
 	 * Default Constructor with a given Game and Configuration.
 	 * 
+	 * @param context Android Context
 	 * @param game The Game
 	 * @param configuration Configuration to use.
 	 */
-	public Engine(Escape game, Configuration configuration) {
+	public Engine(Context context, Escape game, Configuration configuration) {
 		
 		this.graphics = new Graphics(Objects.requireNonNull(game), Objects.requireNonNull(configuration));
 		this.game = game;
 		this.thread = new Thread(this);
-		this.resources = new Resources();
+		this.resources = new Resources(context.getResources());
 		this.runnables = new LinkedList<Runnable>();
 		
 		this.worldUpdateLeft = 0;

@@ -270,7 +270,7 @@ public final class Graphics {
 	 * @param y Position Y in Display Screen
 	 */
 	public void draw(final Texture texture, final int x, final int y) {
-		draw(texture, x, y, 0.);
+		draw(texture, x, y, 0.0f);
 	}
 	
 	/**
@@ -285,7 +285,7 @@ public final class Graphics {
 	 * @param y Position Y in Display Screen
 	 * @param angle Rotation to apply on Texture in Degree
 	 */
-	public void draw(final Texture texture, final int x, final int y, final double angle) {
+	public void draw(final Texture texture, final int x, final int y, final float angle) {
 		draw(texture, x, y, x + texture.getWidth(), y + texture.getHeight(), angle);
 	}
 	
@@ -300,7 +300,7 @@ public final class Graphics {
 	 * @param height Ending Position Y in Display Screen
 	 */
 	public void draw(final Texture texture, final int x, final int y, final int width, final int height) {
-		draw(texture, x, y, width, height, 0.);
+		draw(texture, x, y, width, height, 0.0f);
 	}
 	
 	/**
@@ -317,7 +317,7 @@ public final class Graphics {
 	 * @param height Ending Position Y in Display Screen
 	 * @param angle Rotation to apply on Texture in Degree
 	 */
-	public void draw(final Texture texture, final int x, final int y, final int width, final int height, final double angle) {
+	public void draw(final Texture texture, final int x, final int y, final int width, final int height, final float angle) {
 		draw(texture, x, y, width, height, 0, 0, texture.getWidth(), texture.getHeight(), angle);
 	}
 	
@@ -337,7 +337,7 @@ public final class Graphics {
 	 * @param srcHeight Ending Position Y in Texture
 	 */
 	public void draw(final Texture texture, final int x, final int y, final int srcX, final int srcY, final int srcWidth, final int srcHeight) {
-		draw(texture, x, y, srcX, srcY, srcWidth, srcHeight, 0.);
+		draw(texture, x, y, srcX, srcY, srcWidth, srcHeight, 0.0f);
 	}
 	
 	/**
@@ -359,7 +359,7 @@ public final class Graphics {
 	 * @param srcHeight Ending Position Y in Texture
 	 * @param angle Rotation to apply on Texture in Degree
 	 */
-	public void draw(final Texture texture, final int x, final int y, final int srcX, final int srcY, final int srcWidth, final int srcHeight, double angle) {
+	public void draw(final Texture texture, final int x, final int y, final int srcX, final int srcY, final int srcWidth, final int srcHeight, float angle) {
 		draw(texture, x, y, srcWidth - srcX, srcHeight - srcY, srcX, srcY, srcWidth, srcHeight, angle);
 	}
 	
@@ -381,7 +381,7 @@ public final class Graphics {
 	 * @param srcHeight Ending Position Y in Texture
 	 */
 	public void draw(final Texture texture, final int x, final int y, final int width, final int height, final int srcX, final int srcY, final int srcWidth, final int srcHeight) {
-		draw(texture, x, y, width, height, srcX, srcY, srcWidth, srcHeight, 0.);
+		draw(texture, x, y, width, height, srcX, srcY, srcWidth, srcHeight, 0.0f);
 	}
 	
 	/**
@@ -405,8 +405,8 @@ public final class Graphics {
 	 * @param srcHeight Ending Position Y in Texture
 	 * @param angle Rotation to apply on Texture in Degree
 	 */
-	public void draw(final Texture texture, final int x, final int y, final int width, final int height, final int srcX, final int srcY, final int srcWidth, final int srcHeight, final double angle) {
-		texture.draw(buffer, x, y, width, height, srcX, srcY, srcWidth, srcHeight, angle);
+	public void draw(final Texture texture, final int x, final int y, final int width, final int height, final int srcX, final int srcY, final int srcWidth, final int srcHeight, final float angle) {
+		texture.draw(buffer, paint, x, y, width, height, srcX, srcY, srcWidth, srcHeight, angle);
 	}
 	
 	/**
@@ -420,7 +420,7 @@ public final class Graphics {
 	 * @param height Ending Position Y in Display Screen
 	 */
 	public void draw(final TextureOperator textureOp, final int x, final int y, final int width, final int height) {
-		draw(textureOp, x, y, width, height, 0);
+		draw(textureOp, x, y, width, height, 0.0f);
 	}
 	
 	/**
@@ -434,8 +434,8 @@ public final class Graphics {
 	 * @param height Ending Position Y in Display Screen
 	 * @param angle Rotation to apply on Texture in Degree (Optional)
 	 */
-	public void draw(final TextureOperator textureOp, final int x, final int y, final int width, final int height, final double angle) {
-		textureOp.draw(buffer, x, y, width, height, angle);
+	public void draw(final TextureOperator textureOp, final int x, final int y, final int width, final int height, final float angle) {
+		textureOp.draw(buffer, paint, x, y, width, height, angle);
 	}
 	
 	/**
