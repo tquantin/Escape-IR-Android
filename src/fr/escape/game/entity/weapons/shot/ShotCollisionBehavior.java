@@ -13,7 +13,6 @@ package fr.escape.game.entity.weapons.shot;
 
 
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.Collisionable;
@@ -39,7 +38,7 @@ public final class ShotCollisionBehavior implements CollisionBehavior {
 		switch(type) {
 			case Collisionable.PLAYER_TYPE: {
 				
-				Foundation.ACTIVITY.debug(TAG, "Shot hit a Player.");
+				//Foundation.ACTIVITY.debug(TAG, "Shot hit a Player.");
 				
 				Ship player = (Ship) other;
 				if(player.damage(shot.getDamage())) {
@@ -50,7 +49,7 @@ public final class ShotCollisionBehavior implements CollisionBehavior {
 			}
 			case Collisionable.NPC_TYPE: {
 				
-				Foundation.ACTIVITY.debug(TAG, "Shot hit a NPC.");
+				//Foundation.ACTIVITY.debug(TAG, "Shot hit a NPC.");
 				Ship ship = (Ship) other;
 				
 				if(ship.damage(shot.getDamage())) {

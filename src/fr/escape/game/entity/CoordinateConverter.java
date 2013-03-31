@@ -13,7 +13,6 @@ package fr.escape.game.entity;
 
 import org.jbox2d.dynamics.World;
 
-import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 
 /**

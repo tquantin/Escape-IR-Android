@@ -11,14 +11,13 @@
 
 package fr.escape.game.entity.weapons.shot;
 
-import java.awt.Rectangle;
-
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 
+import android.graphics.Rect;
+
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.CoordinateConverter;
@@ -93,8 +92,8 @@ public class JupiterShot extends AbstractShot {
 		Objects.requireNonNull(graphics);
 		
 		if(isVisible) {
-			Rectangle area = getEdge();
-			graphics.draw(coreJupiterShot, (int) area.getX(), (int) area.getY(), (int) area.getMaxX(), (int) area.getMaxY(), getAngle());
+			Rect area = getEdge();
+			graphics.draw(coreJupiterShot, area.left, area.top, area.right, area.bottom, getAngle());
 		}
 	}
 
@@ -110,11 +109,11 @@ public class JupiterShot extends AbstractShot {
 	}
 
 	@Override
-	protected Rectangle getEdge() {
+	protected Rect getEdge() {
 		int x = CoordinateConverter.toPixelX(getX());
 		int y = CoordinateConverter.toPixelY(getY());
 		
-		return new Rectangle(x - (coreJupiterShot.getWidth() / 2), y - (coreJupiterShot.getHeight() / 2), coreJupiterShot.getWidth(), coreJupiterShot.getHeight());
+		return new Rect(x - (coreJupiterShot.getWidth() / 2), y - (coreJupiterShot.getHeight() / 2),x + (coreJupiterShot.getWidth() / 2), y + (coreJupiterShot.getHeight() / 2));
 	}
 
 }

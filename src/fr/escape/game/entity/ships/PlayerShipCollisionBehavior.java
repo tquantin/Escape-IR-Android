@@ -12,7 +12,6 @@
 package fr.escape.game.entity.ships;
 
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.Collisionable;
@@ -26,7 +25,7 @@ import fr.escape.game.entity.weapons.shot.Shot;
  */
 public final class PlayerShipCollisionBehavior implements CollisionBehavior {
 
-	private static final String TAG = PlayerShipCollisionBehavior.class.getSimpleName();
+	//private static final String TAG = PlayerShipCollisionBehavior.class.getSimpleName();
 	
 	@Override
 	public void applyCollision(User user, Entity handler, Entity other, int type) {
@@ -38,7 +37,7 @@ public final class PlayerShipCollisionBehavior implements CollisionBehavior {
 		switch(type) {
 			case Collisionable.SHOT_TYPE: { 
 				
-				Foundation.ACTIVITY.debug(TAG, "Player hit a Shot.");
+				//Foundation.ACTIVITY.debug(TAG, "Player hit a Shot.");
 				
 				Shot shot = (Shot) other;
 				shot.receive(Shot.MESSAGE_HIT);
@@ -51,7 +50,7 @@ public final class PlayerShipCollisionBehavior implements CollisionBehavior {
 			}
 			case Collisionable.BONUS_TYPE: {
 				
-				Foundation.ACTIVITY.debug(TAG, "Player hit a Bonus.");
+				//Foundation.ACTIVITY.debug(TAG, "Player hit a Bonus.");
 					
 				Bonus bonus = (Bonus) other;
 				user.addBonus(bonus.getWeapon(), bonus.getNumber());
@@ -62,7 +61,7 @@ public final class PlayerShipCollisionBehavior implements CollisionBehavior {
 			}
 			case Collisionable.NPC_TYPE: {
 				
-				Foundation.ACTIVITY.debug(TAG, "Player hit a NPC.");
+				//Foundation.ACTIVITY.debug(TAG, "Player hit a NPC.");
 				
 				Ship ship = (Ship) other;
 				

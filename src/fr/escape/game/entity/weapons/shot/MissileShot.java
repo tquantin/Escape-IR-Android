@@ -11,14 +11,13 @@
 
 package fr.escape.game.entity.weapons.shot;
 
-import java.awt.Rectangle;
-
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 
+import android.graphics.Rect;
+
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.CoordinateConverter;
@@ -120,12 +119,12 @@ public class MissileShot extends AbstractShot {
 	}
 
 	@Override
-	protected Rectangle getEdge() {
+	protected Rect getEdge() {
 		
 		int x = CoordinateConverter.toPixelX(getX());
 		int y = CoordinateConverter.toPixelY(getY());
 		
-		return new Rectangle(x - (coreMissile.getWidth() / 2), y - (coreMissile.getHeight() / 2), coreMissile.getWidth(), coreMissile.getHeight());
+		return new Rect(x - (coreMissile.getWidth() / 2), y - (coreMissile.getHeight() / 2), x + (coreMissile.getWidth() / 2), y + (coreMissile.getHeight() / 2));
 	}
 
 }

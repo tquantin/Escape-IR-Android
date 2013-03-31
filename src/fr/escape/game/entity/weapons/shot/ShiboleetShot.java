@@ -11,14 +11,13 @@
 
 package fr.escape.game.entity.weapons.shot;
 
-import java.awt.Rectangle;
-
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 
+import android.graphics.Rect;
+
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.CoordinateConverter;
@@ -157,9 +156,9 @@ public final class ShiboleetShot extends AbstractShot {
 		
 		if(isVisible) {
 			
-			Rectangle area = getEdge();
+			Rect area = getEdge();
 			
-			graphics.draw(coreShiboleet, (int) area.getX(), (int) area.getY(), (int) area.getMaxX(), (int) area.getMaxY(), getAngle());
+			graphics.draw(coreShiboleet, area.left, area.top, area.right, area.bottom, getAngle());
 		}
 	}
 	
@@ -175,7 +174,7 @@ public final class ShiboleetShot extends AbstractShot {
 	}
 
 	@Override
-	protected Rectangle getEdge() {
+	protected Rect getEdge() {
 		
 		int cx = CoordinateConverter.toPixelX(getX());
 		int cy = CoordinateConverter.toPixelY(getY());
@@ -187,20 +186,25 @@ public final class ShiboleetShot extends AbstractShot {
 		
 		if(isChild) {
 			
-			width = (int) (coreShiboleet.getWidth() * CHILD_RADIUS);
-			height = (int) (coreShiboleet.getHeight() * CHILD_RADIUS);
-			x = CoordinateConverter.toPixelX(getBody().getPosition().x) - (width / 2);
-			y = CoordinateConverter.toPixelY(getBody().getPosition().y) - (height / 2);
+			int tmpWidth = (int) (coreShiboleet.getWidth() * CHILD_RADIUS);
+			int tmpHeight = (int) (coreShiboleet.getHeight() * CHILD_RADIUS);
+			int tmpX = CoordinateConverter.toPixelX(getBody().getPosition().x);
+			int tmpY = CoordinateConverter.toPixelY(getBody().getPosition().y);
+			
+			x = tmpX - (tmpWidth / 2);
+			y = tmpY - (tmpHeight / 2);
+			width = tmpX + (tmpWidth / 2);
+			height = tmpY + (tmpHeight / 2);
 			
 		} else {
 			
 			x = cx - (coreShiboleet.getWidth() / 2);
 			y = cy - (coreShiboleet.getHeight() / 2);
-			width = coreShiboleet.getWidth();
-			height = coreShiboleet.getWidth();
+			width = cx + (coreShiboleet.getWidth() / 2);
+			height = cy + (coreShiboleet.getHeight() / 2);
 		}
 		
-		return new Rectangle(x, y, width, height);
+		return new Rect(x, y, width, height);
 	}
 
 }

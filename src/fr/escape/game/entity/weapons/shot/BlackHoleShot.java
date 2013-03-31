@@ -11,15 +11,14 @@
 
 package fr.escape.game.entity.weapons.shot;
 
-import java.awt.Rectangle;
-
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 
+import android.graphics.Rect;
+
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.CoordinateConverter;
@@ -264,13 +263,13 @@ public final class BlackHoleShot extends AbstractShot {
 	}
 
 	@Override
-	protected Rectangle getEdge() {
+	protected Rect getEdge() {
 		
 		int x = CoordinateConverter.toPixelX(getX());
 		int y = CoordinateConverter.toPixelY(getY());
 		
 		if(drawEventHorizon) {
-			return new Rectangle(x - (eventHorizon.getWidth() / 2), y - (eventHorizon.getHeight() / 2), eventHorizon.getWidth(), eventHorizon.getHeight());
+			return new Rect(x - (eventHorizon.getWidth() / 2), y - (eventHorizon.getHeight() / 2), x + (eventHorizon.getWidth() / 2), y + (eventHorizon.getHeight() / 2));
 		} else if(drawLeftAndRightHelix) {
 			
 			int offset = leftHelix.getWidth();
@@ -278,11 +277,11 @@ public final class BlackHoleShot extends AbstractShot {
 			offset = Math.max(rightHelix.getWidth(), offset);
 			offset = Math.max(rightHelix.getHeight(), offset);
 			
-			return new Rectangle(x - (offset / 2), y - (offset / 2), offset, offset);
+			return new Rect(x - (offset / 2), y - (offset / 2), x + (offset / 2), y + (offset / 2));
 			
 		}
 		
-		return new Rectangle(x - (coreHelix.getWidth() / 2), y - (coreHelix.getHeight() / 2), coreHelix.getWidth(), coreHelix.getHeight());
+		return new Rect(x - (coreHelix.getWidth() / 2), y - (coreHelix.getHeight() / 2), x + (coreHelix.getWidth() / 2), y + (coreHelix.getHeight() / 2));
 	}
 	
 }

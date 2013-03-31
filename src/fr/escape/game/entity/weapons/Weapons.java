@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.entity.weapons.shot.Shot;
 import fr.escape.game.entity.weapons.shot.ShotFactory;
 import fr.escape.graphics.Texture;
+import fr.escape.resources.Resources;
 import fr.escape.resources.TextureLoader;
 
 /**
@@ -50,14 +50,14 @@ public class Weapons {
 	 * @param shotFactory : The {@link ShotFactory} that we will be use by each {@link Weapon}.
 	 * @return
 	 */
-	public static List<Weapon> createListOfWeapons(EntityContainer entityContainer, ShotFactory shotFactory) {
+	public static List<Weapon> createListOfWeapons(Resources resources, EntityContainer entityContainer, ShotFactory shotFactory) {
 		Objects.requireNonNull(entityContainer);
 		Objects.requireNonNull(shotFactory);
 		
 		List<Weapon> list = new ArrayList<Weapon>(4);
 		
 		Weapon wB = new AbstractWeapon(
-				Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_BLACKHOLE), 
+				resources.getTexture(TextureLoader.WEAPON_BLACKHOLE), 
 				entityContainer, shotFactory, BLACKHOLE_DEFAULT_AMMUNITION) {
 			
 			@Override
@@ -69,7 +69,7 @@ public class Weapons {
 		Weapons.validate(wB);
 		
 		Weapon wF = new AbstractWeapon(
-				Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_FIREBALL), 
+				resources.getTexture(TextureLoader.WEAPON_FIREBALL), 
 				entityContainer, shotFactory, FIREBALL_DEFAULT_AMMUNITION) {
 			
 			@Override
@@ -81,7 +81,7 @@ public class Weapons {
 		Weapons.validate(wF);
 		
 		Weapon wS = new AbstractWeapon(
-				Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_SHIBOLEET), 
+				resources.getTexture(TextureLoader.WEAPON_SHIBOLEET), 
 				entityContainer, shotFactory, SHIBOLEET_DEFAULT_AMMUNITION) {
 			
 			@Override
@@ -93,7 +93,7 @@ public class Weapons {
 		Weapons.validate(wS);
 		
 		Weapon wM = new AbstractWeapon(
-				Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_MISSILE), 
+				resources.getTexture(TextureLoader.WEAPON_MISSILE), 
 				entityContainer, shotFactory, MISSILE_DEFAULT_AMMUNITION) {
 			
 			@Override
@@ -163,14 +163,14 @@ public class Weapons {
 	 * @param shotFactory : The {@link ShotFactory} that we will be use by each {@link Weapon}.
 	 * @return
 	 */
-	public static List<Weapon> createListOfUnlimitedWeapons(EntityContainer entityContainer, ShotFactory shotFactory) {
+	public static List<Weapon> createListOfUnlimitedWeapons(Resources resources, EntityContainer entityContainer, ShotFactory shotFactory) {
 		Objects.requireNonNull(entityContainer);
 		Objects.requireNonNull(shotFactory);
 
 		List<Weapon> list = new ArrayList<Weapon>(3);
 		
 		Weapon wF = new AbstractWeapon(
-				Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_FIREBALL), 
+				resources.getTexture(TextureLoader.WEAPON_FIREBALL), 
 				entityContainer, shotFactory, 1) {
 			
 			@Override
@@ -187,7 +187,7 @@ public class Weapons {
 		Weapons.validate(wF);
 		
 		Weapon wS = new AbstractWeapon(
-				Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_SHIBOLEET), 
+				resources.getTexture(TextureLoader.WEAPON_SHIBOLEET), 
 				entityContainer, shotFactory, 1) {
 			
 			@Override
@@ -204,7 +204,7 @@ public class Weapons {
 		Weapons.validate(wS);
 		
 		Weapon wM = new AbstractWeapon(
-				Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_MISSILE), 
+				resources.getTexture(TextureLoader.WEAPON_MISSILE), 
 				entityContainer, shotFactory, 1) {
 			
 			@Override

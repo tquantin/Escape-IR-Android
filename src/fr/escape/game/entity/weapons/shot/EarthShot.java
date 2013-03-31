@@ -11,12 +11,11 @@
 
 package fr.escape.game.entity.weapons.shot;
 
-import java.awt.Rectangle;
-
 import org.jbox2d.dynamics.Body;
 
+import android.graphics.Rect;
+
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.CoordinateConverter;
@@ -91,8 +90,8 @@ public class EarthShot extends AbstractShot {
 		Objects.requireNonNull(graphics);
 		
 		if(isVisible) {
-			Rectangle area = getEdge();
-			graphics.draw(coreEarthShot, (int) area.getX(), (int) area.getY(), (int) area.getMaxX(), graphics.getHeight());
+			Rect area = getEdge();
+			graphics.draw(coreEarthShot, area.left, area.top, area.right, area.bottom);
 		}
 	}
 
@@ -107,11 +106,11 @@ public class EarthShot extends AbstractShot {
 	}
 
 	@Override
-	protected Rectangle getEdge() {
+	protected Rect getEdge() {
 		int x = CoordinateConverter.toPixelX(getX());
 		int y = CoordinateConverter.toPixelY(getY());
-				
-		return new Rectangle(x - (coreEarthShot.getWidth() / 2), y - (coreEarthShot.getHeight() / 2), coreEarthShot.getWidth(), coreEarthShot.getHeight());
+		
+		return new Rect(x - (coreEarthShot.getWidth() / 2), y - (coreEarthShot.getHeight() / 2),x + (coreEarthShot.getWidth() / 2), y + (coreEarthShot.getHeight() / 2));
 	}
 	
 	

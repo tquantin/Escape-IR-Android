@@ -11,21 +11,22 @@
 
 package fr.escape.game.entity;
 
-import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import org.jbox2d.dynamics.World;
 
+import android.graphics.Rect;
+
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.bonus.Bonus;
 import fr.escape.game.entity.bonus.BonusFactory;
 import fr.escape.game.entity.notifier.EdgeNotifier;
 import fr.escape.game.entity.notifier.KillNotifier;
 import fr.escape.game.entity.ships.Ship;
+import fr.escape.resources.Resources;
 
 /**
  * <p>
@@ -38,10 +39,11 @@ import fr.escape.game.entity.ships.Ship;
  */
 public final class EntityContainer implements Updateable, KillNotifier, EdgeNotifier {
 
-	private static final String TAG = EntityContainer.class.getSimpleName();
+	//private static final String TAG = EntityContainer.class.getSimpleName();
 	
+	private final Resources resources;
 	private final World world;
-	private final Rectangle edge;
+	private final Rect edge;
 	private final LinkedHashSet<Entity> entities;
 	private final LinkedList<Entity> destroyed;
 	
@@ -51,14 +53,15 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	 * @param world World used
 	 * @param margin Margin used for Edge World
 	 */
-	public EntityContainer(World world, int margin) {
+	public EntityContainer(Resources resources, World world, int margin) {
 		
+		this.resources = resources;
 		this.world = world;
-		this.edge = new Rectangle(-margin, -margin, Foundation.GRAPHICS.getWidth() + margin, Foundation.GRAPHICS.getHeight() + margin);
+		this.edge = new Rect(-margin, -margin, Foundation.GRAPHICS.getWidth() + margin, Foundation.GRAPHICS.getHeight() + margin);
 		this.entities = new LinkedHashSet<Entity>();
 		this.destroyed = new LinkedList<Entity>();
 		
-		Foundation.ACTIVITY.debug(TAG, "EntityContainer created");
+		//Foundation.ACTIVITY.debug(TAG, "EntityContainer created");
 		
 	}
 	
@@ -70,7 +73,7 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	 */
 	public boolean push(Entity e) {
 		Objects.requireNonNull(e);
-		Foundation.ACTIVITY.debug(TAG, "Push this Entity: "+e);
+		//Foundation.ACTIVITY.debug(TAG, "Push this Entity: "+e);
 		return this.entities.add(e);
 	}
 	
@@ -82,7 +85,7 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	 */
 	private boolean remove(Entity e) {
 		Objects.requireNonNull(e);
-		Foundation.ACTIVITY.debug(TAG, "Remove this Entity: "+e);
+		//Foundation.ACTIVITY.debug(TAG, "Remove this Entity: "+e);
 		return this.entities.remove(e);
 	}
 	
@@ -116,8 +119,8 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	}
 
 	@Override
-	public boolean isInside(Rectangle edge) {
-		return this.edge.intersects(Objects.requireNonNull(edge));
+	public boolean isInside(Rect edge) {
+		return this.edge.contains(edge);
 	}
 	
 	/**
@@ -126,7 +129,7 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	 * @param e {@link Entity}
 	 */
 	public void toDestroy(Entity e) {
-		Foundation.ACTIVITY.debug(TAG, "Add Entity in Removing Queue: "+e);
+		//Foundation.ACTIVITY.debug(TAG, "Add Entity in Removing Queue: "+e);
 		this.destroyed.add(e);
 	}
 	
@@ -139,7 +142,7 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	public boolean flush() {
 		
 		for(Entity e : destroyed) {
-			Foundation.ACTIVITY.debug(TAG, "Remove Entity: "+e+" "+((remove(e)?"[DONE]":"[FAIL]")));
+			//Foundation.ACTIVITY.debug(TAG, "Remove Entity: "+e+" "+((remove(e)?"[DONE]":"[FAIL]")));
 			if(e.getBody() != null) {
 				world.destroyBody(e.getBody());
 				e.setBody(null);
@@ -194,7 +197,7 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	 */
 	public boolean pushBonus(float x, float y) {
 		
-		Bonus bonus = BonusFactory.createBonus(world, x, y, this);
+		Bonus bonus = BonusFactory.createBonus(resources, world, x, y, this);
 		
 		if(bonus != null) {
 			return push(bonus);

@@ -12,7 +12,6 @@
 package fr.escape.game.entity.ships;
 
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.Collisionable;
@@ -25,7 +24,7 @@ import fr.escape.game.entity.weapons.shot.Shot;
  */
 public final class ComputerShipCollisionBehavior implements CollisionBehavior {
 
-	private static final String TAG = ComputerShipCollisionBehavior.class.getSimpleName();
+	//private static final String TAG = ComputerShipCollisionBehavior.class.getSimpleName();
 	
 	@Override
 	public void applyCollision(User user, Entity handler, Entity other, int type) {
@@ -37,7 +36,7 @@ public final class ComputerShipCollisionBehavior implements CollisionBehavior {
 		switch(type) {
 			case Collisionable.SHOT_TYPE: { 
 				
-				Foundation.ACTIVITY.debug(TAG, "NPC hit a Shot.");
+				//Foundation.ACTIVITY.debug(TAG, "NPC hit a Shot.");
 				
 				Shot shot = (Shot) other;
 				shot.receive(Shot.MESSAGE_HIT);
@@ -52,7 +51,7 @@ public final class ComputerShipCollisionBehavior implements CollisionBehavior {
 			}
 			case Collisionable.PLAYER_TYPE: {
 				
-				Foundation.ACTIVITY.debug(TAG, "NPC hit a Player.");
+				//Foundation.ACTIVITY.debug(TAG, "NPC hit a Player.");
 				user.addScore(HIT_SCORE / 2);
 				
 				Ship player = (Ship) other;

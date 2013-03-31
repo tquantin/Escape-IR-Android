@@ -11,9 +11,7 @@
 
 package fr.escape.game.entity.notifier;
 
-import java.awt.Rectangle;
-
-
+import android.graphics.Rect;
 import fr.escape.game.entity.Entity;
 
 /**
@@ -43,6 +41,6 @@ public interface EdgeNotifier {
 	 * @param edge Entity Edge
 	 * @return True if the Entity Edge is inside World Edge
 	 */
-	public boolean isInside(Rectangle edge);
+	public boolean isInside(Rect edge);
 
 }

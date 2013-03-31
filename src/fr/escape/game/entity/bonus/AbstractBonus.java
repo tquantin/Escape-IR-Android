@@ -11,13 +11,12 @@
 
 package fr.escape.game.entity.bonus;
 
-import java.awt.Rectangle;
-
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
+import android.graphics.Rect;
+
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
@@ -92,12 +91,12 @@ abstract class AbstractBonus implements Bonus {
 		throw new UnsupportedOperationException();
 	}
 	
-	public Rectangle getEdge() {
+	public Rect getEdge() {
 		
 		int x = CoordinateConverter.toPixelX(getX());
 		int y = CoordinateConverter.toPixelY(getY());
 		
-		return new Rectangle(x - (drawable.getWidth() / 2), y - (drawable.getHeight() / 2), drawable.getWidth(), drawable.getHeight());
+		return new Rect(x - (drawable.getWidth() / 2), y - (drawable.getHeight() / 2), x + (drawable.getWidth() / 2), y + (drawable.getHeight() / 2));
 	}
 	
 	/**

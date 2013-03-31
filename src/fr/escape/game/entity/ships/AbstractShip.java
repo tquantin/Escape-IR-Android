@@ -11,7 +11,6 @@
 
 package fr.escape.game.entity.ships;
 
-import java.awt.Rectangle;
 import java.util.List;
 
 import org.jbox2d.common.Vec2;
@@ -20,8 +19,9 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
+import android.graphics.Rect;
+
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.app.Graphics;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
@@ -38,7 +38,7 @@ import fr.escape.graphics.Texture;
  */
 public abstract class AbstractShip implements Ship {
 	
-	private static final String TAG = AbstractShip.class.getSimpleName();
+	//private static final String TAG = AbstractShip.class.getSimpleName();
 	
 	private final BodyDef bodyDef;
 	private final FixtureDef fixture;
@@ -93,7 +93,7 @@ public abstract class AbstractShip implements Ship {
 		life -= value;
 		
 		if(life <= 0) {
-			Foundation.ACTIVITY.debug(TAG, "A Ship has been destroy.");
+			//Foundation.ACTIVITY.debug(TAG, "A Ship has been destroy.");
 			return true;
 		}
 		
@@ -256,12 +256,13 @@ public abstract class AbstractShip implements Ship {
 	}
 	
 	@Override
-	public Rectangle getEdge() {
+	public Rect getEdge() {
 		
 		int x = CoordinateConverter.toPixelX(getX());
 		int y = CoordinateConverter.toPixelY(getY());
 		
-		return new Rectangle(x - (shipDrawable.getWidth() / 2), y - (shipDrawable.getHeight() / 2), shipDrawable.getWidth(), shipDrawable.getHeight());
+		return new Rect(x - (shipDrawable.getWidth() / 2), y + (shipDrawable.getHeight() / 2), x + (shipDrawable.getWidth() / 2), y - (shipDrawable.getHeight() / 2));
+		//return new Rectangle(x - (shipDrawable.getWidth() / 2), y - (shipDrawable.getHeight() / 2), shipDrawable.getWidth(), shipDrawable.getHeight());
 	}
 	
 	@Override

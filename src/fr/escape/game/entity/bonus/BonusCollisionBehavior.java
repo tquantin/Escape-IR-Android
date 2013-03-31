@@ -36,7 +36,7 @@ public final class BonusCollisionBehavior implements CollisionBehavior {
 		switch(type) {
 			case Collisionable.PLAYER_TYPE: {
 				
-				Foundation.ACTIVITY.error(TAG, "Bonus hit by Player.");
+				//Foundation.ACTIVITY.error(TAG, "Bonus hit by Player.");
 				user.addBonus(bonus.getWeapon(), bonus.getNumber());
 				bonus.toDestroy();
 				

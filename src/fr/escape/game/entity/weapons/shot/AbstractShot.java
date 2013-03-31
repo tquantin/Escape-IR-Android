@@ -11,13 +11,12 @@
 
 package fr.escape.game.entity.weapons.shot;
 
-import java.awt.Rectangle;
-
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
+import android.graphics.Rect;
+
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.Entity;
@@ -142,7 +141,7 @@ public abstract class AbstractShot implements Shot {
 	 * 
 	 * @return Return the {@link Rectangle} that contains the {@link Shot} {@link Body}.
 	 */
-	protected abstract Rectangle getEdge();
+	protected abstract Rect getEdge();
 
 	/**
 	 * Get EdgeNotifier
