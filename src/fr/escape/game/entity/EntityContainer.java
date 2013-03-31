@@ -27,7 +27,6 @@ import fr.escape.game.entity.bonus.BonusFactory;
 import fr.escape.game.entity.notifier.EdgeNotifier;
 import fr.escape.game.entity.notifier.KillNotifier;
 import fr.escape.game.entity.ships.Ship;
-import fr.escape.resources.Resources;
 
 /**
  * <p>

@@ -61,11 +61,12 @@ public final class BonusFactory {
 	 * @param econtainer Game EntityContainer
 	 * @return A Bonus if the User have luck, <b>null</b> otherwise.
 	 */
-	public static Bonus createBonus(Engine engine, Resources resources, World world, float x, float y, EntityContainer econtainer) {
+	public static Bonus createBonus(Engine engine, World world, float x, float y, EntityContainer econtainer) {
 		
-		Objects.requireNonNull(resources);
+		Objects.requireNonNull(engine);
 		Objects.requireNonNull(world);
 		Objects.requireNonNull(econtainer);
+		Resources resources = engine.getResources();
 		
 		float shapeX = CoordinateConverter.toMeterX(resources.getTexture(TextureLoader.BONUS_WEAPON_MISSILE).getWidth() / 2);
 		float shapeY = CoordinateConverter.toMeterY(resources.getTexture(TextureLoader.BONUS_WEAPON_MISSILE).getHeight() / 2);
