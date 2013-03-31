@@ -15,12 +15,14 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
+import android.content.Context;
+import android.graphics.Typeface;
+
 import fr.escape.Objects;
 import fr.escape.app.Engine;
 import fr.escape.game.entity.ships.ShipFactory;
 import fr.escape.game.scenario.Scenario;
 import fr.escape.graphics.Texture;
-import fr.escape.resources.font.FontLoader;
 import fr.escape.resources.scenario.ScenarioLoader;
 import fr.escape.resources.scenario.ScenarioParser;
 
@@ -40,12 +42,15 @@ import fr.escape.resources.scenario.ScenarioParser;
  */
 public final class Resources {
 	
+	/**
+	 * Class TAG
+	 */
 	static final String TAG = Resources.class.getSimpleName();
 	
 	private final HashMap<String, FontLoader> fontLoader;
 	private final HashMap<Integer, TextureLoader> textureLoader;
 	private final HashMap<String, ScenarioLoader> scenarioLoader;
-	private final android.content.res.Resources nativeResources;
+	private final Context context;
 	
 	/**
 	 * Is all resources loaded in memory ?
@@ -59,13 +64,13 @@ public final class Resources {
 	 * <p>
 	 * Don't forget to call load() after instantiation.
 	 * 
-	 * @param resources Android Native Resources Reference
+	 * @param android Android Native Context Reference
 	 */
-	public Resources(android.content.res.Resources resources) {
+	public Resources(Context android) {
 		fontLoader = new HashMap<String, FontLoader>();
 		textureLoader = new HashMap<Integer, TextureLoader>();
 		scenarioLoader = new HashMap<String, ScenarioLoader>();
-		nativeResources = resources;
+		context = Objects.requireNonNull(android);
 		loaded = false;
 	}
 	
@@ -76,7 +81,7 @@ public final class Resources {
 		if(loaded == false) {
 			
 			// Load Font
-			postFontLoader(FontLoader.VISITOR_ID, 18.0f);
+			postFontLoader(FontLoader.VISITOR_ID);
 			
 			// Load Scenario
 			postScenarioLoader(ScenarioLoader.JUPITER_1);
@@ -155,13 +160,13 @@ public final class Resources {
 	}
 	
 	/**
-	 * Load and return Font from {@link ResourcesLoader} 
+	 * Load and return Typeface from {@link ResourcesLoader} 
 	 * 
 	 * @param name Font name
 	 * @return Font
 	 * @throws NoSuchElementException
 	 */
-	public Font getFont(String name) throws NoSuchElementException {
+	public Typeface getFont(String name) throws NoSuchElementException {
 		Objects.requireNonNull(name);
 		checkIfLoaded();
 		try {
@@ -179,20 +184,19 @@ public final class Resources {
 	/**
 	 * Load and return Texture from {@link ResourcesLoader}
 	 * 
-	 * @param name Texture name
+	 * @param name Texture ID
 	 * @return Texture
 	 * @throws NoSuchElementException
 	 */
-	public Texture getTexture(String name) throws NoSuchElementException {
-		Objects.requireNonNull(name);
+	public Texture getTexture(int id) throws NoSuchElementException {
 		checkIfLoaded();
 		try {
 			
-			TextureLoader loader = textureLoader.get(name);
+			TextureLoader loader = textureLoader.get(Integer.valueOf(id));
 			return loader.load();
 			
 		} catch(Exception e) {
-			NoSuchElementException exception = new NoSuchElementException("Cannot load the given Texture: "+name);
+			NoSuchElementException exception = new NoSuchElementException("Cannot load the given Texture: "+id);
 			exception.initCause(e);
 			throw exception;
 		}
@@ -227,25 +231,18 @@ public final class Resources {
 	 * Create a FontLoader for the given Font name.
 	 * 
 	 * @param fontID Font name
-	 * @param size Font size
 	 * @return FontLoader which will load the Font
 	 */
-	private FontLoader createFontLoader(final String fontID, final float size) {
+	private FontLoader createFontLoader(final String fontID) {
 		return new FontLoader() {
 
-			private Font font;
+			private Typeface font;
 			
 			@Override
-			public Font load() throws Exception {
+			public Typeface load() throws Exception {
 				if(font == null) {
-					
 					Engine.debug(TAG, "Load Font: "+fontID);
-					
-					try(InputStream stream = getInputStream(getPath()+"/"+fontID)) {
-						font = Font.createFont(Font.TRUETYPE_FONT, stream);
-						font = font.deriveFont(size);
-					}
-					
+					font = Typeface.createFromAsset(getContext().getAssets(), fontID);
 				}
 				return font;
 			}
@@ -268,7 +265,7 @@ public final class Resources {
 			public Texture load() throws Exception {
 				if(texture == null) {
 					Engine.debug(TAG, "Load Texture: "+textureID);
-					texture = new Texture(getNativeResources(), textureID);
+					texture = new Texture(getContext().getResources(), textureID);
 				}
 				return texture;
 			}
@@ -283,7 +280,8 @@ public final class Resources {
 	 * @return ScenarioLoader which will load the Scenario
 	 */
 	private ScenarioLoader createScenarioLoader(final String scenarioID) {
-		return new ScenarioLoader() {
+		// TODO Handle it !
+		/* return new ScenarioLoader() {
 			
 			private Scenario scenario = null;
 			
@@ -301,7 +299,8 @@ public final class Resources {
 				return scenario;
 			}
 			
-		};
+		};*/
+		return null;
 	}
 	
 	/**
@@ -317,10 +316,9 @@ public final class Resources {
 	 * Create a FontLoader and add it for a given Font name and size.
 	 * 
 	 * @param fontID Font name
-	 * @param size Font size
 	 */
-	private void postFontLoader(String fontID, float size) {
-		fontLoader.put(fontID, createFontLoader(fontID, size));
+	private void postFontLoader(String fontID) {
+		fontLoader.put(fontID, createFontLoader(fontID));
 	}
 	
 	/**
@@ -357,12 +355,12 @@ public final class Resources {
 	}
 
 	/**
-	 * Retrieve the Android Native Resources.
+	 * Retrieve the Android Context.
 	 * 
-	 * @return Android Resources
+	 * @return Android Context
 	 */
-	android.content.res.Resources getNativeResources() {
-		return nativeResources;
+	Context getContext() {
+		return context;
 	}
 	
 }

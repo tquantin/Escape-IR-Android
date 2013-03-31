@@ -1,19 +1,20 @@
 package fr.escape.game.screen;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-import fr.escape.app.Game;
+import android.graphics.Color;
+
+import fr.escape.app.Engine;
 import fr.escape.app.Input;
 import fr.escape.app.Screen;
 import fr.escape.game.Escape;
+import fr.escape.graphics.Font;
 import fr.escape.graphics.RepeatableScrollingTexture;
+import fr.escape.resources.FontLoader;
 import fr.escape.resources.TextureLoader;
-import fr.escape.resources.font.FontLoader;
 
 /**
  * This class define the {@link Screen} {@link Error}
@@ -45,11 +46,11 @@ public class Error implements Screen {
 		this.random = new Random(200);
 		
 		try {
-			font = game.getResources().getFont(FontLoader.VISITOR_ID);
+			font = new Font(game.getResources().getFont(FontLoader.VISITOR_ID));
 			fallbackFont = false;
 		} catch(NoSuchElementException e) {
 			fallbackFont = true;
-			game.getEngine().error(TAG, "Cannot create Font", e);
+			Engine.error(TAG, "Cannot create Font", e);
 		}
 		
 		try {
@@ -57,10 +58,10 @@ public class Error implements Screen {
 			fallbackBackground = false;
 		} catch(NoSuchElementException e) {
 			fallbackBackground = true;
-			game.getEngine().error(TAG, "Cannot create RepeatableScrollingTexture", e);
+			Engine.error(TAG, "Cannot create RepeatableScrollingTexture", e);
 		}
 		
-		this.message = new ArrayList<>(4);
+		this.message = new ArrayList<String>(4);
 		
 		message.add("An error has occurred :");
 		message.add("");
@@ -72,7 +73,7 @@ public class Error implements Screen {
 	@Override
 	public void render(long delta) {
 		
-		Color color = Color.WHITE;
+		int color = Color.WHITE;
 		
 		if(!fallbackBackground) {
 
@@ -103,7 +104,9 @@ public class Error implements Screen {
 	}
 
 	@Override
-	public void hide() {}
+	public void hide() {
+		// Nothing to do
+	}
 
 	@Override
 	public boolean touch(Input i) {
@@ -124,7 +127,7 @@ public class Error implements Screen {
 	 * @param useFont : Use the {@link Font} to draw.
 	 * @param color : The {@link Color} use to draw.
 	 */
-	private void draw(int x, int y, int space, boolean useFont, Color color) {
+	private void draw(int x, int y, int space, boolean useFont, int color) {
 		
 		int yy = y;
 		

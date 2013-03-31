@@ -1,18 +1,17 @@
 package fr.escape.game.screen;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Rectangle;
-
+import android.graphics.Color;
+import android.graphics.Rect;
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.app.Input;
 import fr.escape.app.Screen;
 import fr.escape.game.Escape;
+import fr.escape.graphics.Font;
 import fr.escape.graphics.Texture;
+import fr.escape.resources.FontLoader;
 import fr.escape.resources.TextureLoader;
-import fr.escape.resources.font.FontLoader;
 
 /**
  * <p>
@@ -45,8 +44,8 @@ public final class Menu implements Screen {
 	private final Texture background;
 	private final Texture grid;
 	
-	private final Rectangle gridArea;
-	private final Rectangle touchArea;
+	private final Rect gridArea;
+	private final Rect touchArea;
 	
 	private final Runnable newGame;
 	
@@ -59,11 +58,10 @@ public final class Menu implements Screen {
 		
 		this.game = Objects.requireNonNull(game);
 		
-		Font baseFont = game.getResources().getFont(FontLoader.VISITOR_ID);
+		this.fontH1 = new Font(game.getResources().getFont(FontLoader.VISITOR_ID), FSIZE_H1);
+		this.fontH2 = new Font(game.getResources().getFont(FontLoader.VISITOR_ID), FSIZE_H2);
+		this.fontH3 = new Font(game.getResources().getFont(FontLoader.VISITOR_ID), FSIZE_H3);
 		
-		this.fontH1 = baseFont.deriveFont(FSIZE_H1);
-		this.fontH2 = baseFont.deriveFont(FSIZE_H2);
-		this.fontH3 = baseFont.deriveFont(FSIZE_H3);
 		this.background = game.getResources().getTexture(TextureLoader.BACKGROUND_MENU);
 		this.grid = game.getResources().getTexture(TextureLoader.MENU_UI_GRID);
 		
@@ -84,8 +82,8 @@ public final class Menu implements Screen {
 	public boolean touch(Input i) {
 		
 		if(touchArea.contains(i.getX(), i.getY())) {
-			Foundation.ACTIVITY.log(TAG, "User Launch: NEW_GAME");
-			Foundation.ACTIVITY.post(newGame);
+			Engine.log(TAG, "User Launch: NEW_GAME");
+			game.getEngine().post(newGame);
 			return true;
 		}
 		
@@ -135,8 +133,8 @@ public final class Menu implements Screen {
 	 * @param grid Grid to use
 	 * @return Touch Area
 	 */
-	private static Rectangle createTouch(Rectangle grid) {
-		return new Rectangle((int) (grid.getX() + GRID_PADDING), (int) (grid.getCenterY() - (GRID_COMPONENTS_SIZE/2)), 
+	private static Rect createTouch(Rect grid) {
+		return new Rect((int) (grid.getX() + GRID_PADDING), (int) (grid.getCenterY() - (GRID_COMPONENTS_SIZE/2)), 
 				(int) (grid.getWidth() - (GRID_PADDING * 2)), GRID_COMPONENTS_SIZE);
 	}
 	
@@ -146,12 +144,12 @@ public final class Menu implements Screen {
 	 * @param graphics Screen property.
 	 * @return Grid Area
 	 */
-	private static Rectangle createGrid(Graphics graphics) {
+	private static Rect createGrid(Graphics graphics) {
 		
 		int x = SIDE_PADDING;
 		int y = HEADER_MARGING * 2;
 		
-		return new Rectangle(x, y, 
+		return new Rect(x, y, 
 				(graphics.getWidth() - (x * 2)), 
 				(graphics.getHeight() - (FOOTER_MARGING * 3)) - y);
 	}

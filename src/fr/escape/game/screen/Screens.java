@@ -11,15 +11,16 @@
 
 package fr.escape.game.screen;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import android.graphics.Color;
+
 import fr.escape.Objects;
 import fr.escape.app.Graphics;
 import fr.escape.app.Input;
+import fr.escape.graphics.Font;
 import fr.escape.graphics.Shapes;
 
 /**
@@ -43,10 +44,10 @@ public final class Screens {
 	 * @param font Font to use
 	 * @param color Color to use
 	 */
-	public static void drawStringInCenterPosition(Graphics graphics, String message, int x, int y, Font font, Color color) {
+	public static void drawStringInCenterPosition(Graphics graphics, String message, int x, int y, Font font, int color) {
 		
-		Objects.requireNonNull(graphics).draw(message, x - ((message.length() / 2) * (font.getSize() / 2)), 
-				y + (font.getSize() / 4), font, color);
+		Objects.requireNonNull(graphics).draw(message, (int) (x - ((message.length() / 2) * (font.getSize() / 2))), 
+				(int) (y + (font.getSize() / 4)), font, color);
 		
 	}
 
@@ -58,7 +59,8 @@ public final class Screens {
 	 * @param color : {@link Color} to use.
 	 * @return Return a List of {@link Input}.
 	 */
-	public static List<Input> drawEventsOnScreen(Graphics graphics, List<Input> events, Color color) {
+	public static List<Input> drawEventsOnScreen(Graphics graphics, List<Input> events, int color) {
+		
 		Objects.requireNonNull(graphics);
 		
 		Input lastInput = null;

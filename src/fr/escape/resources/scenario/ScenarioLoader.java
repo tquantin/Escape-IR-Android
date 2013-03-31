@@ -39,11 +39,6 @@ public abstract class ScenarioLoader implements ResourcesLoader<Scenario> {
 	
 	private ShipFactory factory;
 	
-	@Override
-	public String getPath() {
-		return PATH+"/scenario";
-	}
-	
 	/**
 	 * Add a Ship Factory for this Scenario.
 	 * 

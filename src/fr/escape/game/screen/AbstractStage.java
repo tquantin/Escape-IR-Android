@@ -11,11 +11,11 @@
 
 package fr.escape.game.screen;
 
-import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import android.graphics.Color;
 
 import fr.escape.Objects;
 import fr.escape.app.Engine;
@@ -177,8 +177,8 @@ public abstract class AbstractStage implements Screen {
 		
 		int x = CoordinateConverter.toPixelX(ship.getX());
 		int y = CoordinateConverter.toPixelY(ship.getY());
-		int errorX = ship.getEdge().width / 2;
-		int errorY = ship.getEdge().height / 2;
+		int errorX = ship.getEdge().width() / 2;
+		int errorY = ship.getEdge().height() / 2;
 		
 		if((i.getX() > x - errorX && i.getX() < x + errorX) && (i.getY() > y - errorY && i.getY() < y + errorY)) {
 			
@@ -211,7 +211,7 @@ public abstract class AbstractStage implements Screen {
 					
 					if(touch(start)) {
 						
-						WeaponGesture wg = new WeaponGesture();
+						WeaponGesture wg = new WeaponGesture(game.getResources());
 						Ship ship = game.getUser().getShip();
 						
 						float[] weaponVelocity = new float[3];

@@ -1,15 +1,15 @@
 package fr.escape.game.screen;
 
-import java.awt.Color;
-import java.awt.Font;
-
+import android.graphics.Color;
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Input;
 import fr.escape.app.Screen;
 import fr.escape.game.Escape;
+import fr.escape.graphics.Font;
 import fr.escape.graphics.Texture;
+import fr.escape.resources.FontLoader;
 import fr.escape.resources.TextureLoader;
-import fr.escape.resources.font.FontLoader;
 
 /**
  * <p>
@@ -33,7 +33,7 @@ public final class Lost implements Screen {
 	
 	public Lost(Escape game) {
 		this.game = Objects.requireNonNull(game);
-		this.font = game.getResources().getFont(FontLoader.VISITOR_ID);
+		this.font = new Font(game.getResources().getFont(FontLoader.VISITOR_ID));
 		this.background = game.getResources().getTexture(TextureLoader.BACKGROUND_LOST);
 	}
 
@@ -55,14 +55,16 @@ public final class Lost implements Screen {
 	}
 
 	@Override
-	public void hide() {}
+	public void hide() {
+		// Nothing to do
+	}
 
 	/**
 	 * When user touch the Screen: Return to the Main {@link Menu}.
 	 */
 	@Override
 	public boolean touch(Input i) {
-		game.getEngine().debug(TAG, "User click: Go on Menu Screen");
+		Engine.debug(TAG, "User click: Go on Menu Screen");
 		game.setMenuScreen();
 		return true;
 	}

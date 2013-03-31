@@ -61,7 +61,7 @@ public final class Engine implements Runnable {
 		this.graphics = new Graphics(Objects.requireNonNull(game), Objects.requireNonNull(configuration));
 		this.game = game;
 		this.thread = new Thread(this);
-		this.resources = new Resources(context.getResources());
+		this.resources = new Resources(Objects.requireNonNull(context));
 		this.runnables = new LinkedList<Runnable>();
 		
 		this.worldUpdateLeft = 0;

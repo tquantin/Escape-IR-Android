@@ -11,12 +11,13 @@
 
 package fr.escape.game.entity.ships;
 
-import java.awt.Rectangle;
 import java.util.List;
 
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
+
+import android.graphics.Rect;
 
 import fr.escape.game.entity.Entity;
 import fr.escape.game.entity.weapons.Weapon;
@@ -124,9 +125,9 @@ public interface Ship extends Entity {
 	/**
 	 * Get the {@link Body} edge.
 	 * 
-	 * @return A {@link Rectangle} in which the JBox2D {@link Body} is contained.
+	 * @return A {@link Rect} in which the JBox2D {@link Body} is contained.
 	 */
-	public Rectangle getEdge();
+	public Rect getEdge();
 	
 	/**
 	 * Reset a {@link Ship} at is initial state (position, {@link Weapon}, life).

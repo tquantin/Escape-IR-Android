@@ -12,25 +12,16 @@
 package fr.escape.resources;
 
 /**
- * An interface for Loading a Resource in Memory from JAR.
+ * An interface for Loading a Resource in Memory from Android
+ * Assets and/or Resources.
  * 
  * @param <T> A Resource
  */
 public interface ResourcesLoader<T> {
 	
 	/**
-	 * Root Container Path for Resources.
-	 */
-	public static final String PATH = "/fr/escape/resources";
-	
-	/**
 	 * Load in Memory and Return the Resources.
 	 */
 	public T load() throws Exception;
-	
-	/**
-	 * Return the Container Path for Resources.
-	 */
-	public String getPath();
 	
 }

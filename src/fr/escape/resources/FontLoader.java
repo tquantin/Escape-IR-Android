@@ -9,23 +9,17 @@
  * 
  *****************************************************************************/
 
-package fr.escape.resources.font;
+package fr.escape.resources;
 
 import android.graphics.Typeface;
-import fr.escape.resources.ResourcesLoader;
 
 /**
  * <p>
- * A {@link ResourcesLoader} for {@link Font}.
+ * A {@link ResourcesLoader} for {@link Typeface}.
  * 
  */
 public abstract class FontLoader implements ResourcesLoader<Typeface> {
 	
 	public static final String VISITOR_ID = "visitor.ttf";
-	
-	@Override
-	public String getPath() {
-		return PATH+"/font";
-	}
 	
 }

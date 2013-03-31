@@ -11,23 +11,23 @@
 
 package fr.escape.game.ui;
 
-import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 
 import fr.escape.Objects;
-import fr.escape.app.Engine;
 import fr.escape.app.Input;
 import fr.escape.game.Escape;
 import fr.escape.game.entity.weapons.Weapon;
 import fr.escape.game.entity.weapons.Weapons;
 import fr.escape.game.message.Receiver;
 import fr.escape.game.message.Sender;
+import fr.escape.graphics.Font;
 import fr.escape.graphics.Texture;
+import fr.escape.resources.FontLoader;
 import fr.escape.resources.TextureLoader;
-import fr.escape.resources.font.FontLoader;
 
 /**
  * <p>
@@ -50,7 +50,7 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 	private final Escape game;
 	private final Font font;
 	private final List<Weapon> weapons;
-	private final List<Rectangle> touchArea;
+	private final List<Rect> touchArea;
 	private final Receiver receiver;
 	private final Texture active;
 	private final Texture disable;
@@ -81,7 +81,7 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 		this.game = Objects.requireNonNull(game);
 		this.receiver = Objects.requireNonNull(receiver);
 		
-		this.font = game.getResources().getFont(FontLoader.VISITOR_ID).deriveFont(FONT_SIZE);
+		this.font = new Font(game.getResources().getFont(FontLoader.VISITOR_ID), FONT_SIZE);
 		
 		this.weapons = weapons;
 		this.activeWeapon = activeWeapon;
@@ -93,12 +93,12 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 		this.y = OVERLAY_TOP_MARGING;
 		this.x = this.width - (Weapons.getDrawableWidth() + ITEM_LEFT_MARGING + ITEM_RIGHT_MARGING);
 		
-		this.touchArea = new LinkedList<Rectangle>();
+		this.touchArea = new LinkedList<Rect>();
 		
 		int offset = this.y;
 		for(int i = 0; i < weapons.size(); i++) {
 			
-			Rectangle r = new Rectangle(
+			Rect rectangle = new Rect(
 					this.x + ITEM_LEFT_MARGING, 
 					offset + ITEM_TOP_MARGING,
 					Weapons.getDrawableWidth() + ITEM_RIGHT_MARGING,
@@ -106,7 +106,7 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 			);
 			
 			offset += ITEM_TOP_MARGING + Weapons.getDrawableHeight() + ITEM_BOTTOM_MARGING;
-			touchArea.add(r);
+			touchArea.add(rectangle);
 			
 		}
 
@@ -144,7 +144,7 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 		
 		int i = 0;
 		
-		for(Rectangle rectangle : touchArea) {
+		for(Rect rectangle : touchArea) {
 			if(rectangle.contains(touch.getX(), touch.getY())) {
 				Weapon w = weapons.get(i);
 				if(!w.isEmpty()) {

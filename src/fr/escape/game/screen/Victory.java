@@ -1,16 +1,15 @@
 package fr.escape.game.screen;
 
-import java.awt.Color;
-import java.awt.Font;
-
+import android.graphics.Color;
 import fr.escape.Objects;
-import fr.escape.app.Foundation;
+import fr.escape.app.Engine;
 import fr.escape.app.Input;
 import fr.escape.app.Screen;
 import fr.escape.game.Escape;
+import fr.escape.graphics.Font;
 import fr.escape.graphics.Texture;
+import fr.escape.resources.FontLoader;
 import fr.escape.resources.TextureLoader;
-import fr.escape.resources.font.FontLoader;
 
 /**
  * <p>
@@ -40,7 +39,7 @@ public final class Victory implements Screen {
 	public Victory(Escape game) {
 		
 		this.game = Objects.requireNonNull(game);
-		this.font = game.getResources().getFont(FontLoader.VISITOR_ID).deriveFont(FSIZE_H2);
+		this.font = new Font(game.getResources().getFont(FontLoader.VISITOR_ID), FSIZE_H2);
 		this.background = game.getResources().getTexture(TextureLoader.BACKGROUND_VICTORY);
 		this.user = game.getResources().getTexture(TextureLoader.SHIP_RAPTOR);
 		this.time = 0;
@@ -58,12 +57,12 @@ public final class Victory implements Screen {
 	public boolean touch(Input i) {
 		
 		if(time >= WAIT) {
-			Foundation.ACTIVITY.log(TAG, "User Launch: MENU_SCREEN");
-			Foundation.ACTIVITY.post(confirm);
+			Engine.log(TAG, "User Launch: MENU_SCREEN");
+			game.getEngine().post(confirm);
 			return true;
 		}
 		
-		Foundation.ACTIVITY.debug(TAG, "User may miss-click");
+		Engine.debug(TAG, "User may miss-click");
 		return false;
 	}
 
@@ -97,7 +96,9 @@ public final class Victory implements Screen {
 	}
 
 	@Override
-	public void hide() {}
+	public void hide() {
+		// Nothing to do
+	}
 
 	/**
 	 * Launch Menu when the User touch the Screen.

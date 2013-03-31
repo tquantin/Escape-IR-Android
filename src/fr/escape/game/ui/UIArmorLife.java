@@ -17,7 +17,7 @@ import fr.escape.game.Escape;
 import fr.escape.game.User;
 import fr.escape.game.entity.ships.Ship;
 import fr.escape.graphics.Font;
-import fr.escape.resources.font.FontLoader;
+import fr.escape.resources.FontLoader;
 
 /**
  * <p>
@@ -51,7 +51,7 @@ public final class UIArmorLife extends AbstractOverlay {
 		this.game = Objects.requireNonNull(game);
 		this.user = Objects.requireNonNull(user);
 		this.player = Objects.requireNonNull(player);
-		this.font = game.getResources().getFont(FontLoader.VISITOR_ID);
+		this.font = new Font(game.getResources().getFont(FontLoader.VISITOR_ID));
 		this.color = Color.WHITE;
 	}
 	

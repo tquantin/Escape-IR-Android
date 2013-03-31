@@ -82,9 +82,4 @@ public abstract class TextureLoader implements ResourcesLoader<Texture> {
 	public static final int INTRO_MOON = R.drawable.imoon;
 	public static final int INTRO_EARTH = R.drawable.iearth;
 	
-	@Override
-	public String getPath() {
-		return null;
-	}
-	
 }
