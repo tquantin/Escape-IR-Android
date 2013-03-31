@@ -11,8 +11,8 @@
 
 package fr.escape.graphics;
 
-import java.awt.Graphics2D;
-
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import fr.escape.Objects;
 
 /**
@@ -65,9 +65,13 @@ public final class RepeatableScrollingTexture extends ScrollingTexture {
 	 * @see TextureOperator#draw(Graphics2D, int, int, int, int, double);
 	 */
 	@Override
-	public void draw(Graphics2D graphics, int x, int y, int width, int height, double angle) {
+	public void draw(Canvas canvas, Paint paint, int x, int y, int width, int height, float angle) {
 	
-		Objects.requireNonNull(graphics);
+		/**
+		 * Check required Components
+		 */
+		Objects.requireNonNull(canvas);
+		Objects.requireNonNull(paint);
 		
 		boolean repeatX = true;
 		boolean repeatY = true;
@@ -147,7 +151,7 @@ public final class RepeatableScrollingTexture extends ScrollingTexture {
 			/**
 			 * Draw the Part 1 Texture.
 			 */
-			getTexture().draw(graphics, x, y, deltaWidth, deltaHeight, srcX, srcY, srcWidth, srcHeight);
+			getTexture().draw(canvas, paint, x, y, deltaWidth, deltaHeight, srcX, srcY, srcWidth, srcHeight);
 			
 			/**
 			 * Compute Texture Width Area for Part 2
@@ -159,7 +163,7 @@ public final class RepeatableScrollingTexture extends ScrollingTexture {
 			 * Draw the Part 2 Texture.
 			 */
 			if(repeatX) {
-				getTexture().draw(graphics, deltaWidth, y, width, deltaHeight, srcX2, srcY, srcWidth2, srcHeight);
+				getTexture().draw(canvas, paint, deltaWidth, y, width, deltaHeight, srcX2, srcY, srcWidth2, srcHeight);
 			}
 			
 			
@@ -173,18 +177,18 @@ public final class RepeatableScrollingTexture extends ScrollingTexture {
 			 * Draw the Part 3 Texture.
 			 */
 			if(repeatY) {
-				getTexture().draw(graphics, x, deltaHeight, deltaWidth, height, srcX, srcY3, srcWidth, srcHeight3);
+				getTexture().draw(canvas, paint, x, deltaHeight, deltaWidth, height, srcX, srcY3, srcWidth, srcHeight3);
 			}
 			
 			/**
 			 * Draw the Final Part, the Part 4 Texture. 
 			 */
 			if(repeatX && repeatY) {
-				getTexture().draw(graphics, deltaWidth, deltaHeight, width, height, srcX2, srcY3, srcWidth2, srcHeight3);
+				getTexture().draw(canvas, paint, deltaWidth, deltaHeight, width, height, srcX2, srcY3, srcWidth2, srcHeight3);
 			}
 			
 		} else {
-			super.draw(graphics, x, y, width, height, 0);
+			super.draw(canvas, paint, x, y, width, height, 0);
 		}
 		
 	}

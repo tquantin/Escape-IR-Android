@@ -11,8 +11,8 @@
 
 package fr.escape.graphics;
 
-import java.awt.Graphics2D;
-
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import fr.escape.Objects;
 
 /**
@@ -77,9 +77,13 @@ public class ScrollingTexture implements TextureOperator {
 	 * @see TextureOperator#draw(Graphics2D, int, int, int, int, double);
 	 */
 	@Override
-	public void draw(Graphics2D graphics, int x, int y, int width, int height, double angle) {
+	public void draw(Canvas canvas, Paint paint, int x, int y, int width, int height, float angle) {
 		
-		Objects.requireNonNull(graphics);
+		/**
+		 * Check required Components
+		 */
+		Objects.requireNonNull(canvas);
+		Objects.requireNonNull(paint);
 		
 		/**
 		 * Compute and Check Drawing Area
@@ -138,7 +142,7 @@ public class ScrollingTexture implements TextureOperator {
 		/**
 		 * Draw the Texture.
 		 */
-		getTexture().draw(graphics, x, y, width, height, srcX, srcY, srcWidth, srcHeight);
+		getTexture().draw(canvas, paint, x, y, width, height, srcX, srcY, srcWidth, srcHeight);
 	}
 	
 	/**

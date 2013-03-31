@@ -14,6 +14,7 @@ package fr.escape.graphics;
 import java.util.NoSuchElementException;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
 import fr.escape.Objects;
 
@@ -127,10 +128,10 @@ public final class AnimationTexture implements TextureOperator {
 	}
 	
 	@Override
-	public void draw(Canvas canvas, int x, int y, int width, int height, double angle) {
+	public void draw(Canvas canvas, Paint paint, int x, int y, int width, int height, float angle) {
 	
 		Texture texture = textures[index];
-		texture.draw(Objects.requireNonNull(canvas), x, y, width, height, 0, 0, texture.getWidth(), texture.getHeight(), angle);
+		texture.draw(Objects.requireNonNull(canvas), Objects.requireNonNull(paint), x, y, width, height, 0, 0, texture.getWidth(), texture.getHeight(), angle);
 		
 	}
 

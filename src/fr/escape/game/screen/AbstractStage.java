@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Input;
 import fr.escape.app.Screen;
 import fr.escape.game.Escape;
@@ -182,7 +183,7 @@ public abstract class AbstractStage implements Screen {
 		if((i.getX() > x - errorX && i.getX() < x + errorX) && (i.getY() > y - errorY && i.getY() < y + errorY)) {
 			
 			if(ship.loadWeapon()) {
-				game.getEngine().debug(TAG, "Weapon Gesture Accept : Load");
+				Engine.debug(TAG, "Weapon Gesture Accept : Load");
 			}
 			
 			return true;
@@ -196,7 +197,7 @@ public abstract class AbstractStage implements Screen {
 		
 		Objects.requireNonNull(i);
 		LinkedList<Input> events = this.events;
-		ArrayList<Gesture> gestures = (ArrayList<Gesture>) game.getUser().getGestures();
+		List<Gesture> gestures = game.getUser().getGestures();
 		
 		switch(i.getAction()) {
 			case ACTION_UP: {
@@ -216,7 +217,7 @@ public abstract class AbstractStage implements Screen {
 						float[] weaponVelocity = new float[3];
 						
 						if(wg.accept(start, events, i, weaponVelocity) && ship.isWeaponLoaded()) {
-							game.getEngine().debug(TAG, "Weapon Gesture Accept : Fire");
+							Engine.debug(TAG, "Weapon Gesture Accept : Fire");
 							ship.fireWeapon(weaponVelocity);
 							accept = true;
 						}
