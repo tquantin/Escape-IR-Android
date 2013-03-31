@@ -19,6 +19,7 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.graphics.Texture;
@@ -33,6 +34,7 @@ public final class ShotFactory {
 	private static final int MASK = 0x0001;
 	private static final ShotCollisionBehavior COLLISION_BEHAVIOR = new ShotCollisionBehavior();
 	
+	private final Engine engine;
 	private final Resources resources;
 	private final World world;
 	private final EntityContainer entityContainer;
@@ -43,8 +45,9 @@ public final class ShotFactory {
 	 * @param world : The {@link World} that will contain the {@link Shot}
 	 * @param entityContainer : The {@link EntityContainer} in which the {@link Shot} will be push.
 	 */
-	public ShotFactory(Resources resources, World world, EntityContainer entityContainer) {
-		this.resources = resources;
+	public ShotFactory(Engine engine, World world, EntityContainer entityContainer) {
+		this.engine = engine;
+		this.resources = engine.getResources();
 		this.world = Objects.requireNonNull(world);
 		this.entityContainer = Objects.requireNonNull(entityContainer);
 	}
@@ -80,7 +83,7 @@ public final class ShotFactory {
 		Body body = world.createBody(bodyDef);
 		body.createFixture(fixture);
 		
-		Shot shot = new BlackHoleShot(body, entityContainer, COLLISION_BEHAVIOR);
+		Shot shot = new BlackHoleShot(engine, body, entityContainer, COLLISION_BEHAVIOR);
 		
 		body.setUserData(shot);
 		
@@ -118,7 +121,7 @@ public final class ShotFactory {
 		Body body = world.createBody(bodyDef);
 		body.createFixture(fixture);
 
-		Shot shot = new FireBallShot(body, entityContainer, COLLISION_BEHAVIOR);
+		Shot shot = new FireBallShot(engine, body, entityContainer, COLLISION_BEHAVIOR);
 		
 		body.setUserData(shot);
 		
@@ -156,7 +159,7 @@ public final class ShotFactory {
 		Body body = world.createBody(bodyDef);
 		body.createFixture(fixture);
 
-		Shot shot = new MissileShot(body, entityContainer, COLLISION_BEHAVIOR);
+		Shot shot = new MissileShot(engine, body, entityContainer, COLLISION_BEHAVIOR);
 		
 		body.setUserData(shot);
 		
@@ -202,7 +205,7 @@ public final class ShotFactory {
 		Body body = world.createBody(bodyDef);
 		body.createFixture(fixture);
 
-		Shot shot = new ShiboleetShot(body, isChild, entityContainer, COLLISION_BEHAVIOR, this);
+		Shot shot = new ShiboleetShot(engine, body, isChild, entityContainer, COLLISION_BEHAVIOR, this);
 		
 		body.setUserData(shot);
 		
@@ -239,7 +242,7 @@ public final class ShotFactory {
 		Body body = world.createBody(bodyDef);
 		body.createFixture(fixture);
 
-		Shot shot = new JupiterShot(body, entityContainer, COLLISION_BEHAVIOR);
+		Shot shot = new JupiterShot(engine, body, entityContainer, COLLISION_BEHAVIOR);
 		
 		body.setUserData(shot);
 		
@@ -276,7 +279,7 @@ public final class ShotFactory {
 		Body body = world.createBody(bodyDef);
 		body.createFixture(fixture);
 
-		Shot shot = new MoonShot(body, entityContainer, COLLISION_BEHAVIOR);
+		Shot shot = new MoonShot(engine, body, entityContainer, COLLISION_BEHAVIOR);
 		
 		body.setUserData(shot);
 		
@@ -293,7 +296,7 @@ public final class ShotFactory {
 	public Shot createEarthShot(float x, float y) {
 		Texture coreJupiter = resources.getTexture(TextureLoader.EARTH_SPECIAL);
 		float shapeX = CoordinateConverter.toMeterX(coreJupiter.getWidth() / 2);
-		float shapeY = CoordinateConverter.toMeterY(Foundation.GRAPHICS.getHeight()) - y;
+		float shapeY = CoordinateConverter.toMeterY(engine.getGraphics().getHeight()) - y;
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.set(x, y);
@@ -313,7 +316,7 @@ public final class ShotFactory {
 		Body body = world.createBody(bodyDef);
 		body.createFixture(fixture);
 
-		Shot shot = new EarthShot(body, entityContainer, COLLISION_BEHAVIOR);
+		Shot shot = new EarthShot(engine, body, entityContainer, COLLISION_BEHAVIOR);
 		
 		body.setUserData(shot);
 		

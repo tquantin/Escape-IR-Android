@@ -20,6 +20,7 @@ import org.jbox2d.dynamics.World;
 import android.graphics.Rect;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.bonus.Bonus;
 import fr.escape.game.entity.bonus.BonusFactory;
@@ -41,7 +42,7 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 
 	//private static final String TAG = EntityContainer.class.getSimpleName();
 	
-	private final Resources resources;
+	private final Engine engine;
 	private final World world;
 	private final Rect edge;
 	private final LinkedHashSet<Entity> entities;
@@ -53,11 +54,11 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	 * @param world World used
 	 * @param margin Margin used for Edge World
 	 */
-	public EntityContainer(Resources resources, World world, int margin) {
+	public EntityContainer(Engine engine, World world, int margin) {
 		
-		this.resources = resources;
+		this.engine = engine;
 		this.world = world;
-		this.edge = new Rect(-margin, -margin, Foundation.GRAPHICS.getWidth() + margin, Foundation.GRAPHICS.getHeight() + margin);
+		this.edge = new Rect(-margin, -margin, engine.getGraphics().getWidth() + margin, engine.getGraphics().getHeight() + margin);
 		this.entities = new LinkedHashSet<Entity>();
 		this.destroyed = new LinkedList<Entity>();
 		
@@ -197,7 +198,7 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	 */
 	public boolean pushBonus(float x, float y) {
 		
-		Bonus bonus = BonusFactory.createBonus(resources, world, x, y, this);
+		Bonus bonus = BonusFactory.createBonus(engine, world, x, y, this);
 		
 		if(bonus != null) {
 			return push(bonus);

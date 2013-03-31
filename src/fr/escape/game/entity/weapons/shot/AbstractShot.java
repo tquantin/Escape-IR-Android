@@ -17,6 +17,7 @@ import org.jbox2d.dynamics.Body;
 import android.graphics.Rect;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.Entity;
@@ -31,6 +32,8 @@ public abstract class AbstractShot implements Shot {
 	
 	private static final int PLAYER_SHOT_MASK = NPC_TYPE;
 	private static final int NPC_SHOT_MASK = PLAYER_TYPE;
+	
+	private final Engine engine;
 	
 	private final EdgeNotifier eNotifier;
 	private final KillNotifier kNotifier;
@@ -55,8 +58,9 @@ public abstract class AbstractShot implements Shot {
 	 * @param collisionBehavior : {@link CollisionBehavior} that the {@link Shot} will use.
 	 * @param defaultDamage : The damage done by the {@link Shot}.
 	 */
-	public AbstractShot(Body body, EdgeNotifier edgeNotifier, KillNotifier killNotifier, CollisionBehavior collisionBehavior, int defaultDamage) {
+	public AbstractShot(Engine engine, Body body, EdgeNotifier edgeNotifier, KillNotifier killNotifier, CollisionBehavior collisionBehavior, int defaultDamage) {
 		
+		this.engine = engine;
 		this.body = Objects.requireNonNull(body);
 		this.eNotifier = Objects.requireNonNull(edgeNotifier);
 		this.kNotifier = Objects.requireNonNull(killNotifier);
@@ -162,7 +166,7 @@ public abstract class AbstractShot implements Shot {
 		Objects.requireNonNull(user);
 		Objects.requireNonNull(e);
 		
-		Foundation.ACTIVITY.post(new Runnable() {
+		engine.post(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -224,6 +228,10 @@ public abstract class AbstractShot implements Shot {
 	@Override
 	public void setUntouchable() {
 		Objects.requireNonNull(getBody().getFixtureList()).m_filter.maskBits = 0x0001;
+	}
+	
+	protected Engine getEngine() {
+		return engine;
 	}
 	
 }

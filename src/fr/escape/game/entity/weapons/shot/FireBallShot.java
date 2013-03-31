@@ -19,6 +19,7 @@ import org.jbox2d.dynamics.BodyType;
 import android.graphics.Rect;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.CoordinateConverter;
@@ -51,11 +52,11 @@ public final class FireBallShot extends AbstractShot {
 	 * @param container : The {@link EntityContainer} that contains the {@link Shot}.
 	 * @param collisionBehavior : The {@link CollisionBehavior} use by the {@link Shot}
 	 */
-	public FireBallShot(Body body, EntityContainer container, ShotCollisionBehavior collisionBehavior) {
-		super(body, container, container, collisionBehavior, 3);
+	public FireBallShot(Engine engine, Body body, EntityContainer container, ShotCollisionBehavior collisionBehavior) {
+		super(engine, body, container, container, collisionBehavior, 3);
 		
-		this.coreBall = Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_FIREBALL_CORE_SHOT);
-		this.radiusEffect = Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_FIREBALL_RADIUS_SHOT);
+		this.coreBall = engine.getResources().getTexture(TextureLoader.WEAPON_FIREBALL_CORE_SHOT);
+		this.radiusEffect = engine.getResources().getTexture(TextureLoader.WEAPON_FIREBALL_RADIUS_SHOT);
 		
 		this.isVisible = false;
 		this.radiusGrown = false;
@@ -116,7 +117,7 @@ public final class FireBallShot extends AbstractShot {
 				
 				isVisible = false;
 				
-				Foundation.ACTIVITY.post(new Runnable() {
+				getEngine().post(new Runnable() {
 					
 					@Override
 					public void run() {

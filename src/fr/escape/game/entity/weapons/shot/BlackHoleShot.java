@@ -19,6 +19,7 @@ import org.jbox2d.dynamics.BodyType;
 import android.graphics.Rect;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.CoordinateConverter;
@@ -56,18 +57,18 @@ public final class BlackHoleShot extends AbstractShot {
 	 * @param container : The {@link EntityContainer} that contains the {@link Shot}.
 	 * @param collisionBehavior : The {@link CollisionBehavior} use by the {@link Shot}
 	 */
-	public BlackHoleShot(Body body, EntityContainer container, ShotCollisionBehavior collisionBehavior) {
-		super(body, container, container, collisionBehavior, 5);
+	public BlackHoleShot(Engine engine, Body body, EntityContainer container, ShotCollisionBehavior collisionBehavior) {
+		super(engine, body, container, container, collisionBehavior, 5);
 		
 		this.isVisible = false;
 		this.drawCoreHelix = false;
 		this.drawLeftAndRightHelix = false;
 		this.drawEventHorizon = false;
 		
-		this.coreHelix = Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_BLACKHOLE_CORE_SHOT);
-		this.leftHelix = Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_BLACKHOLE_LEFT_SHOT);
-		this.rightHelix = Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_BLACKHOLE_RIGHT_SHOT);
-		this.eventHorizon = Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_BLACKHOLE_EVENT_HORIZON_SHOT);
+		this.coreHelix = engine.getResources().getTexture(TextureLoader.WEAPON_BLACKHOLE_CORE_SHOT);
+		this.leftHelix = engine.getResources().getTexture(TextureLoader.WEAPON_BLACKHOLE_LEFT_SHOT);
+		this.rightHelix = engine.getResources().getTexture(TextureLoader.WEAPON_BLACKHOLE_RIGHT_SHOT);
+		this.eventHorizon = engine.getResources().getTexture(TextureLoader.WEAPON_BLACKHOLE_EVENT_HORIZON_SHOT);
 		
 	}
 
@@ -102,7 +103,7 @@ public final class BlackHoleShot extends AbstractShot {
 				
 				isVisible = false;
 				
-				Foundation.ACTIVITY.post(new Runnable() {
+				getEngine().post(new Runnable() {
 					
 					@Override
 					public void run() {

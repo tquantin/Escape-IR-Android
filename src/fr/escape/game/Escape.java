@@ -162,13 +162,12 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 			createWall(world,11.0f,CoordinateConverter.toMeterY(getGraphics().getHeight() / 2),true);
 			
 			// Create Entity Container
-			entityContainer = new EntityContainer(getResources(), getWorld(), Math.max((int) (getGraphics().getWidth() * 0.1f), 
-					(int) (getGraphics().getHeight() * 0.1f)));
+			entityContainer = new EntityContainer(getEngine(), getWorld(), Math.max((int) (getGraphics().getWidth() * 0.1f), (int) (getGraphics().getHeight() * 0.1f)));
 			
 			// Create Game Components
 			ingameUI = new IngameUI();
-			shotFactory = new ShotFactory(getWorld(), getEntityContainer());
-			shipFactory = new ShipFactory(getResources(), getEntityContainer(), getShotFactory());
+			shotFactory = new ShotFactory(getEngine(), getWorld(), getEntityContainer());
+			shipFactory = new ShipFactory(getEngine(), getEntityContainer(), getShotFactory());
 			
 			// Create Ship
 			createPlayerShip();

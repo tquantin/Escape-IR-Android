@@ -22,6 +22,7 @@ import org.jbox2d.dynamics.World;
 import android.graphics.Rect;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
@@ -39,6 +40,7 @@ import fr.escape.graphics.Texture;
 public abstract class AbstractShip implements Ship {
 	
 	//private static final String TAG = AbstractShip.class.getSimpleName();
+	private final Engine engine;
 	
 	private final BodyDef bodyDef;
 	private final FixtureDef fixture;
@@ -66,9 +68,9 @@ public abstract class AbstractShip implements Ship {
 	 * @param textures : {@link Texture} use for the {@link AbstractShip}.
 	 * @param collisionBehavior : Behavior used by this {@link AbstractShip} to manage JBox2D Collisions.
 	 */
-	public AbstractShip(BodyDef bodyDef, FixtureDef fixture, List<Weapon> weapons, int life, 
-			EntityContainer container, AnimationTexture textures, CollisionBehavior collisionBehavior) {
+	public AbstractShip(Engine engine, BodyDef bodyDef, FixtureDef fixture, List<Weapon> weapons, int life, EntityContainer container, AnimationTexture textures, CollisionBehavior collisionBehavior) {
 		
+		this.engine = engine;
 		this.bodyDef = Objects.requireNonNull(bodyDef);
 		this.fixture = Objects.requireNonNull(fixture);
 		this.weapons = Objects.requireNonNull(weapons);
@@ -262,7 +264,6 @@ public abstract class AbstractShip implements Ship {
 		int y = CoordinateConverter.toPixelY(getY());
 		
 		return new Rect(x - (shipDrawable.getWidth() / 2), y + (shipDrawable.getHeight() / 2), x + (shipDrawable.getWidth() / 2), y - (shipDrawable.getHeight() / 2));
-		//return new Rectangle(x - (shipDrawable.getWidth() / 2), y - (shipDrawable.getHeight() / 2), shipDrawable.getWidth(), shipDrawable.getHeight());
 	}
 	
 	@Override
@@ -270,7 +271,7 @@ public abstract class AbstractShip implements Ship {
 		Objects.requireNonNull(user);
 		Objects.requireNonNull(e);
 		
-		Foundation.ACTIVITY.post(new Runnable() {
+		engine.post(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -331,6 +332,10 @@ public abstract class AbstractShip implements Ship {
 	@Override
 	public int getInitialLife() {
 		return initialLife;
+	}
+	
+	protected Engine getEngine() {
+		return engine;
 	}
 	
 }

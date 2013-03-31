@@ -18,6 +18,7 @@ import org.jbox2d.dynamics.BodyType;
 import android.graphics.Rect;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.CoordinateConverter;
@@ -42,10 +43,10 @@ public class JupiterShot extends AbstractShot {
 	 * @param container : The {@link EntityContainer} that contains the {@link Shot}.
 	 * @param collisionBehavior : The {@link CollisionBehavior} use by the {@link Shot}
 	 */
-	public JupiterShot(Body body, EntityContainer container, ShotCollisionBehavior collisionBehavior) {
-		super(body, container, container, collisionBehavior, 2);
+	public JupiterShot(Engine engine, Body body, EntityContainer container, ShotCollisionBehavior collisionBehavior) {
+		super(engine, body, container, container, collisionBehavior, 2);
 		
-		this.coreJupiterShot = Foundation.RESOURCES.getTexture(TextureLoader.JUPITER_SPECIAL);
+		this.coreJupiterShot = engine.getResources().getTexture(TextureLoader.JUPITER_SPECIAL);
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class JupiterShot extends AbstractShot {
 				
 				isVisible = false;
 				
-				Foundation.ACTIVITY.post(new Runnable() {
+				getEngine().post(new Runnable() {
 					
 					@Override
 					public void run() {

@@ -17,6 +17,7 @@ import org.jbox2d.dynamics.Body;
 import android.graphics.Rect;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
@@ -35,6 +36,8 @@ abstract class AbstractBonus implements Bonus {
 	
 	private static int COEFFICIENT = 3;
 	
+	private final Engine engine;
+	
 	private final Texture drawable;
 	private final EdgeNotifier eNotifier;
 	private final KillNotifier kNotifier;
@@ -51,8 +54,9 @@ abstract class AbstractBonus implements Bonus {
 	 * @param kNotifier KillNotifier
 	 * @param collisionBehavior 
 	 */
-	public AbstractBonus(Body body,Texture drawable, EdgeNotifier eNotifier, KillNotifier kNotifier, CollisionBehavior collisionBehavior) {
+	public AbstractBonus(Engine engine, Body body,Texture drawable, EdgeNotifier eNotifier, KillNotifier kNotifier, CollisionBehavior collisionBehavior) {
 		
+		this.engine = engine;
 		this.body = Objects.requireNonNull(body);
 		this.drawable = Objects.requireNonNull(drawable);
 		this.eNotifier = Objects.requireNonNull(eNotifier);
@@ -151,7 +155,7 @@ abstract class AbstractBonus implements Bonus {
 	
 	@Override
 	public void collision(final User user, final Entity e, final int whois) {
-		Foundation.ACTIVITY.post(new Runnable() {
+		engine.post(new Runnable() {
 			
 			@Override
 			public void run() {

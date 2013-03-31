@@ -21,9 +21,8 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
-import android.R.anim;
-
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.Collisionable;
@@ -41,8 +40,6 @@ import fr.escape.game.scenario.Scenario;
 import fr.escape.game.scenario.Stage;
 import fr.escape.graphics.AnimationTexture;
 import fr.escape.graphics.Texture;
-import fr.escape.input.Booster;
-import fr.escape.resources.Resources;
 import fr.escape.resources.TextureLoader;
 
 /**
@@ -62,7 +59,7 @@ public class ShipFactory {
 	private static final int MOON_ARMOR = 25;
 	private static final int EARTH_ARMOR = 50;
 	
-	final Resources resources;
+	final Engine engine;
 	private final EntityContainer econtainer;
 	private final List<Weapon> playerWeapons;
 	private final List<Weapon> npcWeapons;
@@ -75,11 +72,11 @@ public class ShipFactory {
 	 * @param ec : {@link EntityContainer} in which the {@link Ship} will be push.
 	 * @param factory : {@link ShotFactory} use to create the {@link Weapon} {@link Shot}.
 	 */
-	public ShipFactory(Resources resources, EntityContainer ec, ShotFactory factory) {
-		this.resources = resources;
+	public ShipFactory(Engine engine, EntityContainer ec, ShotFactory factory) {
+		this.engine = engine;
 		this.econtainer = Objects.requireNonNull(ec);
-		this.playerWeapons = Weapons.createListOfWeapons(this.econtainer, Objects.requireNonNull(factory));
-		this.npcWeapons = Weapons.createListOfUnlimitedWeapons(this.econtainer, factory);
+		this.playerWeapons = Weapons.createListOfWeapons(engine.getResources(), this.econtainer, Objects.requireNonNull(factory));
+		this.npcWeapons = Weapons.createListOfUnlimitedWeapons(engine.getResources(), this.econtainer, factory);
 		this.shotFactory = factory;
 	}
 	
@@ -92,7 +89,7 @@ public class ShipFactory {
 	 */
 	public Ship createFalcon(float x, float y) {
 		
-		AnimationTexture falcon = new AnimationTexture(resources.getTexture(TextureLoader.SHIP_FALCON));
+		AnimationTexture falcon = new AnimationTexture(engine.getResources().getTexture(TextureLoader.SHIP_FALCON));
 		
 		BodyDef bodyDef = createBodyDef(x, y);
 		FixtureDef fixture = createFixtureForNpc(falcon);
@@ -113,7 +110,7 @@ public class ShipFactory {
 	 */
 	public Ship createViper(float x, float y) {
 		
-		AnimationTexture vyper = new AnimationTexture(resources.getTexture(TextureLoader.SHIP_VIPER));
+		AnimationTexture vyper = new AnimationTexture(engine.getResources().getTexture(TextureLoader.SHIP_VIPER));
 		
 		BodyDef bodyDef = createBodyDef(x, y);
 		FixtureDef fixture = createFixtureForNpc(vyper);
@@ -134,7 +131,7 @@ public class ShipFactory {
 	 */
 	public Ship createRaptor(float x, float y) {
 		
-		AnimationTexture raptor = new AnimationTexture(resources.getTexture(TextureLoader.SHIP_RAPTOR));
+		AnimationTexture raptor = new AnimationTexture(engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR));
 		
 		BodyDef bodyDef = createBodyDef(x, y);
 		FixtureDef fixture = createFixtureForNpc(raptor);
@@ -156,22 +153,22 @@ public class ShipFactory {
 	public Ship createPlayer(float x, float y) {
 		
 		AnimationTexture raptor = new AnimationTexture( 
-				resources.getTexture(TextureLoader.SHIP_RAPTOR),
-				resources.getTexture(TextureLoader.SHIP_RAPTOR_1),
-				resources.getTexture(TextureLoader.SHIP_RAPTOR_2),
-				resources.getTexture(TextureLoader.SHIP_RAPTOR_3),
-				resources.getTexture(TextureLoader.SHIP_RAPTOR_4),
-				resources.getTexture(TextureLoader.SHIP_RAPTOR_5),
-				resources.getTexture(TextureLoader.SHIP_RAPTOR_6),
-				resources.getTexture(TextureLoader.SHIP_RAPTOR_7),
-				resources.getTexture(TextureLoader.SHIP_RAPTOR_8),
-				resources.getTexture(TextureLoader.SHIP_RAPTOR_9)
+				engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR),
+				engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR_1),
+				engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR_2),
+				engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR_3),
+				engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR_4),
+				engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR_5),
+				engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR_6),
+				engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR_7),
+				engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR_8),
+				engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR_9)
 		);
 		
 		BodyDef bodyDef = createBodyDef(x, y);
 		FixtureDef fixture = createFixtureForPlayer(raptor);
 
-		return new AbstractShip(bodyDef, fixture, playerWeapons, PLAYER_ARMOR, econtainer, raptor, PLAYER_COLLISION_BEHAVIOR) {
+		return new AbstractShip(engine, bodyDef, fixture, playerWeapons, PLAYER_ARMOR, econtainer, raptor, PLAYER_COLLISION_BEHAVIOR) {
 			
 			private static final int PLAYER_MASK = NPC_TYPE | SHOT_TYPE | BONUS_TYPE | WALL_TYPE;
 			private static final int INVULNERABILITY_MASK = 0x0001 | BONUS_TYPE;
@@ -329,14 +326,14 @@ public class ShipFactory {
 	 */
 	public Boss createJupiterBoss(float x, float y) {
 		
-		AnimationTexture jupiter = new AnimationTexture(resources.getTexture(TextureLoader.BOSS_JUPITER));
+		AnimationTexture jupiter = new AnimationTexture(engine.getResources().getTexture(TextureLoader.BOSS_JUPITER));
 		
 		BodyDef bodyDef = createBodyDef(x, y);
 		FixtureDef fixture = createFixtureForNpc(jupiter);
 		
-		return new AbstractBoss(bodyDef, fixture, npcWeapons, JUPITER_ARMOR, econtainer, jupiter, COMPUTER_COLLISION_BEHAVIOR) {
+		return new AbstractBoss(engine, bodyDef, fixture, npcWeapons, JUPITER_ARMOR, econtainer, jupiter, COMPUTER_COLLISION_BEHAVIOR) {
 
-			private final Texture texture = resources.getTexture(TextureLoader.JUPITER_SPECIAL);
+			private final Texture texture = engine.getResources().getTexture(TextureLoader.JUPITER_SPECIAL);
 			
 			@Override
 			public int getFireWaitingTime() {
@@ -353,7 +350,7 @@ public class ShipFactory {
 				
 				setActiveWeapon(2);
 				
-				Foundation.ACTIVITY.post(new Runnable() {
+				engine.post(new Runnable() {
 					
 					@Override
 					public void run() {
@@ -388,7 +385,7 @@ public class ShipFactory {
 				s3.receive(Shot.MESSAGE_CRUISE);
 				s4.receive(Shot.MESSAGE_CRUISE);
 				
-				Foundation.ACTIVITY.post(new Runnable() {
+				engine.post(new Runnable() {
 					@Override
 					public void run() {
 						container.push(s1);
@@ -421,16 +418,16 @@ public class ShipFactory {
 	public Boss createMoonBoss(float x, float y) {
 		
 		AnimationTexture moon = new AnimationTexture(
-				resources.getTexture(TextureLoader.BOSS_MOON),
-				resources.getTexture(TextureLoader.BOSS_MOON_1)
+				engine.getResources().getTexture(TextureLoader.BOSS_MOON),
+				engine.getResources().getTexture(TextureLoader.BOSS_MOON_1)
 		);
 		
 		BodyDef bodyDef = createBodyDef(x, y);
 		FixtureDef fixture = createFixtureForNpc(moon);
 		
-		return new AbstractBoss(bodyDef, fixture, npcWeapons, MOON_ARMOR, econtainer, moon, COMPUTER_COLLISION_BEHAVIOR) {
+		return new AbstractBoss(engine, bodyDef, fixture, npcWeapons, MOON_ARMOR, econtainer, moon, COMPUTER_COLLISION_BEHAVIOR) {
 
-			private final Texture texture = resources.getTexture(TextureLoader.MOON_SPECIAL);
+			private final Texture texture = engine.getResources().getTexture(TextureLoader.MOON_SPECIAL);
 			private final Random random = new Random();
 			
 			@Override
@@ -448,7 +445,7 @@ public class ShipFactory {
 				
 				setActiveWeapon(random.nextInt(3));
 				
-				Foundation.ACTIVITY.post(new Runnable() {
+				engine.post(new Runnable() {
 					
 					@Override
 					public void run() {
@@ -471,7 +468,7 @@ public class ShipFactory {
 				s1.moveBy(new float[] {0.0f, 0.0f, 2.5f});
 				s1.receive(Shot.MESSAGE_CRUISE);
 				
-				Foundation.ACTIVITY.post(new Runnable() {
+				engine.post(new Runnable() {
 					
 					@Override
 					public void run() {
@@ -503,16 +500,16 @@ public class ShipFactory {
 	public Boss createEarthBoss(float x, float y) {
 		
 		AnimationTexture earth = new AnimationTexture(
-				resources.getTexture(TextureLoader.BOSS_EARTH),
-				resources.getTexture(TextureLoader.BOSS_EARTH_1)
+				engine.getResources().getTexture(TextureLoader.BOSS_EARTH),
+				engine.getResources().getTexture(TextureLoader.BOSS_EARTH_1)
 		);
 		
 		BodyDef bodyDef = createBodyDef(x, y);
 		FixtureDef fixture = createFixtureForNpc(earth);
 		
-		return new AbstractBoss(bodyDef, fixture, npcWeapons, EARTH_ARMOR, econtainer, earth, COMPUTER_COLLISION_BEHAVIOR) {
+		return new AbstractBoss(engine, bodyDef, fixture, npcWeapons, EARTH_ARMOR, econtainer, earth, COMPUTER_COLLISION_BEHAVIOR) {
 			
-			private final Texture texture = resources.getTexture(TextureLoader.EARTH_SPECIAL);
+			private final Texture texture = engine.getResources().getTexture(TextureLoader.EARTH_SPECIAL);
 			private final float VARX = CoordinateConverter.toMeterY(10);
 			private final float VARY = CoordinateConverter.toMeterY(50);
 			private Shot specialShot;
@@ -532,7 +529,7 @@ public class ShipFactory {
 				
 				setActiveWeapon(1);
 				
-				Foundation.ACTIVITY.post(new Runnable() {
+				engine.post(new Runnable() {
 					
 					@Override
 					public void run() {
@@ -555,7 +552,7 @@ public class ShipFactory {
 				s1.moveBy(new float[] {0.0f, 0.0f, 0.0f});
 				s1.receive(Shot.MESSAGE_CRUISE);
 				
-				Foundation.ACTIVITY.post(new Runnable() {
+				engine.post(new Runnable() {
 					@Override
 					public void run() {
 						container.push(s1);
@@ -674,11 +671,11 @@ public class ShipFactory {
 		Objects.requireNonNull(fixture);
 		Objects.requireNonNull(drawable);
 		
-		return new AbstractShip(bodyDef, fixture, npcWeapons, DEFAULT_ARMOR, econtainer, drawable, COMPUTER_COLLISION_BEHAVIOR) {
+		return new AbstractShip(engine, bodyDef, fixture, npcWeapons, DEFAULT_ARMOR, econtainer, drawable, COMPUTER_COLLISION_BEHAVIOR) {
 			
 			@Override
 			public void toDestroy() {
-				Foundation.ACTIVITY.post(new Runnable() {
+				engine.post(new Runnable() {
 					
 					@Override
 					public void run() {

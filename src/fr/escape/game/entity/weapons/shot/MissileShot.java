@@ -18,6 +18,7 @@ import org.jbox2d.dynamics.BodyType;
 import android.graphics.Rect;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.CoordinateConverter;
@@ -43,10 +44,10 @@ public class MissileShot extends AbstractShot {
 	 * @param container : The {@link EntityContainer} that contains the {@link Shot}.
 	 * @param collisionBehavior : The {@link CollisionBehavior} use by the {@link Shot}
 	 */
-	public MissileShot(Body body, EntityContainer container, ShotCollisionBehavior collisionBehavior) {
-		super(body, container, container, collisionBehavior, 2);
+	public MissileShot(Engine engine, Body body, EntityContainer container, ShotCollisionBehavior collisionBehavior) {
+		super(engine, body, container, container, collisionBehavior, 2);
 		
-		this.coreMissile = Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_MISSILE_SHOT);
+		this.coreMissile = engine.getResources().getTexture(TextureLoader.WEAPON_MISSILE_SHOT);
 		this.isVisible = false;
 	}
 
@@ -72,7 +73,7 @@ public class MissileShot extends AbstractShot {
 				
 				isVisible = false;
 				
-				Foundation.ACTIVITY.post(new Runnable() {
+				getEngine().post(new Runnable() {
 					
 					@Override
 					public void run() {

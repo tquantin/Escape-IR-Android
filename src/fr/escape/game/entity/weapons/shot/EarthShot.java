@@ -16,6 +16,7 @@ import org.jbox2d.dynamics.Body;
 import android.graphics.Rect;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.CoordinateConverter;
@@ -41,9 +42,9 @@ public class EarthShot extends AbstractShot {
 	 * @param container : The {@link EntityContainer} that contains the {@link Shot}.
 	 * @param collisionBehavior : The {@link CollisionBehavior} use by the {@link Shot}
 	 */
-	public EarthShot(Body body, EntityContainer container, CollisionBehavior collisionBehavior) {
-		super(body, container, container, collisionBehavior, 50);	
-		this.coreEarthShot = Foundation.RESOURCES.getTexture(TextureLoader.EARTH_SPECIAL);
+	public EarthShot(Engine engine, Body body, EntityContainer container, CollisionBehavior collisionBehavior) {
+		super(engine, body, container, container, collisionBehavior, 50);	
+		this.coreEarthShot = engine.getResources().getTexture(TextureLoader.EARTH_SPECIAL);
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class EarthShot extends AbstractShot {
 				
 				isVisible = false;
 				
-				Foundation.ACTIVITY.post(new Runnable() {
+				getEngine().post(new Runnable() {
 					
 					@Override
 					public void run() {

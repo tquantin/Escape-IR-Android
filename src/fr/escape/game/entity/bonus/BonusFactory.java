@@ -21,6 +21,7 @@ import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.game.entity.Collisionable;
 import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
@@ -60,7 +61,7 @@ public final class BonusFactory {
 	 * @param econtainer Game EntityContainer
 	 * @return A Bonus if the User have luck, <b>null</b> otherwise.
 	 */
-	public static Bonus createBonus(Resources resources, World world, float x, float y, EntityContainer econtainer) {
+	public static Bonus createBonus(Engine engine, Resources resources, World world, float x, float y, EntityContainer econtainer) {
 		
 		Objects.requireNonNull(resources);
 		Objects.requireNonNull(world);
@@ -90,7 +91,7 @@ public final class BonusFactory {
 		Bonus bonus;
 		if(isBlackHoleBonus()) {
 		
-			bonus = new AbstractBonus(body, resources.getTexture(TextureLoader.BONUS_WEAPON_BLACKHOLE), econtainer, econtainer, COLLISION_BEHAVIOR) {
+			bonus = new AbstractBonus(engine, body, resources.getTexture(TextureLoader.BONUS_WEAPON_BLACKHOLE), econtainer, econtainer, COLLISION_BEHAVIOR) {
 				
 				@Override
 				public int getWeapon() {
@@ -106,7 +107,7 @@ public final class BonusFactory {
 			
 		} else if(isFireballBonus()) {
 			
-			bonus = new AbstractBonus(body, resources.getTexture(TextureLoader.BONUS_WEAPON_FIREBALL), econtainer, econtainer, COLLISION_BEHAVIOR) {
+			bonus = new AbstractBonus(engine, body, resources.getTexture(TextureLoader.BONUS_WEAPON_FIREBALL), econtainer, econtainer, COLLISION_BEHAVIOR) {
 				
 				@Override
 				public int getWeapon() {
@@ -122,7 +123,7 @@ public final class BonusFactory {
 			
 		} else if(isShiboleetBonus()) {
 			
-			bonus = new AbstractBonus(body, resources.getTexture(TextureLoader.BONUS_WEAPON_SHIBOLEET), econtainer, econtainer, COLLISION_BEHAVIOR) {
+			bonus = new AbstractBonus(engine, body, resources.getTexture(TextureLoader.BONUS_WEAPON_SHIBOLEET), econtainer, econtainer, COLLISION_BEHAVIOR) {
 				
 				@Override
 				public int getWeapon() {
@@ -138,7 +139,7 @@ public final class BonusFactory {
 			
 		} else if(isMissileBonus()) {
 			
-			bonus = new AbstractBonus(body, resources.getTexture(TextureLoader.BONUS_WEAPON_MISSILE), econtainer, econtainer, COLLISION_BEHAVIOR) {
+			bonus = new AbstractBonus(engine, body, resources.getTexture(TextureLoader.BONUS_WEAPON_MISSILE), econtainer, econtainer, COLLISION_BEHAVIOR) {
 				
 				@Override
 				public int getWeapon() {

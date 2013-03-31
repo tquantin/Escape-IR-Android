@@ -17,6 +17,7 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.FixtureDef;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.EntityContainer;
@@ -47,11 +48,9 @@ public abstract class AbstractBoss extends AbstractShip implements Boss {
 	 * @param textures : {@link Texture} use for the {@link AbstractShip}.
 	 * @param collisionBehavior : Behavior used by this {@link AbstractShip} to manage JBox2D Collisions.
 	 */
-	public AbstractBoss(BodyDef bodyDef, FixtureDef fixture, List<Weapon> weapons, 
-			int life, EntityContainer container, AnimationTexture textures,
-			CollisionBehavior collisionBehavior) {
+	public AbstractBoss(Engine engine, BodyDef bodyDef, FixtureDef fixture, List<Weapon> weapons, int life, EntityContainer container, AnimationTexture textures, CollisionBehavior collisionBehavior) {
 		
-		super(bodyDef, fixture, weapons, life, container, textures, collisionBehavior);
+		super(engine, bodyDef, fixture, weapons, life, container, textures, collisionBehavior);
 		
 		moveToRight = false;
 		timer = 0;
@@ -90,7 +89,7 @@ public abstract class AbstractBoss extends AbstractShip implements Boss {
 
 	@Override
 	public void toDestroy() {
-		Foundation.ACTIVITY.post(new Runnable() {
+		getEngine().post(new Runnable() {
 
 			@Override
 			public void run() {

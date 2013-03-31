@@ -18,6 +18,7 @@ import org.jbox2d.dynamics.BodyType;
 import android.graphics.Rect;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.CoordinateConverter;
@@ -50,10 +51,10 @@ public final class ShiboleetShot extends AbstractShot {
 	 * @param collisionBehavior : The {@link CollisionBehavior} use by the {@link Shot}
 	 * @param factory : The {@link ShotFactory}.
 	 */
-	public ShiboleetShot(Body body, boolean isChild, EntityContainer container, ShotCollisionBehavior collisionBehavior, ShotFactory factory) {
-		super(body, container, container, collisionBehavior, 1);
+	public ShiboleetShot(Engine engine, Body body, boolean isChild, EntityContainer container, ShotCollisionBehavior collisionBehavior, ShotFactory factory) {
+		super(engine, body, container, container, collisionBehavior, 1);
 
-		this.coreShiboleet = Foundation.RESOURCES.getTexture(TextureLoader.WEAPON_SHIBOLEET_SHOT);
+		this.coreShiboleet = engine.getResources().getTexture(TextureLoader.WEAPON_SHIBOLEET_SHOT);
 		this.entityContainer = Objects.requireNonNull(container);
 		this.shotFactory = Objects.requireNonNull(factory);
 		this.isVisible = false;
@@ -92,7 +93,7 @@ public final class ShiboleetShot extends AbstractShot {
 				
 				isVisible = false;
 				
-				Foundation.ACTIVITY.post(new Runnable() {
+				getEngine().post(new Runnable() {
 					
 					@Override
 					public void run() {
