@@ -108,10 +108,9 @@ public final class Menu implements Screen {
 				(game.getGraphics().getWidth() / 2), HEADER_MARGING, 
 				fontH1, Color.WHITE);
 		
-		game.getGraphics().draw(grid, (int) gridArea.getX(), (int) gridArea.getY(), 
-				(int) (gridArea.getX() + gridArea.getWidth()), (int) (gridArea.getY() + gridArea.getHeight()));
+		game.getGraphics().draw(grid, gridArea.left, gridArea.top, gridArea.right, gridArea.bottom);
 		
-		Screens.drawStringInCenterPosition(game.getGraphics(), NEW_GAME, (int) touchArea.getCenterX(), (int) touchArea.getCenterY(), fontH3, Color.BLACK);		
+		Screens.drawStringInCenterPosition(game.getGraphics(), NEW_GAME, touchArea.centerX(), touchArea.centerY(), fontH3, Color.BLACK);		
 		Screens.drawStringInCenterPosition(
 				game.getGraphics(), FOOTER, 
 				(game.getGraphics().getWidth() / 2),
@@ -125,7 +124,7 @@ public final class Menu implements Screen {
 	}
 
 	@Override
-	public void hide() {}
+	public void hide() { /**/ }
 
 	/**
 	 * Create a Touch Components inside the Grid.
@@ -134,8 +133,8 @@ public final class Menu implements Screen {
 	 * @return Touch Area
 	 */
 	private static Rect createTouch(Rect grid) {
-		return new Rect((int) (grid.getX() + GRID_PADDING), (int) (grid.getCenterY() - (GRID_COMPONENTS_SIZE/2)), 
-				(int) (grid.getWidth() - (GRID_PADDING * 2)), GRID_COMPONENTS_SIZE);
+		return new Rect(grid.left + GRID_PADDING, grid.centerY() - (GRID_COMPONENTS_SIZE/2),
+						grid.right - (GRID_PADDING * 2), GRID_COMPONENTS_SIZE);
 	}
 	
 	/**
