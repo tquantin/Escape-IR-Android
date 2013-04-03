@@ -25,7 +25,7 @@ public final class Engine implements Runnable {
 	/**
 	 * World Updating
 	 */
-	private static final float WORLD_STEP = 1.0f / 60.0f;
+	private static final float WORLD_STEP = 1.0f / 20.0f;
 	private static final int WORLD_UPDATE = (int) (WORLD_STEP * 1000);
 	
 	/**
@@ -176,7 +176,7 @@ public final class Engine implements Runnable {
 			debug(TAG, "Create Game");
 			getGame().create(this);
 			
-			for(;;) {
+			while(!Thread.currentThread().isInterrupted()) {
 				
 				int executionTime = 0;
 				
@@ -203,8 +203,11 @@ public final class Engine implements Runnable {
 					
 					int sleep = getGraphics().getNextWakeUp() - executionTime;
 					long start = System.currentTimeMillis();
-					updateWorld(sleep);
+					// TODO Fix it!
+					//updateWorld(sleep);
 					sleep -= ((int) (System.currentTimeMillis() - start));
+					
+					error(TAG, "Sleep: "+sleep);
 					
 					if(sleep > 0) {
 						Thread.sleep(sleep);

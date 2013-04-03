@@ -3,28 +3,61 @@ package fr.escape.android;
 import fr.escape.app.Graphics;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.AttributeSet;
-import android.view.View;
+import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.SurfaceHolder.Callback;
 
-public final class GraphicsView extends View {
+public final class GraphicsView extends SurfaceView implements Callback {
+	
+	static final String TAG = GraphicsView.class.getSimpleName();
 	
 	private Graphics graphics;
+	private Object lock;
 	
-	public GraphicsView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        graphics = null;
+	public GraphicsView(Context context) {
+		super(context);
+		throw new IllegalStateException("You cannot inflate this View from XML");
+	}
+	
+	public GraphicsView(EscapeActivity activity) {
+        super(activity);
+        graphics = activity.getEngine().getGraphics();
+        lock = new Object();
+        getHolder().addCallback(this);
     }
 	
 	public void setGraphics(Graphics graphics) {
-		this.graphics = graphics;
+		synchronized(lock) {
+			this.graphics = graphics;
+		}
 	}
 	
-	@Override
-	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
-		if(graphics != null) {
-			graphics.flush(canvas);
+	public void render() {
+		synchronized(lock) {
+			if(graphics != null) {
+				Canvas canvas = getHolder().lockCanvas();
+				graphics.flush(canvas);
+				getHolder().unlockCanvasAndPost(canvas);
+			}
 		}
+	}
+
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+		Log.i(TAG, "onChange("+format+", "+width+", "+height+")");
+	}
+
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+		Log.i(TAG, "onCreate()");
+		graphics.createView(this, getWidth(), getHeight());
+	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder) {
+		Log.i(TAG, "onDestroy()");
+		graphics.destroyView();
 	}
 	
 }

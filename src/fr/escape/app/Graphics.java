@@ -64,7 +64,6 @@ public final class Graphics {
 	private int width;
 	private int height;
 	private Canvas buffer;
-	private Bitmap bitmap;
 	private GraphicsView view;
 	
 	/**
@@ -139,21 +138,22 @@ public final class Graphics {
 		return wakeUp;
 	}
 	
-	public void setView(GraphicsView view, int width, int height) {
-		
-		this.view = view;
-		this.width = width;
-		this.height = height;
-		
-		if(bitmap != null && !bitmap.isRecycled()) {
-			bitmap.recycle();
+	public void createView(GraphicsView view, int width, int height) {
+		synchronized(lock) {
+			this.view = view;
+			this.width = width;
+			this.height = height;
+			this.view.setGraphics(this);
 		}
-		
-		bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-		buffer = new Canvas(bitmap);
-		
-		this.view.setGraphics(this);
-		
+	}
+	
+	public void destroyView() {
+		synchronized(lock) {
+			this.view.setGraphics(null);
+			this.view = null;
+			this.width = 0;
+			this.height = 0;
+		}
 	}
 	
 	/**
@@ -172,19 +172,8 @@ public final class Graphics {
 	 */
 	public void render() {
 		synchronized (lock) {
-			if(buffer != null) {
-				
-				// Flush and clear previous drawing
-				buffer.drawColor(Color.WHITE);
-				
-				// Start Game Rendering
-				listener.render();
-				
-				// Update Render Timing
-				updateRender(System.currentTimeMillis());
-				
-				// Notify the Graphics View that it need an Update
-				view.postInvalidate();
+			if(view != null) {
+				view.render();
 			}
 		}
 	}
@@ -204,10 +193,19 @@ public final class Graphics {
 	 */
 	public void flush(Canvas canvas) {
 		synchronized (lock) {
-			if(bitmap != null) {
+			if(canvas != null) {
 				
-				// Draw Graphics
-				canvas.drawBitmap(bitmap, 0.0f, 0.0f, null);
+				buffer = canvas;
+				
+				// Flush and clear previous drawing
+				buffer.drawColor(Color.WHITE);
+						
+				// Start Game Rendering
+				listener.render();
+				
+				// Update Render Timing
+				updateRender(System.currentTimeMillis());
+				
 			}
 		}
 	}

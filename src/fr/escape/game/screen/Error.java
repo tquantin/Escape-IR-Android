@@ -73,6 +73,8 @@ public class Error implements Screen {
 	@Override
 	public void render(long delta) {
 		
+		Engine.debug(TAG, "Delta: "+delta);
+		
 		int color = Color.WHITE;
 		
 		if(!fallbackBackground) {
@@ -94,6 +96,10 @@ public class Error implements Screen {
 			draw(25, 20, 20, false, color);
 		}
 
+
+		game.getGraphics().draw("Time: "+System.currentTimeMillis(), 10, 10, font, color);
+		
+		
 	}
 
 	@Override

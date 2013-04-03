@@ -12,9 +12,9 @@
 package fr.escape.android;
 
 import fr.escape.app.Engine;
+import fr.escape.app.Graphics;
 
 import android.os.Bundle;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
@@ -32,35 +32,34 @@ public abstract class EscapeActivity extends Activity {
 	 */
 	private Engine engine;
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		// Retrieve Engine
 		engine = ((EscapeApplication) getApplication()).getEngine();
 		Engine.debug(TAG, "onCreate");
 		
 		// Configure Window Options
 		configureWindow();
 		
-		// Retrieve Display Components
-		Display display = getWindowManager().getDefaultDisplay();
+		// Configure Content View
+		setContentView(new GraphicsView(this));
 		
-		// Ignore deprecation for API Lower than 13
-		int width = display.getWidth();
-		
-		// Ignore deprecation for API Lower than 13 
-		int height = display.getHeight();
-		
-		setContentView(R.layout.escape);
-		
-		engine.getGraphics().setView((GraphicsView) findViewById(R.id.gview), width, height);
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
         return ((EscapeApplication) getApplication()).onTouchEvent(event);
     }
+	
+	public Engine getEngine() {
+		return engine;
+	}
+	
+	public Graphics getGraphics() {
+		return getEngine().getGraphics();
+	}
 	
 	/**
 	 * Configure Activity and Application Window.
