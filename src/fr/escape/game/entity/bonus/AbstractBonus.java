@@ -21,7 +21,6 @@ import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
-import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.Entity;
 import fr.escape.game.entity.notifier.EdgeNotifier;
 import fr.escape.game.entity.notifier.KillNotifier;
@@ -97,8 +96,8 @@ abstract class AbstractBonus implements Bonus {
 	
 	public Rect getEdge() {
 		
-		int x = CoordinateConverter.toPixelX(getX());
-		int y = CoordinateConverter.toPixelY(getY());
+		int x = engine.getConverter().toPixelX(getX());
+		int y = engine.getConverter().toPixelY(getY());
 		
 		return new Rect(x - (drawable.getWidth() / 2), y - (drawable.getHeight() / 2), x + (drawable.getWidth() / 2), y + (drawable.getHeight() / 2));
 	}
@@ -124,8 +123,8 @@ abstract class AbstractBonus implements Bonus {
 	@Override
 	public void draw(Graphics graphics) {
 		
-		int x = CoordinateConverter.toPixelX(body.getPosition().x) - (drawable.getWidth() / 2);
-		int y = CoordinateConverter.toPixelY(body.getPosition().y) - (drawable.getHeight() / 2);
+		int x = engine.getConverter().toPixelX(body.getPosition().x) - (drawable.getWidth() / 2);
+		int y = engine.getConverter().toPixelY(body.getPosition().y) - (drawable.getHeight() / 2);
 		
 		graphics.draw(drawable, x, y);
 	}

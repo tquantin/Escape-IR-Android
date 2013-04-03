@@ -14,9 +14,8 @@ package fr.escape.input;
 import java.util.List;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.app.Input;
-import fr.escape.game.entity.CoordinateConverter;
-import fr.escape.resources.Resources;
 import fr.escape.resources.TextureLoader;
 
 /**
@@ -24,11 +23,13 @@ import fr.escape.resources.TextureLoader;
  */
 public final class WeaponGesture implements Gesture {
 	
+	private final Engine engine;
 	private final int coefficient;
 	private final int shotPosition;
 	
-	public WeaponGesture(Resources resources) {
-		this.shotPosition = resources.getTexture(TextureLoader.SHIP_RAPTOR).getHeight() / 2;
+	public WeaponGesture(Engine engine) {
+		this.engine = engine;
+		this.shotPosition = engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR).getHeight() / 2;
 		this.coefficient = 5;
 	}
 	
@@ -42,8 +43,8 @@ public final class WeaponGesture implements Gesture {
 		int y = start.getY() - shotPosition;
 		if(y <= end.getY()) return false;
 				
-		float distanceX = CoordinateConverter.toMeterX(end.getX() - start.getX());
-		float distanceY = CoordinateConverter.toMeterX(end.getY() - y);
+		float distanceX = engine.getConverter().toMeterX(end.getX() - start.getX());
+		float distanceY = engine.getConverter().toMeterX(end.getY() - y);
 		
 		double cd = (double) (end.getY() - y) / (end.getX() - start.getX());
 		float angle = - (float) (180 * (Math.atan(cd) - Math.atan(0)) / Math.PI);

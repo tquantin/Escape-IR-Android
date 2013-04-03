@@ -22,14 +22,18 @@ import fr.escape.app.Graphics;
  */
 public final class CoordinateConverter {
 	
-	private static final float X_COEFF = Foundation.GRAPHICS.getWidth();
-	private static final float Y_COEFF = Foundation.GRAPHICS.getHeight();
-	private static final float W_COEFF = 10;
+	private final float X_COEFF; //= Foundation.GRAPHICS.getWidth();
+	private final float Y_COEFF; //= Foundation.GRAPHICS.getHeight();
+	private final float W_COEFF; //= 10;
 	
 	/**
 	 * You cannot instantiate this Class
 	 */
-	private CoordinateConverter() {}
+	public CoordinateConverter(float x, float y, float w) {
+		this.X_COEFF = x;
+		this.Y_COEFF = y;
+		this.W_COEFF = w;
+	}
 	
 	/**
 	 * Convert a {@link Graphics} Coordinate to {@link World} Coordinate for X axis. 
@@ -37,7 +41,7 @@ public final class CoordinateConverter {
 	 * @param x Graphics Coordinate
 	 * @return World Coordinate
 	 */
-	public static float toMeterX(int x) {
+	public float toMeterX(int x) {
 		return (x / X_COEFF) * W_COEFF;
 	}
 	
@@ -47,7 +51,7 @@ public final class CoordinateConverter {
 	 * @param y Graphics Coordinate
 	 * @return World Coordinate
 	 */
-	public static float toMeterY(int y) {
+	public float toMeterY(int y) {
 		return (y / Y_COEFF) * W_COEFF;
 	}
 	
@@ -57,7 +61,7 @@ public final class CoordinateConverter {
 	 * @param x World Coordinate
 	 * @return Graphics Coordinate
 	 */
-	public static int toPixelX(float x) {
+	public int toPixelX(float x) {
 		return (int) ((x / W_COEFF) * X_COEFF);
 	}
 	
@@ -67,7 +71,7 @@ public final class CoordinateConverter {
 	 * @param y World Coordinate
 	 * @return Graphics Coordinate
 	 */
-	public static int toPixelY(float y) {
+	public int toPixelY(float y) {
 		return (int) ((y / W_COEFF) * Y_COEFF);
 	}
 }

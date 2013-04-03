@@ -21,7 +21,6 @@ import fr.escape.Objects;
 import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
-import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.graphics.Texture;
 import fr.escape.resources.TextureLoader;
@@ -102,8 +101,8 @@ public class MissileShot extends AbstractShot {
 	private void drawCoreMissile(Graphics graphics) {
 		Objects.requireNonNull(graphics);
 		
-		int x = CoordinateConverter.toPixelX(getBody().getPosition().x) - coreMissile.getWidth() / 2;
-		int y = CoordinateConverter.toPixelY(getBody().getPosition().y) - coreMissile.getHeight() / 2;
+		int x = getEngine().getConverter().toPixelX(getBody().getPosition().x) - coreMissile.getWidth() / 2;
+		int y = getEngine().getConverter().toPixelY(getBody().getPosition().y) - coreMissile.getHeight() / 2;
 		
 		graphics.draw(coreMissile, x, y, getAngle());
 	}
@@ -122,8 +121,8 @@ public class MissileShot extends AbstractShot {
 	@Override
 	protected Rect getEdge() {
 		
-		int x = CoordinateConverter.toPixelX(getX());
-		int y = CoordinateConverter.toPixelY(getY());
+		int x = getEngine().getConverter().toPixelX(getX());
+		int y = getEngine().getConverter().toPixelY(getY());
 		
 		return new Rect(x - (coreMissile.getWidth() / 2), y - (coreMissile.getHeight() / 2), x + (coreMissile.getWidth() / 2), y + (coreMissile.getHeight() / 2));
 	}

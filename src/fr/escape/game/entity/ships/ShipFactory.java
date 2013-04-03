@@ -26,7 +26,6 @@ import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
 import fr.escape.game.entity.Collisionable;
-import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.weapons.Weapon;
 import fr.escape.game.entity.weapons.Weapons;
@@ -92,7 +91,7 @@ public class ShipFactory {
 		AnimationTexture falcon = new AnimationTexture(engine.getResources().getTexture(TextureLoader.SHIP_FALCON));
 		
 		BodyDef bodyDef = createBodyDef(x, y);
-		FixtureDef fixture = createFixtureForNpc(falcon);
+		FixtureDef fixture = createFixtureForNpc(engine, falcon);
 		
 		Ship ship = createNpcAbstractShip(bodyDef, fixture, falcon);
 		ship.setActiveWeapon(2);
@@ -113,7 +112,7 @@ public class ShipFactory {
 		AnimationTexture vyper = new AnimationTexture(engine.getResources().getTexture(TextureLoader.SHIP_VIPER));
 		
 		BodyDef bodyDef = createBodyDef(x, y);
-		FixtureDef fixture = createFixtureForNpc(vyper);
+		FixtureDef fixture = createFixtureForNpc(engine, vyper);
 		
 		Ship ship = createNpcAbstractShip(bodyDef, fixture, vyper);
 		ship.setActiveWeapon(0);
@@ -134,7 +133,7 @@ public class ShipFactory {
 		AnimationTexture raptor = new AnimationTexture(engine.getResources().getTexture(TextureLoader.SHIP_RAPTOR));
 		
 		BodyDef bodyDef = createBodyDef(x, y);
-		FixtureDef fixture = createFixtureForNpc(raptor);
+		FixtureDef fixture = createFixtureForNpc(engine, raptor);
 		
 		Ship ship = createNpcAbstractShip(bodyDef, fixture, raptor);
 		ship.setRotation(180);
@@ -166,7 +165,7 @@ public class ShipFactory {
 		);
 		
 		BodyDef bodyDef = createBodyDef(x, y);
-		FixtureDef fixture = createFixtureForPlayer(raptor);
+		FixtureDef fixture = createFixtureForPlayer(engine, raptor);
 
 		return new AbstractShip(engine, bodyDef, fixture, playerWeapons, PLAYER_ARMOR, econtainer, raptor, PLAYER_COLLISION_BEHAVIOR) {
 			
@@ -233,7 +232,7 @@ public class ShipFactory {
 					Shot shot = getActiveWeapon().getShot();
 					
 					if(shot != null) {
-						shot.setPosition(getX(), getY() - CoordinateConverter.toMeterY(getEdge().height()));
+						shot.setPosition(getX(), getY() - engine.getConverter().toMeterY(getEdge().height()));
 					}
 
 				}
@@ -329,7 +328,7 @@ public class ShipFactory {
 		AnimationTexture jupiter = new AnimationTexture(engine.getResources().getTexture(TextureLoader.BOSS_JUPITER));
 		
 		BodyDef bodyDef = createBodyDef(x, y);
-		FixtureDef fixture = createFixtureForNpc(jupiter);
+		FixtureDef fixture = createFixtureForNpc(engine, jupiter);
 		
 		return new AbstractBoss(engine, bodyDef, fixture, npcWeapons, JUPITER_ARMOR, econtainer, jupiter, COMPUTER_COLLISION_BEHAVIOR) {
 
@@ -423,7 +422,7 @@ public class ShipFactory {
 		);
 		
 		BodyDef bodyDef = createBodyDef(x, y);
-		FixtureDef fixture = createFixtureForNpc(moon);
+		FixtureDef fixture = createFixtureForNpc(engine, moon);
 		
 		return new AbstractBoss(engine, bodyDef, fixture, npcWeapons, MOON_ARMOR, econtainer, moon, COMPUTER_COLLISION_BEHAVIOR) {
 
@@ -462,7 +461,7 @@ public class ShipFactory {
 				
 				getBossTexture().next();
 
-				final MoonShot s1 = (MoonShot) shotFactory.createMoonShot(getX() - CoordinateConverter.toMeterX(20), getY() - CoordinateConverter.toMeterY(9));
+				final MoonShot s1 = (MoonShot) shotFactory.createMoonShot(getX() - engine.getConverter().toMeterX(20), getY() - engine.getConverter().toMeterY(9));
 				
 				s1.setShotConfiguration(new ShotContext(isPlayer(), texture.getWidth(), texture.getHeight()));
 				s1.moveBy(new float[] {0.0f, 0.0f, 2.5f});
@@ -505,13 +504,13 @@ public class ShipFactory {
 		);
 		
 		BodyDef bodyDef = createBodyDef(x, y);
-		FixtureDef fixture = createFixtureForNpc(earth);
+		FixtureDef fixture = createFixtureForNpc(engine, earth);
 		
 		return new AbstractBoss(engine, bodyDef, fixture, npcWeapons, EARTH_ARMOR, econtainer, earth, COMPUTER_COLLISION_BEHAVIOR) {
 			
 			private final Texture texture = engine.getResources().getTexture(TextureLoader.EARTH_SPECIAL);
-			private final float VARX = CoordinateConverter.toMeterY(10);
-			private final float VARY = CoordinateConverter.toMeterY(50);
+			private final float VARX = engine.getConverter().toMeterY(10);
+			private final float VARY = engine.getConverter().toMeterY(50);
 			private Shot specialShot;
 			
 			@Override
@@ -608,12 +607,12 @@ public class ShipFactory {
 	 * @param drawable : The {@link AnimationTexture} use to create the {@link PolygonShape}
 	 * @return Return a {@link PolygonShape}.
 	 */
-	private static PolygonShape createShape(AnimationTexture drawable) {
+	private static PolygonShape createShape(Engine engine, AnimationTexture drawable) {
 		
 		Objects.requireNonNull(drawable);
 		
-		float shapeX = CoordinateConverter.toMeterX(drawable.getWidth() / 2);
-		float shapeY = CoordinateConverter.toMeterY(drawable.getHeight() / 2);
+		float shapeX = engine.getConverter().toMeterX(drawable.getWidth() / 2);
+		float shapeY = engine.getConverter().toMeterY(drawable.getHeight() / 2);
 		
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(shapeX, shapeY);
@@ -627,12 +626,12 @@ public class ShipFactory {
 	 * @param drawable : The {@link AnimationTexture} use to create the {@link FixtureDef}
 	 * @return Return a {@link FixtureDef}.
 	 */
-	private static FixtureDef createFixtureForNpc(AnimationTexture drawable) {
+	private static FixtureDef createFixtureForNpc(Engine engine, AnimationTexture drawable) {
 		
 		Objects.requireNonNull(drawable);
 		
 		FixtureDef fixture = new FixtureDef();
-		fixture.shape = createShape(drawable);
+		fixture.shape = createShape(engine, drawable);
 		fixture.density = 0.5f;
 		fixture.friction = 0.3f;      
 		fixture.restitution = 0.0f;
@@ -648,9 +647,9 @@ public class ShipFactory {
 	 * @param drawable : The {@link AnimationTexture} use to create the {@link FixtureDef}
 	 * @return Return the Player {@link Ship} {@link FixtureDef}.
 	 */
-	private static FixtureDef createFixtureForPlayer(AnimationTexture drawable) {
+	private static FixtureDef createFixtureForPlayer(Engine engine, AnimationTexture drawable) {
 		
-		FixtureDef fixture = createFixtureForNpc(drawable);
+		FixtureDef fixture = createFixtureForNpc(engine, drawable);
 		
 		fixture.filter.categoryBits = 0x0002;
 		fixture.filter.maskBits = PLAYERMASK;

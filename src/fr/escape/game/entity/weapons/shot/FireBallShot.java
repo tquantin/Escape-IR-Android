@@ -22,7 +22,6 @@ import fr.escape.Objects;
 import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
-import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.graphics.Texture;
 import fr.escape.resources.TextureLoader;
@@ -137,8 +136,8 @@ public final class FireBallShot extends AbstractShot {
 	@Override
 	protected Rect getEdge() {
 		
-		int x = CoordinateConverter.toPixelX(getX());
-		int y = CoordinateConverter.toPixelY(getY());
+		int x = getEngine().getConverter().toPixelX(getX());
+		int y = getEngine().getConverter().toPixelY(getY());
 		
 		int width = (int) (radiusEffect.getWidth() * radiusSize);
 		int height = (int) (radiusEffect.getHeight() * radiusSize);
@@ -158,8 +157,8 @@ public final class FireBallShot extends AbstractShot {
 	private void drawCoreBall(Graphics graphics) {
 		Objects.requireNonNull(graphics);
 		
-		int x = CoordinateConverter.toPixelX(getBody().getPosition().x) - coreBall.getWidth() / 2;
-		int y = CoordinateConverter.toPixelY(getBody().getPosition().y) - coreBall.getHeight() / 2;
+		int x = getEngine().getConverter().toPixelX(getBody().getPosition().x) - coreBall.getWidth() / 2;
+		int y = getEngine().getConverter().toPixelY(getBody().getPosition().y) - coreBall.getHeight() / 2;
 		
 		graphics.draw(coreBall, x, y, getAngle());
 	}
@@ -176,8 +175,8 @@ public final class FireBallShot extends AbstractShot {
 		int width = (int) (radiusEffect.getWidth() * radiusSize);
 		int height = (int) (radiusEffect.getHeight() * radiusSize);
 		
-		int x = CoordinateConverter.toPixelX(getBody().getPosition().x) - (width / 2);
-		int y = CoordinateConverter.toPixelY(getBody().getPosition().y) - (height / 2);
+		int x = getEngine().getConverter().toPixelX(getBody().getPosition().x) - (width / 2);
+		int y = getEngine().getConverter().toPixelY(getBody().getPosition().y) - (height / 2);
 		
 		graphics.draw(radiusEffect, x, y, x + width, y + height, random);
 		

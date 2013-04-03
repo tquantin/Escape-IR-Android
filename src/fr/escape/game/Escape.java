@@ -30,7 +30,6 @@ import fr.escape.app.Screen;
 import fr.escape.game.User.LifeListener;
 import fr.escape.game.entity.CollisionDetector;
 import fr.escape.game.entity.Collisionable;
-import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.entity.ships.ShipFactory;
@@ -153,13 +152,13 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 			setWorld(world);
 			
 			//Top Wall
-			createWall(world,CoordinateConverter.toMeterX(getGraphics().getWidth() / 2),CoordinateConverter.toMeterY((getGraphics().getHeight() * 2) / 3) - 1.0f,false);
+			createWall(world,engine.getConverter().toMeterX(getGraphics().getWidth() / 2),engine.getConverter().toMeterY((getGraphics().getHeight() * 2) / 3) - 1.0f,false);
 			//Bottom Wall
-			createWall(world,CoordinateConverter.toMeterX(getGraphics().getWidth() / 2),CoordinateConverter.toMeterY(getGraphics().getHeight()) + 2.0f,false);
+			createWall(world,engine.getConverter().toMeterX(getGraphics().getWidth() / 2),engine.getConverter().toMeterY(getGraphics().getHeight()) + 2.0f,false);
 			//Left Wall
-			createWall(world,-1.0f,CoordinateConverter.toMeterY(getGraphics().getHeight() / 2),true);
+			createWall(world,-1.0f,engine.getConverter().toMeterY(getGraphics().getHeight() / 2),true);
 			//Right Wall
-			createWall(world,11.0f,CoordinateConverter.toMeterY(getGraphics().getHeight() / 2),true);
+			createWall(world,11.0f,engine.getConverter().toMeterY(getGraphics().getHeight() / 2),true);
 			
 			// Create Entity Container
 			entityContainer = new EntityContainer(getEngine(), getWorld(), Math.max((int) (getGraphics().getWidth() * 0.1f), (int) (getGraphics().getHeight() * 0.1f)));
@@ -204,8 +203,8 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 		
 		Objects.requireNonNull(world);
 		
-		float shapeX = (isRightOrLeft) ? 1.0f : CoordinateConverter.toMeterX(getGraphics().getWidth());
-		float shapeY = (isRightOrLeft) ? CoordinateConverter.toMeterY(getGraphics().getHeight()) : 1.0f;
+		float shapeX = (isRightOrLeft) ? 1.0f : engine.getConverter().toMeterX(getGraphics().getWidth());
+		float shapeY = (isRightOrLeft) ? engine.getConverter().toMeterY(getGraphics().getHeight()) : 1.0f;
 		
 		
 		BodyDef bodyDef = new BodyDef();
@@ -382,8 +381,8 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	@Override
 	public void stop() {
 		
-		float x = CoordinateConverter.toMeterX(getGraphics().getWidth() / 2);
-		float y = CoordinateConverter.toMeterY(getGraphics().getHeight() - 100);
+		float x = engine.getConverter().toMeterX(getGraphics().getWidth() / 2);
+		float y = engine.getConverter().toMeterY(getGraphics().getHeight() - 100);
 		
 		getUser().reset(x,y);
 		setScreen(lost);
@@ -468,8 +467,8 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	private void createPlayerShip() {
 		
 		Ship ship = getShipFactory().createPlayer(
-				CoordinateConverter.toMeterX(getGraphics().getWidth() / 2), 
-				CoordinateConverter.toMeterY(getGraphics().getHeight() - 100)
+				engine.getConverter().toMeterX(getGraphics().getWidth() / 2), 
+				engine.getConverter().toMeterY(getGraphics().getHeight() - 100)
 		);
 		
 		ship.createBody(getWorld());

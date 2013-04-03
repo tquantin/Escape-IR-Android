@@ -19,7 +19,6 @@ import fr.escape.Objects;
 import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
-import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.graphics.Texture;
 import fr.escape.resources.TextureLoader;
@@ -108,8 +107,8 @@ public class EarthShot extends AbstractShot {
 
 	@Override
 	protected Rect getEdge() {
-		int x = CoordinateConverter.toPixelX(getX());
-		int y = CoordinateConverter.toPixelY(getY());
+		int x = getEngine().getConverter().toPixelX(getX());
+		int y = getEngine().getConverter().toPixelY(getY());
 		
 		return new Rect(x - (coreEarthShot.getWidth() / 2), y - (coreEarthShot.getHeight() / 2),x + (coreEarthShot.getWidth() / 2), y + (coreEarthShot.getHeight() / 2));
 	}

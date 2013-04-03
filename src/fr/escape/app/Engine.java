@@ -7,6 +7,7 @@ import org.jbox2d.dynamics.World;
 
 import fr.escape.Objects;
 import fr.escape.game.Escape;
+import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.input.EventListener;
 import fr.escape.resources.Resources;
 import android.content.Context;
@@ -33,6 +34,7 @@ public final class Engine implements Runnable {
 	private final Thread thread;
 	private final Resources resources;
 	private final Queue<Runnable> runnables;
+	private final CoordinateConverter converter;
 	
 	/**
 	 * Engine World State
@@ -65,7 +67,7 @@ public final class Engine implements Runnable {
 		this.runnables = new LinkedList<Runnable>();
 		
 		this.worldUpdateLeft = 0;
-		
+		this.converter = new CoordinateConverter(game.getGraphics().getWidth(), game.getGraphics().getHeight(), 10);
 	}
 	
 	/**
@@ -239,6 +241,16 @@ public final class Engine implements Runnable {
 	 */
 	private EventListener getEventListener() {
 		return game;
+	}
+	
+	/**
+	 * <p>
+	 * Return Coordinate Converter.
+	 * 
+	 * @return {@link CoordinateConverter}
+	 */
+	public CoordinateConverter getConverter() {
+		return converter;
 	}
 	
 	/**

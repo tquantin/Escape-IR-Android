@@ -26,7 +26,6 @@ import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.User;
 import fr.escape.game.entity.CollisionBehavior;
-import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.Entity;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.weapons.Weapon;
@@ -164,8 +163,8 @@ public abstract class AbstractShip implements Ship {
 	public void draw(Graphics graphics) {
 		Objects.requireNonNull(graphics);
 		
-		int x = CoordinateConverter.toPixelX(getX()) - (shipDrawable.getWidth() / 2);
-		int y = CoordinateConverter.toPixelY(getY()) - (shipDrawable.getHeight() / 2);
+		int x = engine.getConverter().toPixelX(getX()) - (shipDrawable.getWidth() / 2);
+		int y = engine.getConverter().toPixelY(getY()) - (shipDrawable.getHeight() / 2);
 			
 		graphics.draw(shipDrawable, x, y, x + shipDrawable.getWidth(), y + shipDrawable.getHeight(), angle);
 		
@@ -203,7 +202,7 @@ public abstract class AbstractShip implements Ship {
 		
 		Weapon activeWeapon = getActiveWeapon();
 		
-		if(activeWeapon.load(getX(), getY() - CoordinateConverter.toMeterY(shipDrawable.getHeight()), 
+		if(activeWeapon.load(getX(), getY() - engine.getConverter().toMeterY(shipDrawable.getHeight()), 
 				new ShotContext(isPlayer(), shipDrawable.getWidth(), shipDrawable.getHeight()))) {
 			
 			isWeaponLoaded = true;
@@ -260,8 +259,8 @@ public abstract class AbstractShip implements Ship {
 	@Override
 	public Rect getEdge() {
 		
-		int x = CoordinateConverter.toPixelX(getX());
-		int y = CoordinateConverter.toPixelY(getY());
+		int x = engine.getConverter().toPixelX(getX());
+		int y = engine.getConverter().toPixelY(getY());
 		
 		return new Rect(x - (shipDrawable.getWidth() / 2), y + (shipDrawable.getHeight() / 2), x + (shipDrawable.getWidth() / 2), y - (shipDrawable.getHeight() / 2));
 	}

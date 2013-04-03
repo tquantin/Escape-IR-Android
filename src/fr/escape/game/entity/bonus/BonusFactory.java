@@ -23,7 +23,6 @@ import org.jbox2d.dynamics.World;
 import fr.escape.Objects;
 import fr.escape.app.Engine;
 import fr.escape.game.entity.Collisionable;
-import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.weapons.Weapons;
 import fr.escape.resources.Resources;
@@ -68,8 +67,8 @@ public final class BonusFactory {
 		Objects.requireNonNull(econtainer);
 		Resources resources = engine.getResources();
 		
-		float shapeX = CoordinateConverter.toMeterX(resources.getTexture(TextureLoader.BONUS_WEAPON_MISSILE).getWidth() / 2);
-		float shapeY = CoordinateConverter.toMeterY(resources.getTexture(TextureLoader.BONUS_WEAPON_MISSILE).getHeight() / 2);
+		float shapeX = engine.getConverter().toMeterX(resources.getTexture(TextureLoader.BONUS_WEAPON_MISSILE).getWidth() / 2);
+		float shapeY = engine.getConverter().toMeterY(resources.getTexture(TextureLoader.BONUS_WEAPON_MISSILE).getHeight() / 2);
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.set(x, y);

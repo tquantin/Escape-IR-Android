@@ -22,7 +22,6 @@ import fr.escape.app.Engine;
 import fr.escape.app.Input;
 import fr.escape.app.Screen;
 import fr.escape.game.Escape;
-import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.scenario.Stage;
 import fr.escape.graphics.RepeatableScrollingTexture;
@@ -147,8 +146,8 @@ public abstract class AbstractStage implements Screen {
 		activeEventTime = 0;
 		events.clear();
 		
-		float x = CoordinateConverter.toMeterX(game.getGraphics().getWidth() / 2);
-		float y = CoordinateConverter.toMeterY(game.getGraphics().getHeight() - 100);
+		float x = game.getEngine().getConverter().toMeterX(game.getGraphics().getWidth() / 2);
+		float y = game.getEngine().getConverter().toMeterY(game.getGraphics().getHeight() - 100);
 		
 		velocity[0] = 0.0f;
 		game.getUser().getShip().reset(x, y);
@@ -158,8 +157,8 @@ public abstract class AbstractStage implements Screen {
 	@Override
 	public void hide() {
 		
-		float x = CoordinateConverter.toMeterX(game.getGraphics().getWidth() / 2);
-		float y = CoordinateConverter.toMeterY(game.getGraphics().getHeight() - 100);
+		float x = game.getEngine().getConverter().toMeterX(game.getGraphics().getWidth() / 2);
+		float y = game.getEngine().getConverter().toMeterY(game.getGraphics().getHeight() - 100);
 		
 		game.getOverlay().hide();
 		game.getEntityContainer().reset();
@@ -175,8 +174,8 @@ public abstract class AbstractStage implements Screen {
 		
 		Ship ship = game.getUser().getShip();
 		
-		int x = CoordinateConverter.toPixelX(ship.getX());
-		int y = CoordinateConverter.toPixelY(ship.getY());
+		int x = game.getEngine().getConverter().toPixelX(ship.getX());
+		int y = game.getEngine().getConverter().toPixelY(ship.getY());
 		int errorX = ship.getEdge().width() / 2;
 		int errorY = ship.getEdge().height() / 2;
 		
@@ -211,7 +210,7 @@ public abstract class AbstractStage implements Screen {
 					
 					if(touch(start)) {
 						
-						WeaponGesture wg = new WeaponGesture(game.getResources());
+						WeaponGesture wg = new WeaponGesture(game.getEngine());
 						Ship ship = game.getUser().getShip();
 						
 						float[] weaponVelocity = new float[3];

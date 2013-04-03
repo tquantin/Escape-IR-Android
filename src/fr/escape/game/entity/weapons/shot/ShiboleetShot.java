@@ -21,7 +21,6 @@ import fr.escape.Objects;
 import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
-import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.graphics.Texture;
 import fr.escape.resources.TextureLoader;
@@ -64,7 +63,7 @@ public final class ShiboleetShot extends AbstractShot {
 	@Override
 	public void setPosition(float x, float y) {
 		
-		float size = CoordinateConverter.toMeterY(Math.max(getHeight(), getWidth()));
+		float size = getEngine().getConverter().toMeterY(Math.max(getHeight(), getWidth()));
 		getBody().setTransform(new Vec2(x, y + size), getBody().getAngle());
 		
 	}
@@ -177,8 +176,8 @@ public final class ShiboleetShot extends AbstractShot {
 	@Override
 	protected Rect getEdge() {
 		
-		int cx = CoordinateConverter.toPixelX(getX());
-		int cy = CoordinateConverter.toPixelY(getY());
+		int cx = getEngine().getConverter().toPixelX(getX());
+		int cy = getEngine().getConverter().toPixelY(getY());
 		
 		int x;
 		int y;
@@ -189,8 +188,8 @@ public final class ShiboleetShot extends AbstractShot {
 			
 			int tmpWidth = (int) (coreShiboleet.getWidth() * CHILD_RADIUS);
 			int tmpHeight = (int) (coreShiboleet.getHeight() * CHILD_RADIUS);
-			int tmpX = CoordinateConverter.toPixelX(getBody().getPosition().x);
-			int tmpY = CoordinateConverter.toPixelY(getBody().getPosition().y);
+			int tmpX = getEngine().getConverter().toPixelX(getBody().getPosition().x);
+			int tmpY = getEngine().getConverter().toPixelY(getBody().getPosition().y);
 			
 			x = tmpX - (tmpWidth / 2);
 			y = tmpY - (tmpHeight / 2);

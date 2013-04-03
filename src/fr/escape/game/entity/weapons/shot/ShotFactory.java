@@ -20,7 +20,6 @@ import org.jbox2d.dynamics.World;
 
 import fr.escape.Objects;
 import fr.escape.app.Engine;
-import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.graphics.Texture;
 import fr.escape.resources.Resources;
@@ -62,8 +61,8 @@ public final class ShotFactory {
 	public Shot createBlackholeShot(float x, float y) {
 		Texture texture = resources.getTexture(TextureLoader.WEAPON_BLACKHOLE_CORE_SHOT);
 
-		float shapeX = CoordinateConverter.toMeterX(texture.getWidth() / 2);
-		float shapeY = CoordinateConverter.toMeterY(texture.getHeight() / 2);
+		float shapeX = engine.getConverter().toMeterX(texture.getWidth() / 2);
+		float shapeY = engine.getConverter().toMeterY(texture.getHeight() / 2);
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.set(x, y);
@@ -100,8 +99,8 @@ public final class ShotFactory {
 	public Shot createFireBallShot(float x, float y) {
 		Texture texture = resources.getTexture(TextureLoader.WEAPON_FIREBALL_CORE_SHOT);
 
-		float shapeX = CoordinateConverter.toMeterX(texture.getWidth() / 2);
-		float shapeY = CoordinateConverter.toMeterY(texture.getHeight() / 2);
+		float shapeX = engine.getConverter().toMeterX(texture.getWidth() / 2);
+		float shapeY = engine.getConverter().toMeterY(texture.getHeight() / 2);
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.set(x, y);
@@ -138,8 +137,8 @@ public final class ShotFactory {
 	public Shot createMissileShot(float x, float y) {
 		Texture texture = resources.getTexture(TextureLoader.WEAPON_MISSILE_SHOT);
 
-		float shapeX = CoordinateConverter.toMeterX(texture.getWidth() / 2);
-		float shapeY = CoordinateConverter.toMeterY(texture.getHeight() / 2);
+		float shapeX = engine.getConverter().toMeterX(texture.getWidth() / 2);
+		float shapeY = engine.getConverter().toMeterY(texture.getHeight() / 2);
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.set(x, y);
@@ -178,13 +177,13 @@ public final class ShotFactory {
 		Texture coreShiboleet = resources.getTexture(TextureLoader.WEAPON_SHIBOLEET_SHOT);
 		float shapeX, shapeY;
 
-		float shipSize = CoordinateConverter.toMeterY(resources.getTexture(TextureLoader.SHIP_RAPTOR).getHeight());
+		float shipSize = engine.getConverter().toMeterY(resources.getTexture(TextureLoader.SHIP_RAPTOR).getHeight());
 		if(isChild) {
-			shapeX = CoordinateConverter.toMeterX(coreShiboleet.getWidth() / 2 - 10);
-			shapeY = CoordinateConverter.toMeterY(coreShiboleet.getHeight() / 2 - 10);
+			shapeX = engine.getConverter().toMeterX(coreShiboleet.getWidth() / 2 - 10);
+			shapeY = engine.getConverter().toMeterY(coreShiboleet.getHeight() / 2 - 10);
 		} else {
-			shapeX = CoordinateConverter.toMeterX((int) ((coreShiboleet.getWidth() / 2) * ShiboleetShot.CHILD_RADIUS));
-			shapeY = CoordinateConverter.toMeterY((int) ((coreShiboleet.getHeight() / 2) * ShiboleetShot.CHILD_RADIUS));
+			shapeX = engine.getConverter().toMeterX((int) ((coreShiboleet.getWidth() / 2) * ShiboleetShot.CHILD_RADIUS));
+			shapeY = engine.getConverter().toMeterY((int) ((coreShiboleet.getHeight() / 2) * ShiboleetShot.CHILD_RADIUS));
 		}
 		
 		BodyDef bodyDef = new BodyDef();
@@ -221,8 +220,8 @@ public final class ShotFactory {
 	 */
 	public Shot createJupiterShot(float x, float y) {
 		Texture coreJupiter = resources.getTexture(TextureLoader.JUPITER_SPECIAL);
-		float shapeX = CoordinateConverter.toMeterX(coreJupiter.getWidth() / 2);
-		float shapeY = CoordinateConverter.toMeterY(coreJupiter.getHeight() / 2);
+		float shapeX = engine.getConverter().toMeterX(coreJupiter.getWidth() / 2);
+		float shapeY = engine.getConverter().toMeterY(coreJupiter.getHeight() / 2);
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.set(x, y);
@@ -258,8 +257,8 @@ public final class ShotFactory {
 	 */
 	public Shot createMoonShot(float x, float y) {
 		Texture coreJupiter = resources.getTexture(TextureLoader.MOON_SPECIAL);
-		float shapeX = CoordinateConverter.toMeterX(coreJupiter.getWidth() / 2);
-		float shapeY = CoordinateConverter.toMeterY(coreJupiter.getHeight() / 2);
+		float shapeX = engine.getConverter().toMeterX(coreJupiter.getWidth() / 2);
+		float shapeY = engine.getConverter().toMeterY(coreJupiter.getHeight() / 2);
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.set(x, y);
@@ -295,8 +294,8 @@ public final class ShotFactory {
 	 */
 	public Shot createEarthShot(float x, float y) {
 		Texture coreJupiter = resources.getTexture(TextureLoader.EARTH_SPECIAL);
-		float shapeX = CoordinateConverter.toMeterX(coreJupiter.getWidth() / 2);
-		float shapeY = CoordinateConverter.toMeterY(engine.getGraphics().getHeight()) - y;
+		float shapeX = engine.getConverter().toMeterX(coreJupiter.getWidth() / 2);
+		float shapeY = engine.getConverter().toMeterY(engine.getGraphics().getHeight()) - y;
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.set(x, y);

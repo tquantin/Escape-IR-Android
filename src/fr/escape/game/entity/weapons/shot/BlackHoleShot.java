@@ -22,7 +22,6 @@ import fr.escape.Objects;
 import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import fr.escape.game.entity.CollisionBehavior;
-import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.graphics.Texture;
 import fr.escape.resources.TextureLoader;
@@ -127,14 +126,14 @@ public final class BlackHoleShot extends AbstractShot {
 		float shapeX, shapeY;
 		
 		if(drawEventHorizon) {
-			shapeX = CoordinateConverter.toMeterX(eventHorizon.getWidth() / 2);
-			shapeY = CoordinateConverter.toMeterY(eventHorizon.getHeight() / 2);
+			shapeX = getEngine().getConverter().toMeterX(eventHorizon.getWidth() / 2);
+			shapeY = getEngine().getConverter().toMeterY(eventHorizon.getHeight() / 2);
 		} else if(drawLeftAndRightHelix) {
-			shapeX = CoordinateConverter.toMeterX(leftHelix.getWidth() / 2);
-			shapeY = CoordinateConverter.toMeterY(leftHelix.getHeight() / 2);
+			shapeX = getEngine().getConverter().toMeterX(leftHelix.getWidth() / 2);
+			shapeY = getEngine().getConverter().toMeterY(leftHelix.getHeight() / 2);
 		} else {
-			shapeX = CoordinateConverter.toMeterX(coreHelix.getWidth() / 2);
-			shapeY = CoordinateConverter.toMeterY(coreHelix.getHeight() / 2);
+			shapeX = getEngine().getConverter().toMeterX(coreHelix.getWidth() / 2);
+			shapeY = getEngine().getConverter().toMeterY(coreHelix.getHeight() / 2);
 		}
 
 		PolygonShape shape = new PolygonShape();
@@ -186,8 +185,8 @@ public final class BlackHoleShot extends AbstractShot {
 	private void drawCoreHelix(Graphics graphics) {
 		Objects.requireNonNull(graphics);
 		
-		int x = CoordinateConverter.toPixelX(getBody().getPosition().x) - coreHelix.getWidth() / 2;
-		int y = CoordinateConverter.toPixelY(getBody().getPosition().y) - coreHelix.getHeight() / 2;
+		int x = getEngine().getConverter().toPixelX(getBody().getPosition().x) - coreHelix.getWidth() / 2;
+		int y = getEngine().getConverter().toPixelY(getBody().getPosition().y) - coreHelix.getHeight() / 2;
 		
 		graphics.draw(coreHelix, x, y, getAngle());
 	}
@@ -200,8 +199,8 @@ public final class BlackHoleShot extends AbstractShot {
 	private void drawLeftAndRightHelix(Graphics graphics) {
 		Objects.requireNonNull(graphics);
 		
-		int centerX = CoordinateConverter.toPixelX(getBody().getPosition().x);
-		int centerY = CoordinateConverter.toPixelY(getBody().getPosition().y);
+		int centerX = getEngine().getConverter().toPixelX(getBody().getPosition().x);
+		int centerY = getEngine().getConverter().toPixelY(getBody().getPosition().y);
 		
 		int x = centerX - (leftHelix.getWidth() / 2);
 		int y = centerY - (leftHelix.getHeight() / 2);
@@ -226,8 +225,8 @@ public final class BlackHoleShot extends AbstractShot {
 
 		float size = getEventHorizonSize();
 		
-		int centerX = CoordinateConverter.toPixelX(getBody().getPosition().x);
-		int centerY = CoordinateConverter.toPixelY(getBody().getPosition().y);
+		int centerX = getEngine().getConverter().toPixelX(getBody().getPosition().x);
+		int centerY = getEngine().getConverter().toPixelY(getBody().getPosition().y);
 
 		int width = (int) (eventHorizon.getWidth() * size);
 		int height = (int) (eventHorizon.getHeight() * size);
@@ -266,8 +265,8 @@ public final class BlackHoleShot extends AbstractShot {
 	@Override
 	protected Rect getEdge() {
 		
-		int x = CoordinateConverter.toPixelX(getX());
-		int y = CoordinateConverter.toPixelY(getY());
+		int x = getEngine().getConverter().toPixelX(getX());
+		int y = getEngine().getConverter().toPixelY(getY());
 		
 		if(drawEventHorizon) {
 			return new Rect(x - (eventHorizon.getWidth() / 2), y - (eventHorizon.getHeight() / 2), x + (eventHorizon.getWidth() / 2), y + (eventHorizon.getHeight() / 2));
