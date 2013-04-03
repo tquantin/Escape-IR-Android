@@ -8,8 +8,10 @@ import org.jbox2d.dynamics.World;
 import fr.escape.Objects;
 import fr.escape.game.Escape;
 import fr.escape.game.entity.CoordinateConverter;
+import fr.escape.graphics.Texture;
 import fr.escape.input.EventListener;
 import fr.escape.resources.Resources;
+import fr.escape.resources.TextureLoader;
 import android.content.Context;
 import android.util.Log;
 
@@ -67,13 +69,47 @@ public final class Engine implements Runnable {
 		this.runnables = new LinkedList<Runnable>();
 		
 		this.worldUpdateLeft = 0;
-		this.converter = new CoordinateConverter(game.getGraphics().getWidth(), game.getGraphics().getHeight(), 10);
+		this.converter = new CoordinateConverter(graphics.getWidth(), graphics.getHeight(), 10);
 	}
 	
 	/**
 	 * Create Engine Components.
 	 */
 	public void create() {
+		
+		getResources().load();
+		
+		// Create Splash Screen
+		Screen splash = new Screen() {
+
+			private final Texture background = getResources().getTexture(TextureLoader.BACKGROUND_SPLASH);
+			
+			@Override
+			public boolean touch(Input i) {
+				return false;
+			}
+
+			@Override
+			public boolean move(Input i) {
+				return false;
+			}
+
+			@Override
+			public void render(long delta) {
+				getGraphics().draw(background, 0, 0, getGraphics().getWidth(), getGraphics().getHeight());
+			}
+
+			@Override
+			public void show() {}
+
+			@Override
+			public void hide() {}
+			
+		};
+					
+		debug(TAG, "Show Splash Screen");
+		getGame().setScreen(splash);
+		getGraphics().render();
 		
 		thread.setName("Engine Looper");
 		thread.start();
@@ -137,14 +173,8 @@ public final class Engine implements Runnable {
 			
 			debug(TAG, "Application started");
 			
-			/*
-			debug(TAG, "Show Splash Screen");
-			getGame().setScreen(splash);
-			getGraphics().render(context);
-			
 			debug(TAG, "Create Game");
-			getGame().create();
-			*/
+			getGame().create(this);
 			
 			for(;;) {
 				

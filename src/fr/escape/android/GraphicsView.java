@@ -15,10 +15,16 @@ public final class GraphicsView extends View {
         graphics = null;
     }
 	
+	public void setGraphics(Graphics graphics) {
+		this.graphics = graphics;
+	}
+	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		graphics.flush(canvas);
+		if(graphics != null) {
+			graphics.flush(canvas);
+		}
 	}
 	
 }
