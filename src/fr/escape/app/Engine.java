@@ -25,7 +25,7 @@ public final class Engine implements Runnable {
 	/**
 	 * World Updating
 	 */
-	private static final float WORLD_STEP = 1.0f / 20.0f;
+	private static final float WORLD_STEP = 1.0f / 60.0f;
 	private static final int WORLD_UPDATE = (int) (WORLD_STEP * 1000);
 	
 	/**
