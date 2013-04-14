@@ -1,6 +1,6 @@
 /*****************************************************************************
  * 
- * Copyright 2012 See AUTHORS file.
+ * Copyright 2012-2013 See AUTHORS file.
  * 
  * This file is part of Escape-IR.
  * 
@@ -11,15 +11,16 @@
 
 package fr.escape.resources;
 
+import fr.escape.android.R;
 import android.graphics.Typeface;
 
 /**
  * <p>
- * A {@link ResourcesLoader} for {@link Typeface}.
+ * An Index of ID for {@link Typeface} Resources.
  * 
  */
-public abstract class FontLoader implements ResourcesLoader<Typeface> {
-	
-	public static final String VISITOR_ID = "visitor.ttf";
-	
+public abstract class FontLoader {
+
+	public static final int VISITOR_ID = R.string.font_visitor;
+
 }

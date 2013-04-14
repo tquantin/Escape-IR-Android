@@ -19,7 +19,7 @@ import fr.escape.graphics.Texture;
  * A {@link ResourcesLoader} for {@link Texture}.
  * 
  */
-public abstract class TextureLoader implements ResourcesLoader<Texture> {
+public abstract class TextureLoader {
 	
 	public static final int BACKGROUND_ERROR = R.drawable.berror;
 	public static final int BACKGROUND_LOST = R.drawable.blost;

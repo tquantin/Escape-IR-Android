@@ -1,5 +1,6 @@
 package fr.escape.app;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -8,6 +9,7 @@ import org.jbox2d.dynamics.World;
 import fr.escape.Objects;
 import fr.escape.game.Escape;
 import fr.escape.game.entity.CoordinateConverter;
+import fr.escape.game.screen.SplashScreen;
 import fr.escape.graphics.Texture;
 import fr.escape.input.EventListener;
 import fr.escape.resources.Resources;
@@ -25,23 +27,25 @@ public final class Engine implements Runnable {
 	/**
 	 * World Updating
 	 */
-	private static final float WORLD_STEP = 1.0f / 60.0f;
-	private static final int WORLD_UPDATE = (int) (WORLD_STEP * 1000);
+	static final float WORLD_STEP = 1.0f / 60.0f;
+	static final int WORLD_UPDATE = (int) (WORLD_STEP * 1000);
+	static final int WORLD_VELOCITY_ITERATION = 6;
+	static final int WORLD_POSITION_ITERATION = 2;
 	
 	/**
 	 * Engine Properties
 	 */
-	private final Escape game;
-	private final Graphics graphics;
-	private final Thread thread;
-	private final Resources resources;
-	private final Queue<Runnable> runnables;
-	private final CoordinateConverter converter;
-	
+	final Escape game;
+	final Graphics graphics;
+	final Thread thread;
+	final Resources resources;
+	final Queue<Runnable> runnables;
+	final CoordinateConverter converter;
+
 	/**
 	 * Engine World State
 	 */
-	private int worldUpdateLeft;
+	int worldUpdateLeft;
 	
 	/**
 	 * Constructor with default Configuration and a given Game.
@@ -69,51 +73,29 @@ public final class Engine implements Runnable {
 		this.runnables = new LinkedList<Runnable>();
 		
 		this.worldUpdateLeft = 0;
+		
 		this.converter = new CoordinateConverter(graphics.getWidth(), graphics.getHeight(), 10);
+		
 	}
 	
 	/**
 	 * Create Engine Components.
+	 * 
+	 * @param context Android Context
 	 */
-	public void create() {
-		
-		getResources().load();
-		
-		// Create Splash Screen
-		Screen splash = new Screen() {
-
-			private final Texture background = getResources().getTexture(TextureLoader.BACKGROUND_SPLASH);
+	public void create(Context context) {
+		try {
 			
-			@Override
-			public boolean touch(Input i) {
-				return false;
-			}
-
-			@Override
-			public boolean move(Input i) {
-				return false;
-			}
-
-			@Override
-			public void render(long delta) {
-				getGraphics().draw(background, 0, 0, getGraphics().getWidth(), getGraphics().getHeight());
-			}
-
-			@Override
-			public void show() {}
-
-			@Override
-			public void hide() {}
+			// Set Splash Screen
+			getGame().setScreen(new SplashScreen(context, graphics));
 			
-		};
-					
-		debug(TAG, "Show Splash Screen");
-		getGame().setScreen(splash);
-		getGraphics().render();
+			thread.setName("Engine Looper");
+			thread.start();
+			
+		} catch (Exception e) {
+			error(TAG, "An error has occurred while creating Engine", e);
+		}
 		
-		thread.setName("Engine Looper");
-		thread.start();
-
 	}
 	
 	/** 
@@ -171,8 +153,26 @@ public final class Engine implements Runnable {
 	public void run() {
 		try {
 			
-			debug(TAG, "Application started");
 			
+			// TODO Fix this shit
+			while(!Thread.currentThread().isInterrupted()) {
+				getGraphics().render();
+			}
+			
+			
+			try {
+				
+				getResources().load();
+				Thread.sleep(2000);
+				
+			} catch (Exception ioe) {
+				throw new RuntimeException("Unable to load Resources");
+			}
+			
+			
+			
+			debug(TAG, "Application started");
+
 			debug(TAG, "Create Game");
 			getGame().create(this);
 			
@@ -183,7 +183,7 @@ public final class Engine implements Runnable {
 				/**
 				 * May need to implements QoS in Runnable execution.
 				 */
-				if(!getRunnables().isEmpty()) {
+				/*if(!getRunnables().isEmpty()) {
 					
 					long start = System.currentTimeMillis();
 					Runnable next;
@@ -197,17 +197,18 @@ public final class Engine implements Runnable {
 					}
 					
 					executionTime = (int) (System.currentTimeMillis() - start);
-				}
+				}*/
 				
 				try {
 					
+					executionTime = 0;
+					
 					int sleep = getGraphics().getNextWakeUp() - executionTime;
 					long start = System.currentTimeMillis();
-					// TODO Fix it!
-					//updateWorld(sleep);
+					updateWorld(sleep);
 					sleep -= ((int) (System.currentTimeMillis() - start));
 					
-					error(TAG, "Sleep: "+sleep);
+					//error(TAG, "Sleep: "+sleep);
 					
 					if(sleep > 0) {
 						Thread.sleep(sleep);
@@ -258,11 +259,21 @@ public final class Engine implements Runnable {
 	
 	/**
 	 * <p>
+	 * Return the Game's {@link World}
+	 * 
+	 * @return {@link World}
+	 */
+	World getWorld() {
+		return game.getWorld();
+	}
+	
+	/**
+	 * <p>
 	 * Return Runnable Queue.
 	 * 
 	 * @return Runnable Queue
 	 */
-	private Queue<Runnable> getRunnables() {
+	Queue<Runnable> getRunnables() {
 		return runnables;
 	}
 	
@@ -272,7 +283,7 @@ public final class Engine implements Runnable {
 	 * 
 	 * @return Event Listener
 	 */
-	private EventListener getEventListener() {
+	EventListener getEventListener() {
 		return game;
 	}
 	
@@ -302,11 +313,11 @@ public final class Engine implements Runnable {
 	 * @see World
 	 */
 	private void updateWorld(int sleep) {
-		
+
 		worldUpdateLeft += sleep;
 		
 		while(worldUpdateLeft >= WORLD_UPDATE) {
-			game.getWorld().step(WORLD_STEP, 6, 2);
+			getWorld().step(WORLD_STEP, WORLD_VELOCITY_ITERATION, WORLD_POSITION_ITERATION);
 			worldUpdateLeft -= WORLD_UPDATE;
 		}
 		

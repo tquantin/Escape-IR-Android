@@ -54,7 +54,7 @@ public final class EscapeApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		Engine.debug(TAG, "Initialize Engine");
-		engine.create();
+		engine.create(this);
 	}
 	
 	@Override

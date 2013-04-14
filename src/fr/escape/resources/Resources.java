@@ -11,20 +11,21 @@
 
 package fr.escape.resources;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.SparseArray;
 
 import fr.escape.Objects;
+import fr.escape.android.R;
 import fr.escape.app.Engine;
 import fr.escape.game.entity.ships.ShipFactory;
 import fr.escape.game.scenario.Scenario;
 import fr.escape.graphics.Texture;
 import fr.escape.resources.scenario.ScenarioLoader;
-import fr.escape.resources.scenario.ScenarioParser;
 
 /**
  * <p>
@@ -47,10 +48,9 @@ public final class Resources {
 	 */
 	static final String TAG = Resources.class.getSimpleName();
 	
-	private final HashMap<String, FontLoader> fontLoader;
-	private final HashMap<Integer, TextureLoader> textureLoader;
-	private final HashMap<String, ScenarioLoader> scenarioLoader;
-	private final Context context;
+	final SparseArray<Typeface> font;
+	final SparseArray<Texture> texture;
+	final Context context;
 	
 	/**
 	 * Is all resources loaded in memory ?
@@ -67,24 +67,34 @@ public final class Resources {
 	 * @param android Android Native Context Reference
 	 */
 	public Resources(Context android) {
-		fontLoader = new HashMap<String, FontLoader>();
-		textureLoader = new HashMap<Integer, TextureLoader>();
-		scenarioLoader = new HashMap<String, ScenarioLoader>();
+		font = new SparseArray<Typeface>(1);
+		texture = new SparseArray<Texture>(29);
 		context = Objects.requireNonNull(android);
 		loaded = false;
 	}
 	
 	/**
-	 * Create and Load {@link ResourcesLoader} in List
+	 * Create and Load Resource for Minimal Environment.
+	 * 
+	 * @throws IOException If an error has occurred during Minimal Configuration.
 	 */
-	public void load() {
+	public void minimal() throws IOException {
+		textureLoader(TextureLoader.BACKGROUND_SPLASH);
+	}
+	
+	/**
+	 * Create and Load Resource
+	 * 
+	 * @throws IOException If an error has occurred during Resources Loading.
+	 */
+	public void load() throws IOException {
 		if(loaded == false) {
 			
 			// Load Font
-			postFontLoader(FontLoader.VISITOR_ID);
+			fontLoader(R.string.font_visitor);
 			
 			// Load Scenario
-			postScenarioLoader(ScenarioLoader.JUPITER_1);
+			/*postScenarioLoader(ScenarioLoader.JUPITER_1);
 			postScenarioLoader(ScenarioLoader.JUPITER_2);
 			postScenarioLoader(ScenarioLoader.JUPITER_3);
 			postScenarioLoader(ScenarioLoader.JUPITER_4);
@@ -94,65 +104,64 @@ public final class Resources {
 			postScenarioLoader(ScenarioLoader.EARTH_1);
 			postScenarioLoader(ScenarioLoader.EARTH_2);
 			postScenarioLoader(ScenarioLoader.EARTH_3);
-			postScenarioLoader(ScenarioLoader.EARTH_4);
+			postScenarioLoader(ScenarioLoader.EARTH_4);*/
 			
 			// Load Texture
-			postTextureLoader(TextureLoader.BACKGROUND_SPLASH);
-			postTextureLoader(TextureLoader.BACKGROUND_ERROR);
-			postTextureLoader(TextureLoader.BACKGROUND_LOST);
-			postTextureLoader(TextureLoader.BACKGROUND_MENU);
-			postTextureLoader(TextureLoader.BACKGROUND_VICTORY);
-			postTextureLoader(TextureLoader.BACKGROUND_INTRO);
-			postTextureLoader(TextureLoader.BACKGROUND_JUPITER);
-			postTextureLoader(TextureLoader.BACKGROUND_MOON);
-			postTextureLoader(TextureLoader.BACKGROUND_EARTH);
-			postTextureLoader(TextureLoader.WEAPON_UI_ACTIVATED);
-			postTextureLoader(TextureLoader.WEAPON_UI_DISABLED);
-			postTextureLoader(TextureLoader.WEAPON_BLACKHOLE);
-			postTextureLoader(TextureLoader.WEAPON_FIREBALL);
-			postTextureLoader(TextureLoader.WEAPON_MISSILE);
-			postTextureLoader(TextureLoader.WEAPON_SHIBOLEET);
-			postTextureLoader(TextureLoader.WEAPON_MISSILE_SHOT);
-			postTextureLoader(TextureLoader.WEAPON_FIREBALL_CORE_SHOT);
-			postTextureLoader(TextureLoader.WEAPON_FIREBALL_RADIUS_SHOT);
-			postTextureLoader(TextureLoader.WEAPON_SHIBOLEET_SHOT);
-			postTextureLoader(TextureLoader.WEAPON_BLACKHOLE_CORE_SHOT);
-			postTextureLoader(TextureLoader.WEAPON_BLACKHOLE_LEFT_SHOT);
-			postTextureLoader(TextureLoader.WEAPON_BLACKHOLE_RIGHT_SHOT);
-			postTextureLoader(TextureLoader.WEAPON_BLACKHOLE_EVENT_HORIZON_SHOT);
-			postTextureLoader(TextureLoader.BONUS_WEAPON_MISSILE);
-			postTextureLoader(TextureLoader.BONUS_WEAPON_FIREBALL);
-			postTextureLoader(TextureLoader.BONUS_WEAPON_SHIBOLEET);
-			postTextureLoader(TextureLoader.BONUS_WEAPON_BLACKHOLE);
+			textureLoader(TextureLoader.BACKGROUND_ERROR);
+			textureLoader(TextureLoader.BACKGROUND_LOST);
+			textureLoader(TextureLoader.BACKGROUND_MENU);
+			textureLoader(TextureLoader.BACKGROUND_VICTORY);
+			textureLoader(TextureLoader.BACKGROUND_INTRO);
+			textureLoader(TextureLoader.BACKGROUND_JUPITER);
+			textureLoader(TextureLoader.BACKGROUND_MOON);
+			textureLoader(TextureLoader.BACKGROUND_EARTH);
+			textureLoader(TextureLoader.WEAPON_UI_ACTIVATED);
+			textureLoader(TextureLoader.WEAPON_UI_DISABLED);
+			textureLoader(TextureLoader.WEAPON_BLACKHOLE);
+			textureLoader(TextureLoader.WEAPON_FIREBALL);
+			textureLoader(TextureLoader.WEAPON_MISSILE);
+			textureLoader(TextureLoader.WEAPON_SHIBOLEET);
+			textureLoader(TextureLoader.WEAPON_MISSILE_SHOT);
+			textureLoader(TextureLoader.WEAPON_FIREBALL_CORE_SHOT);
+			textureLoader(TextureLoader.WEAPON_FIREBALL_RADIUS_SHOT);
+			textureLoader(TextureLoader.WEAPON_SHIBOLEET_SHOT);
+			textureLoader(TextureLoader.WEAPON_BLACKHOLE_CORE_SHOT);
+			textureLoader(TextureLoader.WEAPON_BLACKHOLE_LEFT_SHOT);
+			textureLoader(TextureLoader.WEAPON_BLACKHOLE_RIGHT_SHOT);
+			textureLoader(TextureLoader.WEAPON_BLACKHOLE_EVENT_HORIZON_SHOT);
+			textureLoader(TextureLoader.BONUS_WEAPON_MISSILE);
+			textureLoader(TextureLoader.BONUS_WEAPON_FIREBALL);
+			textureLoader(TextureLoader.BONUS_WEAPON_SHIBOLEET);
+			textureLoader(TextureLoader.BONUS_WEAPON_BLACKHOLE);
 			
-			postTextureLoader(TextureLoader.SHIP_RAPTOR);
-			postTextureLoader(TextureLoader.SHIP_RAPTOR_1);
-			postTextureLoader(TextureLoader.SHIP_RAPTOR_2);
-			postTextureLoader(TextureLoader.SHIP_RAPTOR_3);
-			postTextureLoader(TextureLoader.SHIP_RAPTOR_4);
-			postTextureLoader(TextureLoader.SHIP_RAPTOR_5);
-			postTextureLoader(TextureLoader.SHIP_RAPTOR_6);
-			postTextureLoader(TextureLoader.SHIP_RAPTOR_7);
-			postTextureLoader(TextureLoader.SHIP_RAPTOR_8);
-			postTextureLoader(TextureLoader.SHIP_RAPTOR_9);
-			postTextureLoader(TextureLoader.SHIP_FALCON);
-			postTextureLoader(TextureLoader.SHIP_VIPER);
+			textureLoader(TextureLoader.SHIP_RAPTOR);
+			textureLoader(TextureLoader.SHIP_RAPTOR_1);
+			textureLoader(TextureLoader.SHIP_RAPTOR_2);
+			textureLoader(TextureLoader.SHIP_RAPTOR_3);
+			textureLoader(TextureLoader.SHIP_RAPTOR_4);
+			textureLoader(TextureLoader.SHIP_RAPTOR_5);
+			textureLoader(TextureLoader.SHIP_RAPTOR_6);
+			textureLoader(TextureLoader.SHIP_RAPTOR_7);
+			textureLoader(TextureLoader.SHIP_RAPTOR_8);
+			textureLoader(TextureLoader.SHIP_RAPTOR_9);
+			textureLoader(TextureLoader.SHIP_FALCON);
+			textureLoader(TextureLoader.SHIP_VIPER);
 			
-			postTextureLoader(TextureLoader.BOSS_JUPITER);
-			postTextureLoader(TextureLoader.BOSS_MOON);
-			postTextureLoader(TextureLoader.BOSS_MOON_1);
-			postTextureLoader(TextureLoader.BOSS_EARTH);
-			postTextureLoader(TextureLoader.BOSS_EARTH_1);
-			postTextureLoader(TextureLoader.JUPITER_SPECIAL);
-			postTextureLoader(TextureLoader.MOON_SPECIAL);
-			postTextureLoader(TextureLoader.EARTH_SPECIAL);
+			textureLoader(TextureLoader.BOSS_JUPITER);
+			textureLoader(TextureLoader.BOSS_MOON);
+			textureLoader(TextureLoader.BOSS_MOON_1);
+			textureLoader(TextureLoader.BOSS_EARTH);
+			textureLoader(TextureLoader.BOSS_EARTH_1);
+			textureLoader(TextureLoader.JUPITER_SPECIAL);
+			textureLoader(TextureLoader.MOON_SPECIAL);
+			textureLoader(TextureLoader.EARTH_SPECIAL);
 			
-			postTextureLoader(TextureLoader.MENU_UI_GRID);
-			postTextureLoader(TextureLoader.OVERLAY_STAR);
+			textureLoader(TextureLoader.MENU_UI_GRID);
+			textureLoader(TextureLoader.OVERLAY_STAR);
 			
-			postTextureLoader(TextureLoader.INTRO_JUPITER);
-			postTextureLoader(TextureLoader.INTRO_MOON);
-			postTextureLoader(TextureLoader.INTRO_EARTH);
+			textureLoader(TextureLoader.INTRO_JUPITER);
+			textureLoader(TextureLoader.INTRO_MOON);
+			textureLoader(TextureLoader.INTRO_EARTH);
 			
 		}
 		
@@ -160,20 +169,17 @@ public final class Resources {
 	}
 	
 	/**
-	 * Load and return Typeface from {@link ResourcesLoader} 
+	 * Load and return Typeface from {@link Resources} 
 	 * 
-	 * @param name Font name
-	 * @return Font
-	 * @throws NoSuchElementException
+	 * @param id Font ID
+	 * @return Typeface
+	 * @throws NoSuchElementException If the Typeface is not loaded.
+	 * @throws IllegalStateException If the {@link Resources} is not loaded.
 	 */
-	public Typeface getFont(String name) throws NoSuchElementException {
-		Objects.requireNonNull(name);
+	public Typeface getFont(int name) throws NoSuchElementException {
 		checkIfLoaded();
 		try {
-			
-			FontLoader loader = fontLoader.get(name);
-			return loader.load();
-			
+			return font.get(name);
 		} catch(Exception e) {
 			NoSuchElementException exception = new NoSuchElementException("Cannot load the given Font: "+name);
 			exception.initCause(e);
@@ -182,19 +188,17 @@ public final class Resources {
 	}
 	
 	/**
-	 * Load and return Texture from {@link ResourcesLoader}
+	 * Load and return Texture from {@link Resources}
 	 * 
 	 * @param name Texture ID
 	 * @return Texture
-	 * @throws NoSuchElementException
+	 * @throws NoSuchElementException If the Texture is not loaded.
+	 * @throws IllegalStateException If the {@link Resources} is not loaded.
 	 */
 	public Texture getTexture(int id) throws NoSuchElementException {
 		checkIfLoaded();
 		try {
-			
-			TextureLoader loader = textureLoader.get(Integer.valueOf(id));
-			return loader.load();
-			
+			return texture.get(id);
 		} catch(Exception e) {
 			NoSuchElementException exception = new NoSuchElementException("Cannot load the given Texture: "+id);
 			exception.initCause(e);
@@ -211,7 +215,7 @@ public final class Resources {
 	 * @throws NoSuchElementException
 	 */
 	public Scenario getScenario(String name, ShipFactory factory) {
-		Objects.requireNonNull(name);
+		/*Objects.requireNonNull(name);
 		Objects.requireNonNull(factory);
 		checkIfLoaded();
 		try {
@@ -224,53 +228,8 @@ public final class Resources {
 			NoSuchElementException exception = new NoSuchElementException("Cannot load the given Scenario: "+name);
 			exception.initCause(e);
 			throw exception;
-		}
-	}
-	
-	/**
-	 * Create a FontLoader for the given Font name.
-	 * 
-	 * @param fontID Font name
-	 * @return FontLoader which will load the Font
-	 */
-	private FontLoader createFontLoader(final String fontID) {
-		return new FontLoader() {
-
-			private Typeface font;
-			
-			@Override
-			public Typeface load() throws Exception {
-				if(font == null) {
-					Engine.debug(TAG, "Load Font: "+fontID);
-					font = Typeface.createFromAsset(getContext().getAssets(), fontID);
-				}
-				return font;
-			}
-
-		};
-	}
-	
-	/**
-	 * Create a TextureLoader for the given Texture name.
-	 * 
-	 * @param textureID Texture name
-	 * @return TextureLoader which will load the Texture
-	 */
-	private TextureLoader createTextureLoader(final int textureID) {
-		return new TextureLoader() {
-			
-			private Texture texture = null;
-			
-			@Override
-			public Texture load() throws Exception {
-				if(texture == null) {
-					Engine.debug(TAG, "Load Texture: "+textureID);
-					texture = new Texture(getContext().getResources(), textureID);
-				}
-				return texture;
-			}
-			
-		};
+		}*/
+		return null;
 	}
 	
 	/**
@@ -304,21 +263,25 @@ public final class Resources {
 	}
 	
 	/**
-	 * Create a TextureLoader and add it for a given Texture name.
+	 * Load the Texture with the given ID into memory.
 	 * 
 	 * @param textureID Texture ID
+	 * @throws IOException If an error has occurred
 	 */
-	private void postTextureLoader(int textureID) {
-		textureLoader.put(Integer.valueOf(textureID), createTextureLoader(textureID));
+	private void textureLoader(int textureID) throws IOException {
+		Engine.debug(TAG, "Load Texture ID: "+textureID);
+		texture.put(textureID, new Texture(getContext().getResources(), textureID));
 	}
 	
 	/**
-	 * Create a FontLoader and add it for a given Font name and size.
+	 * Load the Font with the given ID into memory.
 	 * 
-	 * @param fontID Font name
+	 * @param fontID Font ID
+	 * @throws IOException If an error has occurred
 	 */
-	private void postFontLoader(String fontID) {
-		fontLoader.put(fontID, createFontLoader(fontID));
+	private void fontLoader(int fontID) throws IOException {	
+		Engine.debug(TAG, "Load Font ID: "+fontID);
+		font.put(fontID, Typeface.createFromAsset(getContext().getAssets(), getContext().getString(fontID)));
 	}
 	
 	/**
@@ -326,9 +289,9 @@ public final class Resources {
 	 * 
 	 * @param scenarioID Scenario name
 	 */
-	private void postScenarioLoader(String scenarioID) {
+	/*private void postScenarioLoader(String scenarioID) {
 		scenarioLoader.put(scenarioID, createScenarioLoader(scenarioID));
-	}
+	}*/
 	
 	/**
 	 * <p>
@@ -359,7 +322,7 @@ public final class Resources {
 	 * 
 	 * @return Android Context
 	 */
-	Context getContext() {
+	public Context getContext() {
 		return context;
 	}
 	

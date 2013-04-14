@@ -147,18 +147,20 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 			setEngine(engine);
 			
 			// Create World
-			World world = new World(new Vec2(0.0f,0.0f), true);
+			World world = new World(new Vec2(0.0f,0.0f), false);
 			world.setContactListener(new CollisionDetector(getUser()));
 			setWorld(world);
 			
+			// TODO Fix it
+			
 			//Top Wall
-			createWall(world,engine.getConverter().toMeterX(getGraphics().getWidth() / 2),engine.getConverter().toMeterY((getGraphics().getHeight() * 2) / 3) - 1.0f,false);
+			//createWall(world,engine.getConverter().toMeterX(getGraphics().getWidth() / 2),engine.getConverter().toMeterY((getGraphics().getHeight() * 2) / 3) - 1.0f,false);
 			//Bottom Wall
-			createWall(world,engine.getConverter().toMeterX(getGraphics().getWidth() / 2),engine.getConverter().toMeterY(getGraphics().getHeight()) + 2.0f,false);
+			//createWall(world,engine.getConverter().toMeterX(getGraphics().getWidth() / 2),engine.getConverter().toMeterY(getGraphics().getHeight()) + 2.0f,false);
 			//Left Wall
-			createWall(world,-1.0f,engine.getConverter().toMeterY(getGraphics().getHeight() / 2),true);
+			//createWall(world,-1.0f,engine.getConverter().toMeterY(getGraphics().getHeight() / 2),true);
 			//Right Wall
-			createWall(world,11.0f,engine.getConverter().toMeterY(getGraphics().getHeight() / 2),true);
+			//createWall(world,11.0f,engine.getConverter().toMeterY(getGraphics().getHeight() / 2),true);
 			
 			// Create Entity Container
 			entityContainer = new EntityContainer(getEngine(), getWorld(), Math.max((int) (getGraphics().getWidth() * 0.1f), (int) (getGraphics().getHeight() * 0.1f)));

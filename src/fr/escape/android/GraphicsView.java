@@ -15,6 +15,8 @@ public final class GraphicsView extends SurfaceView implements Callback {
 	private Graphics graphics;
 	private Object lock;
 	
+	private volatile boolean isVisible;
+	
 	public GraphicsView(Context context) {
 		super(context);
 		throw new IllegalStateException("You cannot inflate this View from XML");
@@ -36,9 +38,13 @@ public final class GraphicsView extends SurfaceView implements Callback {
 	public void render() {
 		synchronized(lock) {
 			if(graphics != null) {
+				
 				Canvas canvas = getHolder().lockCanvas();
 				graphics.flush(canvas);
-				getHolder().unlockCanvasAndPost(canvas);
+				
+				if(isVisible) {
+					getHolder().unlockCanvasAndPost(canvas);
+				}
 			}
 		}
 	}
@@ -52,11 +58,13 @@ public final class GraphicsView extends SurfaceView implements Callback {
 	public void surfaceCreated(SurfaceHolder holder) {
 		Log.i(TAG, "onCreate()");
 		graphics.createView(this, getWidth(), getHeight());
+		isVisible = true;
 	}
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		Log.i(TAG, "onDestroy()");
+		isVisible = false;
 		graphics.destroyView();
 	}
 	
