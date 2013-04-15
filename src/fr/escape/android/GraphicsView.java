@@ -43,28 +43,6 @@ public final class GraphicsView extends SurfaceView implements Callback {
 		}
 	}
 	
-	public void showSplash() {
-		if(splash != null) {
-			
-			Canvas canvas = getHolder().lockCanvas();
-			
-			Paint p = new Paint();
-			p.setColor(Color.WHITE);
-			canvas.drawText("Fuck", 10, 10, p);
-			
-			splash.render(canvas, getWidth(), getHeight());
-			
-			if(isVisible) {
-				getHolder().unlockCanvasAndPost(canvas);
-			} else {
-				Engine.error(TAG, "GraphicsView is not visible");
-			}
-			
-		} else {
-			Engine.error(TAG, "Splash is null");
-		}
-	}
-	
 	public void render() {
 		synchronized(lock) {
 			if(graphics != null) {
@@ -86,17 +64,28 @@ public final class GraphicsView extends SurfaceView implements Callback {
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		Log.i(TAG, "onCreate()");
+		
+		Engine.debug(TAG, "Surface Created");
+		
 		graphics.createView(this, getWidth(), getHeight());
 		isVisible = true;
-		showSplash();
+		
+		if(splash != null) {
+			Canvas canvas = getHolder().lockCanvas();
+			splash.render(canvas, getWidth(), getHeight());
+			getHolder().unlockCanvasAndPost(canvas);
+		}
+		
 	}
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		Log.i(TAG, "onDestroy()");
+		
+		Engine.debug(TAG, "Surface Destroyed");
+		
 		isVisible = false;
 		graphics.destroyView();
+		
 	}
 	
 }
