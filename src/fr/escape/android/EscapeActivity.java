@@ -20,7 +20,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.app.Activity;
 
-public abstract class EscapeActivity extends Activity {
+public final class EscapeActivity extends Activity {
 
 	/**
 	 * Class TAG

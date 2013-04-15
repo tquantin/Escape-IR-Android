@@ -1,8 +1,12 @@
 package fr.escape.android;
 
+import java.io.IOException;
+
+import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
-import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -14,24 +18,50 @@ public final class GraphicsView extends SurfaceView implements Callback {
 	
 	private Graphics graphics;
 	private Object lock;
+	private Splash splash;
 	
 	private volatile boolean isVisible;
-	
-	public GraphicsView(Context context) {
-		super(context);
-		throw new IllegalStateException("You cannot inflate this View from XML");
-	}
-	
+		
 	public GraphicsView(EscapeActivity activity) {
         super(activity);
+        
         graphics = activity.getEngine().getGraphics();
         lock = new Object();
+        
+        try {
+        	splash = new Splash(activity);
+        } catch(Exception e) {
+        	Engine.error(TAG, "An error has occurred while creating Splash", e);
+        }
+        
         getHolder().addCallback(this);
     }
 	
 	public void setGraphics(Graphics graphics) {
 		synchronized(lock) {
 			this.graphics = graphics;
+		}
+	}
+	
+	public void showSplash() {
+		if(splash != null) {
+			
+			Canvas canvas = getHolder().lockCanvas();
+			
+			Paint p = new Paint();
+			p.setColor(Color.WHITE);
+			canvas.drawText("Fuck", 10, 10, p);
+			
+			splash.render(canvas, getWidth(), getHeight());
+			
+			if(isVisible) {
+				getHolder().unlockCanvasAndPost(canvas);
+			} else {
+				Engine.error(TAG, "GraphicsView is not visible");
+			}
+			
+		} else {
+			Engine.error(TAG, "Splash is null");
 		}
 	}
 	
@@ -59,6 +89,7 @@ public final class GraphicsView extends SurfaceView implements Callback {
 		Log.i(TAG, "onCreate()");
 		graphics.createView(this, getWidth(), getHeight());
 		isVisible = true;
+		showSplash();
 	}
 
 	@Override

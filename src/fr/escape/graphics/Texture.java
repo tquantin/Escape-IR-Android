@@ -150,7 +150,7 @@ public final class Texture {
 		}
         
 		// Draw Texture on Canvas
-		canvas.drawBitmap(getBitmap(), new Rect(x, y, width, height), new Rect(srcX, srcY, srcWidth, srcHeight), paint);
+		canvas.drawBitmap(getBitmap(), new Rect(srcX, srcY, srcWidth, srcHeight), new Rect(x, y, width, height), paint);
 		
 		// Restore Previous Matrix
 		if(updateMatrix) {

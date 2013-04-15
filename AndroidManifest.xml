@@ -18,8 +18,10 @@
         android:theme="@style/AppTheme" >
         
         <activity
-            android:name="fr.escape.android.LoaderActivity"
-            android:label="@string/app_name" >
+            android:name="fr.escape.android.EscapeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            >
             
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

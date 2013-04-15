@@ -1,6 +1,5 @@
 package fr.escape.app;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -9,11 +8,8 @@ import org.jbox2d.dynamics.World;
 import fr.escape.Objects;
 import fr.escape.game.Escape;
 import fr.escape.game.entity.CoordinateConverter;
-import fr.escape.game.screen.SplashScreen;
-import fr.escape.graphics.Texture;
 import fr.escape.input.EventListener;
 import fr.escape.resources.Resources;
-import fr.escape.resources.TextureLoader;
 import android.content.Context;
 import android.util.Log;
 
@@ -84,18 +80,8 @@ public final class Engine implements Runnable {
 	 * @param context Android Context
 	 */
 	public void create(Context context) {
-		try {
-			
-			// Set Splash Screen
-			getGame().setScreen(new SplashScreen(context, graphics));
-			
-			thread.setName("Engine Looper");
-			thread.start();
-			
-		} catch (Exception e) {
-			error(TAG, "An error has occurred while creating Engine", e);
-		}
-		
+		thread.setName("Engine Looper");
+		//thread.start();
 	}
 	
 	/** 
@@ -152,13 +138,6 @@ public final class Engine implements Runnable {
 	@Override
 	public void run() {
 		try {
-			
-			
-			// TODO Fix this shit
-			while(!Thread.currentThread().isInterrupted()) {
-				getGraphics().render();
-			}
-			
 			
 			try {
 				
