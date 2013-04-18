@@ -26,6 +26,7 @@ import fr.escape.game.entity.ships.ShipFactory;
 import fr.escape.game.scenario.Scenario;
 import fr.escape.graphics.Texture;
 import fr.escape.resources.scenario.ScenarioLoader;
+import fr.escape.resources.scenario.ScenarioParser;
 
 /**
  * <p>
@@ -215,12 +216,12 @@ public final class Resources {
 	 * @throws NoSuchElementException
 	 */
 	public Scenario getScenario(String name, ShipFactory factory) {
-		/*Objects.requireNonNull(name);
+		Objects.requireNonNull(name);
 		Objects.requireNonNull(factory);
 		checkIfLoaded();
 		try {
 			
-			ScenarioLoader loader = scenarioLoader.get(name);
+			ScenarioLoader loader = createScenarioLoader(name);//scenarioLoader.get(name);
 			loader.addShipCreator(factory);
 			return loader.load();
 			
@@ -228,8 +229,8 @@ public final class Resources {
 			NoSuchElementException exception = new NoSuchElementException("Cannot load the given Scenario: "+name);
 			exception.initCause(e);
 			throw exception;
-		}*/
-		return null;
+		}
+		//return null;
 	}
 	
 	/**
@@ -240,7 +241,7 @@ public final class Resources {
 	 */
 	private ScenarioLoader createScenarioLoader(final String scenarioID) {
 		// TODO Handle it !
-		/* return new ScenarioLoader() {
+		return new ScenarioLoader() {
 			
 			private Scenario scenario = null;
 			
@@ -250,16 +251,19 @@ public final class Resources {
 					
 					Engine.debug(TAG, "Load Scenario: "+scenarioID);
 					
-					try(InputStream stream = getInputStream(getPath()+"/"+scenarioID)) {
+					InputStream stream = getContext().getAssets().open("level/"+scenarioID);//getInputStream(getPath()+"/"+scenarioID);
+					try {
 						scenario = ScenarioParser.parse(getShipCreator(), stream);
+					} finally {
+						stream.close();
 					}
 					
 				}
 				return scenario;
 			}
 			
-		};*/
-		return null;
+		};
+		//return null;
 	}
 	
 	/**

@@ -20,8 +20,10 @@ import android.graphics.Color;
 import fr.escape.Objects;
 import fr.escape.app.Engine;
 import fr.escape.app.Input;
+import fr.escape.app.Input.Action;
 import fr.escape.app.Screen;
 import fr.escape.game.Escape;
+import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.scenario.Stage;
 import fr.escape.graphics.RepeatableScrollingTexture;
@@ -48,6 +50,8 @@ public abstract class AbstractStage implements Screen {
 	
 	private long time;
 	private float[] velocity = {0, 0, 0, 0};
+	private float distanceX;
+	private float distanceY;
 
 	private List<Input> activeEvents;
 	private long activeEventTime;
@@ -65,13 +69,15 @@ public abstract class AbstractStage implements Screen {
         
 	}
 	
+	//TODO : need to fix stage
 	@Override
 	public void render(long delta) {
 
 		time += delta;
 		activeEventTime += delta;
 		
-		float percent = ((float) time) / (getStage().getEstimatedScenarioTime() * 1000);
+		//float percent = ((float) time) / (getStage().getEstimatedScenarioTime() * 1000);
+		float percent = ((float) time) / (50 * 1000);
 
 		if(percent >= 1.0f) {
 			percent = 1.0f;
@@ -84,7 +90,7 @@ public abstract class AbstractStage implements Screen {
 		game.getGraphics().draw(star, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight());
 		
 		game.getUser().getShip().update(game.getGraphics(), delta);
-		game.getUser().getShip().moveBy(velocity);
+		/*game.getUser().getShip().moveBy(velocity);
 		
 		getStage().update((int) (time / 1000));
 		
@@ -113,7 +119,7 @@ public abstract class AbstractStage implements Screen {
 				}
 			}
 			
-		});
+		});*/
 	}
 
 	/**
@@ -171,8 +177,24 @@ public abstract class AbstractStage implements Screen {
 
 	@Override
 	public boolean touch(Input i) {
-		
 		Ship ship = game.getUser().getShip();
+		CoordinateConverter converter = game.getEngine().getConverter();
+		
+		float x = converter.toMeterX(i.getX());
+		float y = converter.toMeterY(i.getY());
+		
+		Action action = i.getAction();
+		this.events.add(i);
+		if(action.equals(Input.Action.ACTION_DOWN)) {
+			distanceX = x - ship.getX();
+        	distanceY = y - ship.getY();
+		} else if(action.equals(Input.Action.ACTION_UP)) {
+			//TODO : check gesture
+		}
+		
+		ship.moveTo(x - distanceX, y - distanceY);
+		return true;
+		/*Ship ship = game.getUser().getShip();
 		
 		int x = game.getEngine().getConverter().toPixelX(ship.getX());
 		int y = game.getEngine().getConverter().toPixelY(ship.getY());
@@ -188,7 +210,7 @@ public abstract class AbstractStage implements Screen {
 			return true;
 		}
 		
-		return false;
+		return false;*/
 	}
 
 	@Override

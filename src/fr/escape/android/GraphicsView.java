@@ -1,12 +1,8 @@
 package fr.escape.android;
 
-import java.io.IOException;
-
 import fr.escape.app.Engine;
 import fr.escape.app.Graphics;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;

@@ -142,7 +142,7 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	 */
 	public void create(Engine engine) {
 		try {
-			
+			Engine.debug("ESCAPE", "CREATE ESCAPE");
 			// Set Engine
 			setEngine(engine);
 			
@@ -154,13 +154,13 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 			// TODO Fix it
 			
 			//Top Wall
-			//createWall(world,engine.getConverter().toMeterX(getGraphics().getWidth() / 2),engine.getConverter().toMeterY((getGraphics().getHeight() * 2) / 3) - 1.0f,false);
+			createWall(world,engine.getConverter().toMeterX(getGraphics().getWidth() / 2),0.0f,false); 
 			//Bottom Wall
-			//createWall(world,engine.getConverter().toMeterX(getGraphics().getWidth() / 2),engine.getConverter().toMeterY(getGraphics().getHeight()) + 2.0f,false);
+			createWall(world,engine.getConverter().toMeterX(getGraphics().getWidth() / 2),engine.getConverter().toMeterY(getGraphics().getHeight()) + 2.0f,false);
 			//Left Wall
-			//createWall(world,-1.0f,engine.getConverter().toMeterY(getGraphics().getHeight() / 2),true);
+			createWall(world,-1.0f,engine.getConverter().toMeterY(getGraphics().getHeight() / 2),true);
 			//Right Wall
-			//createWall(world,11.0f,engine.getConverter().toMeterY(getGraphics().getHeight() / 2),true);
+			createWall(world,11.0f,engine.getConverter().toMeterY(getGraphics().getHeight() / 2),true);
 			
 			// Create Entity Container
 			entityContainer = new EntityContainer(getEngine(), getWorld(), Math.max((int) (getGraphics().getWidth() * 0.1f), (int) (getGraphics().getHeight() * 0.1f)));
@@ -467,7 +467,7 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	 * Create a Player Ship
 	 */
 	private void createPlayerShip() {
-		
+		Engine.debug("ESCAPE", "CREATE PLAYER SHIP AT : " + engine.getConverter().toMeterX(getGraphics().getWidth() / 2) + "/" + engine.getConverter().toMeterY(getGraphics().getHeight() - 100));
 		Ship ship = getShipFactory().createPlayer(
 				engine.getConverter().toMeterX(getGraphics().getWidth() / 2), 
 				engine.getConverter().toMeterY(getGraphics().getHeight() - 100)

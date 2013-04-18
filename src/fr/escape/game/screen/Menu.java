@@ -80,27 +80,23 @@ public final class Menu implements Screen {
 	
 	@Override
 	public boolean touch(Input i) {
-		
-		if(touchArea.contains(i.getX(), i.getY())) {
+		//TODO : Fix touchArea.contains
+		//if(touchArea.contains(i.getX(), i.getY())) {
 			Engine.log(TAG, "User Launch: NEW_GAME");
 			game.getEngine().post(newGame);
 			return true;
-		}
+		//}
 		
-		return false;
+		//return false;
 	}
 
 	@Override
 	public boolean move(Input i) {
-		if(touchArea.contains(i.getX(), i.getY())) {
-			return touch(i);
-		}
-		return false;
+		return touch(i);
 	}
 
 	@Override
 	public void render(long delta) {
-		
 		game.getGraphics().draw(background, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight());
 		
 		Screens.drawStringInCenterPosition(
