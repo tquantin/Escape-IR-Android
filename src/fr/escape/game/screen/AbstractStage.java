@@ -177,6 +177,8 @@ public abstract class AbstractStage implements Screen {
 
 	@Override
 	public boolean touch(Input i) {
+		Objects.requireNonNull(i);
+		
 		Ship ship = game.getUser().getShip();
 		CoordinateConverter converter = game.getEngine().getConverter();
 		
@@ -194,29 +196,12 @@ public abstract class AbstractStage implements Screen {
 		
 		ship.moveTo(x - distanceX, y - distanceY);
 		return true;
-		/*Ship ship = game.getUser().getShip();
-		
-		int x = game.getEngine().getConverter().toPixelX(ship.getX());
-		int y = game.getEngine().getConverter().toPixelY(ship.getY());
-		int errorX = ship.getEdge().width() / 2;
-		int errorY = ship.getEdge().height() / 2;
-		
-		if((i.getX() > x - errorX && i.getX() < x + errorX) && (i.getY() > y - errorY && i.getY() < y + errorY)) {
-			
-			if(ship.loadWeapon()) {
-				Engine.debug(TAG, "Weapon Gesture Accept : Load");
-			}
-			
-			return true;
-		}
-		
-		return false;*/
 	}
 
 	@Override
 	public boolean move(final Input i) {
-		
-		Objects.requireNonNull(i);
+		return touch(i);
+		/*Objects.requireNonNull(i);
 		LinkedList<Input> events = this.events;
 		List<Gesture> gestures = game.getUser().getGestures();
 		
@@ -268,7 +253,7 @@ public abstract class AbstractStage implements Screen {
 			}
 		}
 		
-		return false;
+		return false;*/
 	}
 
 	/**
