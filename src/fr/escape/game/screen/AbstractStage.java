@@ -13,11 +13,7 @@ package fr.escape.game.screen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-
-import android.graphics.Color;
 
 import fr.escape.Objects;
 import fr.escape.app.Engine;
@@ -43,7 +39,7 @@ public abstract class AbstractStage implements Screen {
 	
 	private final static String TAG = AbstractStage.class.getSimpleName();
 	
-	private final static int MAX_ACTIVE_EVENT_TIME = 1337;
+	//private final static int MAX_ACTIVE_EVENT_TIME = 1337;
 	private final static long STAR_SPEED = 5000;
 	
 	private final Escape game;
@@ -60,7 +56,7 @@ public abstract class AbstractStage implements Screen {
 	private float distanceY;
 
 	private List<Input> activeEvents;
-	private long activeEventTime;
+	//private long activeEventTime;
 	
 	/**
 	 * Default Constructor
@@ -79,7 +75,7 @@ public abstract class AbstractStage implements Screen {
 	@Override
 	public void render(long delta) {
 		time += delta;
-		activeEventTime += delta;
+		//activeEventTime += delta;
 		
 		float percent = ((float) time) / (getStage().getEstimatedScenarioTime() * 1000);
 
@@ -100,10 +96,11 @@ public abstract class AbstractStage implements Screen {
 			game.getUser().getShip().moveBy(velocity);
 		}
 		
-		//getStage().update((int) (time / 1000));
+		getStage().update((int) (time / 1000));
 		
 		game.getEntityContainer().update(game.getGraphics(), delta);
 		
+		//TODO : remove ???
 		/*if(!events.isEmpty()) {
 			activeEvents = Screens.drawEventsOnScreen(game.getGraphics(), events, Color.WHITE);
 			activeEventTime = 0;
@@ -118,16 +115,14 @@ public abstract class AbstractStage implements Screen {
 		}*/
 		
 		game.getEntityContainer().flush();
-		/*game.getEngine().post(new Runnable() {
-			
+		game.getEngine().post(new Runnable() {
 			@Override
 			public void run() {
 				if(getStage().hasFinished()) {
 					next();
 				}
 			}
-			
-		});*/
+		});
 	}
 
 	/**
@@ -157,7 +152,7 @@ public abstract class AbstractStage implements Screen {
 		if(activeEvents != null) {
 			activeEvents.clear();
 		}
-		activeEventTime = 0;
+		//activeEventTime = 0;
 		events.clear();
 		
 		float x = game.getEngine().getConverter().toMeterX(game.getGraphics().getWidth() / 2);

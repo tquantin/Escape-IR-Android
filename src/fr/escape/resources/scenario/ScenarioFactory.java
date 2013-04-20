@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import fr.escape.Objects;
+import fr.escape.app.Engine;
 import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.scenario.Scenario;
@@ -76,11 +77,10 @@ final class ScenarioFactory {
 				// Check if we need to remove some Ship from Scenario
 				Iterator<Entry<Integer, Ship>> it = ships.entrySet().iterator();
 				while (it.hasNext()) {
-
 					Entry<Integer, Ship> row = it.next();
-
+					
 					if(spawns.contains(row.getKey()) && !getContainer().contains(row.getValue())) {
-						//Foundation.ACTIVITY.debug(toString(), "Remove "+row.getValue());
+						Engine.debug(tag, "Remove "+row.getValue());
 						spawns.remove(row.getKey());
 					}
 
@@ -149,7 +149,7 @@ final class ScenarioFactory {
 					}
 
 				} catch(Exception e) {
-					//Foundation.ACTIVITY.error(toString(), "An error has occurred", e);
+					Engine.error(toString(), "An error has occurred", e);
 				}
 				
 				return true;
