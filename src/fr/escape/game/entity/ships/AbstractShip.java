@@ -245,8 +245,8 @@ public abstract class AbstractShip implements Ship {
 		float distanceY = y - getY();
 		
 		float max = Math.max(Math.abs(distanceX), Math.abs(distanceY));
-		float coeff = 5.0f / max;
-		
+		float coeff = 5.0f / ((max == 0.0f) ? 1.0f : max);
+				
 		getBody().setLinearDamping((coeff));
 		getBody().setLinearVelocity(new Vec2(distanceX * coeff, distanceY * coeff));
 	}

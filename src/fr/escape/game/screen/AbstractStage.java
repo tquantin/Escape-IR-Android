@@ -72,7 +72,6 @@ public abstract class AbstractStage implements Screen {
 	//TODO : need to fix stage
 	@Override
 	public void render(long delta) {
-
 		time += delta;
 		activeEventTime += delta;
 		
