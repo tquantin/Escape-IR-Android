@@ -23,19 +23,9 @@ import fr.escape.resources.ResourcesLoader;
  */
 public abstract class ScenarioLoader implements ResourcesLoader<Scenario> {
 	
-	public static final String JUPITER_1 = "jupiter_1.scn";
-	public static final String JUPITER_2 = "jupiter_2.scn";
-	public static final String JUPITER_3 = "jupiter_3.scn";
-	public static final String JUPITER_4 = "jupiter_4.scn";
-	
-	public static final String MOON_1 = "moon_1.scn";
-	public static final String MOON_2 = "moon_2.scn";
-	public static final String MOON_3 = "moon_3.scn";
-	
-	public static final String EARTH_1 = "earth_1.scn";
-	public static final String EARTH_2 = "earth_2.scn";
-	public static final String EARTH_3 = "earth_3.scn";
-	public static final String EARTH_4 = "earth_4.scn";
+	public static final String JUPITER = "jupiter.scn";
+	public static final String MOON = "moon.scn";
+	public static final String EARTH = "earth.scn";
 	
 	private ShipFactory factory;
 	
