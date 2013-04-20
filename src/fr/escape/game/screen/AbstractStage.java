@@ -12,6 +12,7 @@
 package fr.escape.game.screen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,8 +81,7 @@ public abstract class AbstractStage implements Screen {
 		time += delta;
 		activeEventTime += delta;
 		
-		//float percent = ((float) time) / (getStage().getEstimatedScenarioTime() * 1000);
-		float percent = ((float) time) / (50 * 1000);
+		float percent = ((float) time) / (getStage().getEstimatedScenarioTime() * 1000);
 
 		if(percent >= 1.0f) {
 			percent = 1.0f;
@@ -100,11 +100,11 @@ public abstract class AbstractStage implements Screen {
 			game.getUser().getShip().moveBy(velocity);
 		}
 		
-		/*getStage().update((int) (time / 1000));
+		//getStage().update((int) (time / 1000));
 		
 		game.getEntityContainer().update(game.getGraphics(), delta);
 		
-		if(!events.isEmpty()) {
+		/*if(!events.isEmpty()) {
 			activeEvents = Screens.drawEventsOnScreen(game.getGraphics(), events, Color.WHITE);
 			activeEventTime = 0;
 		}
@@ -115,10 +115,10 @@ public abstract class AbstractStage implements Screen {
 		
 		if(activeEventTime > MAX_ACTIVE_EVENT_TIME) {
 			activeEvents = null;
-		}
+		}*/
 		
 		game.getEntityContainer().flush();
-		game.getEngine().post(new Runnable() {
+		/*game.getEngine().post(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -186,6 +186,7 @@ public abstract class AbstractStage implements Screen {
 	@Override
 	public boolean touch(Input i) {
 		Objects.requireNonNull(i);
+		boolean fire = (Math.abs(i.getXVelocity()) > 3000 || Math.abs(i.getYVelocity()) > 3000);
 		
 		Ship ship = game.getUser().getShip();
 		CoordinateConverter converter = game.getEngine().getConverter();
@@ -195,35 +196,41 @@ public abstract class AbstractStage implements Screen {
 		
 		Action action = i.getAction();
 		this.events.add(i);
-		if(action.equals(Input.Action.ACTION_DOWN)) {
-			distanceX = x - ship.getX();
-        	distanceY = y - ship.getY();
-		} else if(action.equals(Input.Action.ACTION_UP)) {
-			Engine.log(TAG, "Velocity :" + i.getXVelocity() + "/" + i.getYVelocity());
-			//TODO : check if the ship must fire
-			/*WeaponGesture wg = new WeaponGesture(game.getEngine());
-			Ship ship = game.getUser().getShip();
-			
-			float[] weaponVelocity = new float[3];
-			
-			if(wg.accept(start, events, i, weaponVelocity) && ship.isWeaponLoaded()) {
-				Engine.debug(TAG, "Weapon Gesture Accept : Fire");
-				ship.fireWeapon(weaponVelocity);
-				accept = true;
-			}*/
-			
-			List<Gesture> gestures = game.getUser().getGestures();
-			for(int j = 0; j < gestures.size(); j++) {
-				if(gestures.get(j).accept(events.get(0), events, i, velocity)) {
-					accepted = true;
-					stop = false;
-					break;
+		
+		if(fire) {
+			if(action.equals(Input.Action.ACTION_UP)) {
+				WeaponGesture wg = new WeaponGesture(game.getEngine());
+				
+				float[] weaponVelocity = new float[3];
+				
+				if(wg.accept(events.get(0), events, i, weaponVelocity)) {
+					Engine.debug(TAG, "Weapon Gesture Accept : Fire");
+					ship.loadWeapon();
+					ship.fireWeapon(weaponVelocity);
 				}
+				
+				events.clear();
 			}
-			events.clear();
+		} else {
+			if(action.equals(Input.Action.ACTION_DOWN)) {
+				distanceX = x - ship.getX();
+	        	distanceY = y - ship.getY();
+	        	Arrays.fill(velocity, 0);
+			} else if(action.equals(Input.Action.ACTION_UP)) {
+				List<Gesture> gestures = game.getUser().getGestures();
+				for(int j = 0; j < gestures.size(); j++) {
+					if(gestures.get(j).accept(events.get(0), events, i, velocity)) {
+						accepted = true;
+						stop = false;
+						break;
+					}
+				}
+				events.clear();
+			}
+			
+			ship.moveTo(x - distanceX, y - distanceY);
 		}
 		
-		ship.moveTo(x - distanceX, y - distanceY);
 		return true;
 	}
 

@@ -41,7 +41,6 @@ public final class WeaponGesture implements Gesture {
 		Objects.requireNonNull(end);
 		
 		int y = start.getY() - shotPosition;
-		if(y <= end.getY()) return false;
 				
 		float distanceX = engine.getConverter().toMeterX(end.getX() - start.getX());
 		float distanceY = engine.getConverter().toMeterX(end.getY() - y);
