@@ -66,7 +66,7 @@ public final class EscapeApplication extends Application {
 	public Engine getEngine() {
 		return engine;
 	}
-	
+		
 	public boolean onTouchEvent(MotionEvent event) {
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN: {

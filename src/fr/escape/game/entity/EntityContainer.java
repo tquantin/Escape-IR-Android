@@ -11,9 +11,9 @@
 
 package fr.escape.game.entity;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 
 import org.jbox2d.dynamics.World;
 
@@ -39,13 +39,13 @@ import fr.escape.game.entity.ships.Ship;
  */
 public final class EntityContainer implements Updateable, KillNotifier, EdgeNotifier {
 
-	//private static final String TAG = EntityContainer.class.getSimpleName();
+	private static final String TAG = EntityContainer.class.getSimpleName();
 	
 	private final Engine engine;
 	private final World world;
 	private final Rect edge;
 	private final LinkedHashSet<Entity> entities;
-	private final LinkedList<Entity> destroyed;
+	private final ArrayList<Entity> destroyed;
 	
 	/**
 	 * Default Constructor
@@ -59,9 +59,9 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 		this.world = world;
 		this.edge = new Rect(-margin, -margin, engine.getGraphics().getWidth() + margin, engine.getGraphics().getHeight() + margin);
 		this.entities = new LinkedHashSet<Entity>();
-		this.destroyed = new LinkedList<Entity>();
+		this.destroyed = new ArrayList<Entity>();
 		
-		//Foundation.ACTIVITY.debug(TAG, "EntityContainer created");
+		Engine.debug(TAG, "EntityContainer created");
 		
 	}
 	
@@ -73,7 +73,7 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	 */
 	public boolean push(Entity e) {
 		Objects.requireNonNull(e);
-		//Foundation.ACTIVITY.debug(TAG, "Push this Entity: "+e);
+		Engine.debug(TAG, "Push this Entity: "+e);
 		return this.entities.add(e);
 	}
 	
@@ -85,7 +85,7 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	 */
 	private boolean remove(Entity e) {
 		Objects.requireNonNull(e);
-		//Foundation.ACTIVITY.debug(TAG, "Remove this Entity: "+e);
+		Engine.debug(TAG, "Remove this Entity: "+e);
 		return this.entities.remove(e);
 	}
 	
@@ -104,8 +104,11 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	@Override
 	public void update(Graphics graphics, long delta) {
 		Objects.requireNonNull(graphics);
-		for(Entity e : entities) {
-			e.update(graphics, delta);
+		Object[] aEntities = entities.toArray();
+		for(int i = 0; i < aEntities.length; i++) {
+			Entity e = (Entity) aEntities[i];
+			if(e.getBody() != null)
+				e.update(graphics, delta);
 		}
 	}
 
@@ -129,7 +132,7 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	 * @param e {@link Entity}
 	 */
 	public void toDestroy(Entity e) {
-		//Foundation.ACTIVITY.debug(TAG, "Add Entity in Removing Queue: "+e);
+		Engine.debug(TAG, "Add Entity in Removing Queue: "+e);
 		this.destroyed.add(e);
 	}
 	
@@ -141,8 +144,9 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	 */
 	public boolean flush() {
 		
-		for(Entity e : destroyed) {
-			//Foundation.ACTIVITY.debug(TAG, "Remove Entity: "+e+" "+((remove(e)?"[DONE]":"[FAIL]")));
+		for(int i = 0; i < destroyed.size(); i++) {
+			Entity e = destroyed.get(i);
+			Engine.debug(TAG, "Remove Entity: "+e+" "+((remove(e)?"[DONE]":"[FAIL]")));
 			if(e.getBody() != null) {
 				world.destroyBody(e.getBody());
 				e.setBody(null);

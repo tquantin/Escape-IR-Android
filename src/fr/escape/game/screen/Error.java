@@ -1,7 +1,6 @@
 package fr.escape.game.screen;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
@@ -27,7 +26,7 @@ public class Error implements Screen {
 	
 	private final Escape game;
 	private final Random random;
-	private final List<String> message;
+	private final ArrayList<String> message;
 
 	private Font font;
 	private RepeatableScrollingTexture background;
@@ -137,7 +136,8 @@ public class Error implements Screen {
 		
 		int yy = y;
 		
-		for(String info: message) {
+		for(int i = 0; i < message.size(); i++) {
+			String info = message.get(i);
 			
 			if(useFont) {
 				game.getGraphics().draw(info, x, yy, font, color);

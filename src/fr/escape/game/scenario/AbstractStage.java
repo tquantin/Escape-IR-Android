@@ -68,7 +68,8 @@ public abstract class AbstractStage implements Stage {
 	
 	@Override
 	public void start() {
-		//TODO : nothing (remove ?)
+		Engine.log("AbstractStage", "Load Container");
+		this.scenario.setContainer(container);
 	}
 	
 	@Override

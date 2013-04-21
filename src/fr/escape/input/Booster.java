@@ -40,7 +40,8 @@ public final class Booster implements Gesture {
   		if(cd > COEFFDIR || cd < -COEFFDIR) {
   			double pUp = (end.getY() + faultTolerence) - (cd * (end.getX() + faultTolerence));
       		double pDown = (end.getY() - faultTolerence) - (cd * (end.getX() - faultTolerence));
-      		for(Input event : events) {
+      		for(int i = 0; i < events.size(); i++) {
+      			Input event = events.get(i);
       			double yUp = cd * event.getX() + Math.max(pUp, pDown);
       			double yDown = cd * event.getX() + Math.min(pUp, pDown);
       			

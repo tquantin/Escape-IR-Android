@@ -53,7 +53,8 @@ public final class Drift implements Gesture {
 			double pUp = (end.getY() + faultTolerance) - (cd * (end.getX() + faultTolerance));
 			double pDown = (end.getY() - faultTolerance) - (cd * (end.getX() - faultTolerance));
 			
-			for(Input event : events) {
+			for(int i = 0; i < events.size(); i++) {
+				Input event = events.get(i);
 				int yUp = (int) ((cd * event.getX()) + Math.max(pUp, pDown)) + faultTolerance;
 				int yDown = (int) ((cd * event.getX()) + Math.min(pUp, pDown)) - faultTolerance;
 

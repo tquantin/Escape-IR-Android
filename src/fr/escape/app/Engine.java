@@ -36,7 +36,7 @@ public final class Engine implements Runnable {
 	final Thread thread;
 	final Resources resources;
 	final Queue<Runnable> runnables;
-	final CoordinateConverter converter;
+	CoordinateConverter converter;
 
 	/**
 	 * Engine World State
@@ -81,7 +81,7 @@ public final class Engine implements Runnable {
 	 */
 	public void create(Context context) {
 		thread.setName("Engine Looper");
-		//thread.start();
+		thread.start();
 	}
 	
 	/** 
@@ -132,6 +132,7 @@ public final class Engine implements Runnable {
 	public void event(final Input event) {
 
 		Objects.requireNonNull(event);
+		getGame().getScreen().touch(event);
 		
 	}
 
@@ -151,6 +152,9 @@ public final class Engine implements Runnable {
 			
 			
 			debug(TAG, "Application started");
+			
+			Engine.debug(TAG, "WIDTH & HEIGHT FOR CONVERTER : " + graphics.getWidth() + "/" + graphics.getHeight());
+			this.converter = new CoordinateConverter(graphics.getWidth(), graphics.getHeight(), 10);
 
 			debug(TAG, "Create Game");
 			getGame().create(this);
@@ -162,7 +166,7 @@ public final class Engine implements Runnable {
 				/**
 				 * May need to implements QoS in Runnable execution.
 				 */
-				/*if(!getRunnables().isEmpty()) {
+				if(!getRunnables().isEmpty()) {
 					
 					long start = System.currentTimeMillis();
 					Runnable next;
@@ -176,7 +180,7 @@ public final class Engine implements Runnable {
 					}
 					
 					executionTime = (int) (System.currentTimeMillis() - start);
-				}*/
+				}
 				
 				try {
 					

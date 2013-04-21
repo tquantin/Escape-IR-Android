@@ -33,7 +33,8 @@ public final class Loop implements Gesture {
 		int coeff = 25;
 		Input maxX = start;
 		Input minX = start;
-		for(Input event : events) {
+		for(int i = 0; i < events.size(); i++) {
+			Input event = events.get(i);
 			if(event.getX() > maxX.getX()) maxX = event;
 			if(event.getX() < minX.getX()) minX = event;
 		}
@@ -54,7 +55,8 @@ public final class Loop implements Gesture {
 		
 		int smallRad = radius - (radius*faultTolerance/100);
 		int bigRad = radius + (radius*faultTolerance/100);
-		for(Input event : events) {
+		for(int i = 0; i < events.size(); i++) {
+			Input event = events.get(i);
 			double dist = Math.sqrt(Math.pow(event.getX()-cx, 2)+Math.pow(event.getY()-cy, 2));
 			if(dist < smallRad || dist > bigRad) return false;
 		}
