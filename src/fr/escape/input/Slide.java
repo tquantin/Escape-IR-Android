@@ -41,7 +41,8 @@ public class Slide implements Gesture {
   		if(cd < COEFFDIR && cd > -COEFFDIR) {
   			double pUp = (end.getY() + faultTolerance) - (cd * (end.getX() + faultTolerance));
       		double pDown = (end.getY() - faultTolerance) - (cd * (end.getX() - faultTolerance));
-      		for(Input event : events) {
+      		for(int i = 0; i < events.size(); i++) {
+      			Input event = events.get(i);
       			double yUp = cd * event.getX() + pUp;
       			double yDown = cd * event.getX() + pDown;
       			if(event.getY() > yUp || event.getY() < yDown) 

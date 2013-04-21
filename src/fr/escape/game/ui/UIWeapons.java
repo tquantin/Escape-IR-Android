@@ -11,7 +11,7 @@
 
 package fr.escape.game.ui;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Color;
@@ -93,7 +93,7 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 		this.y = OVERLAY_TOP_MARGING;
 		this.x = this.width - (Weapons.getDrawableWidth() + ITEM_LEFT_MARGING + ITEM_RIGHT_MARGING);
 		
-		this.touchArea = new LinkedList<Rect>();
+		this.touchArea = new ArrayList<Rect>();
 		
 		int offset = this.y;
 		for(int i = 0; i < weapons.size(); i++) {
@@ -116,7 +116,8 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 	public void render(long delta) {
 
 		int offset = this.y;
-		for(Weapon w : weapons) {
+		for(int i = 0; i < weapons.size(); i++) {
+			Weapon w = weapons.get(i);
 			
 			offset += ITEM_TOP_MARGING;
 			
@@ -142,9 +143,8 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 	@Override
 	public boolean touch(Input touch) {
 		
-		int i = 0;
-		
-		for(Rect rectangle : touchArea) {
+		for(int i = 0; i < touchArea.size(); i++) {
+			Rect rectangle = touchArea.get(i);
 			if(rectangle.contains(touch.getX(), touch.getY())) {
 				Weapon w = weapons.get(i);
 				if(!w.isEmpty()) {
@@ -153,7 +153,6 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 				}
 				return true;
 			}
-			i++;
 		}
 		
 		return false;

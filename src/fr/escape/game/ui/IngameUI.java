@@ -12,7 +12,6 @@
 package fr.escape.game.ui;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fr.escape.Objects;
 import fr.escape.app.Input;
@@ -30,7 +29,7 @@ public final class IngameUI extends AbstractOverlay {
 	/**
 	 * List of Overlay
 	 */
-	private final List<Overlay> overlays;
+	private final ArrayList<Overlay> overlays;
 	
 	/**
 	 * Default Constructor
@@ -62,8 +61,8 @@ public final class IngameUI extends AbstractOverlay {
 	@Override
 	public void render(long delta) {
 		if(isVisible()) {
-			for(Overlay o : overlays) {
-				o.render(delta);
+			for(int i = 0; i < overlays.size(); i++) {
+				overlays.get(i).render(delta);
 			}
 		}
 	}
@@ -71,16 +70,16 @@ public final class IngameUI extends AbstractOverlay {
 	@Override
 	public void show() {
 		super.show();
-		for(Overlay o : overlays) {
-			o.show();
+		for(int i = 0; i < overlays.size(); i++) {
+			overlays.get(i).show();
 		}
 	}
 
 	@Override
 	public void hide() {
 		super.hide();
-		for(Overlay o : overlays) {
-			o.hide();
+		for(int i = 0; i < overlays.size(); i++) {
+			overlays.get(i).hide();
 		}
 	}
 
@@ -90,8 +89,8 @@ public final class IngameUI extends AbstractOverlay {
 		Objects.requireNonNull(touch);
 		
 		if(isVisible()) {
-			for(Overlay o : overlays) {
-				if(o.touch(touch)) {
+			for(int i = 0; i < overlays.size(); i++) {
+				if(overlays.get(i).touch(touch)) {
 					return true;
 				}
 			}
@@ -105,8 +104,8 @@ public final class IngameUI extends AbstractOverlay {
 		Objects.requireNonNull(move);
 		
 		if(isVisible()) {
-			for(Overlay o : overlays) {
-				if(o.touch(move)) {
+			for(int i = 0; i < overlays.size(); i++) {
+				if(overlays.get(i).touch(move)) {
 					return true;
 				}
 			}

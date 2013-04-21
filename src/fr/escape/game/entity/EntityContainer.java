@@ -11,9 +11,9 @@
 
 package fr.escape.game.entity;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 
 import org.jbox2d.dynamics.World;
 
@@ -45,7 +45,7 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	private final World world;
 	private final Rect edge;
 	private final LinkedHashSet<Entity> entities;
-	private final LinkedList<Entity> destroyed;
+	private final ArrayList<Entity> destroyed;
 	
 	/**
 	 * Default Constructor
@@ -59,7 +59,7 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 		this.world = world;
 		this.edge = new Rect(-margin, -margin, engine.getGraphics().getWidth() + margin, engine.getGraphics().getHeight() + margin);
 		this.entities = new LinkedHashSet<Entity>();
-		this.destroyed = new LinkedList<Entity>();
+		this.destroyed = new ArrayList<Entity>();
 		
 		Engine.debug(TAG, "EntityContainer created");
 		
@@ -104,7 +104,9 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	@Override
 	public void update(Graphics graphics, long delta) {
 		Objects.requireNonNull(graphics);
-		for(Entity e : entities) {
+		Object[] aEntities = entities.toArray();
+		for(int i = 0; i < aEntities.length; i++) {
+			Entity e = (Entity) aEntities[i];
 			if(e.getBody() != null)
 				e.update(graphics, delta);
 		}
@@ -142,7 +144,8 @@ public final class EntityContainer implements Updateable, KillNotifier, EdgeNoti
 	 */
 	public boolean flush() {
 		
-		for(Entity e : destroyed) {
+		for(int i = 0; i < destroyed.size(); i++) {
+			Entity e = destroyed.get(i);
 			Engine.debug(TAG, "Remove Entity: "+e+" "+((remove(e)?"[DONE]":"[FAIL]")));
 			if(e.getBody() != null) {
 				world.destroyBody(e.getBody());

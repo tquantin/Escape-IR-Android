@@ -314,8 +314,8 @@ public abstract class AbstractShip implements Ship {
 		getBody().setTransform(new Vec2(x, y), getBody().getAngle());
 		
 		// Reset All Weapons
-		for(Weapon w : getAllWeapons()) {
-			if(!w.reset()) {
+		for(int i = 0; i < weapons.size(); i++) {
+			if(!weapons.get(i).reset()) {
 				return false;
 			}
 		}

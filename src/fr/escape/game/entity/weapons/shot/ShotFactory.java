@@ -155,7 +155,9 @@ public final class ShotFactory {
 		fixture.filter.categoryBits = 0x0008;
 		fixture.filter.maskBits = MASK;
 		
-		Body body = world.createBody(bodyDef);
+		Body body = null;
+		//TODO : voir comment corriger ça autrement - createBody retourne null si le world.step est en cours.
+		while(body == null) body = world.createBody(bodyDef);
 		body.createFixture(fixture);
 
 		Shot shot = new MissileShot(engine, body, entityContainer, COLLISION_BEHAVIOR);
