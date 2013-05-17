@@ -47,8 +47,6 @@ public final class Menu implements Screen {
 	private final Rect gridArea;
 	private final Rect touchArea;
 	
-	private final Runnable newGame;
-	
 	/**
 	 * Default Constructor
 	 * 
@@ -68,15 +66,6 @@ public final class Menu implements Screen {
 		this.gridArea = createGrid(game.getGraphics());
 		this.touchArea = createTouch(gridArea);
 		
-		this.newGame = new Runnable() {
-			
-			@Override
-			public void run() {
-				next();	
-			}
-			
-		};
-		
 	}
 	
 	@Override
@@ -84,7 +73,7 @@ public final class Menu implements Screen {
 		//TODO : Fix touchArea.contains
 		//if(touchArea.contains(i.getX(), i.getY())) {
 			Engine.log(TAG, "User Launch: NEW_GAME");
-			game.getEngine().post(newGame);
+			next();
 			return true;
 		//}
 		
@@ -126,14 +115,12 @@ public final class Menu implements Screen {
 		 */
 		game.getGraphics().draw(background, 0, 0, width, heigth, srcX, srcY, srcWidth, srcHeigth);
 		
-		Screens.drawStringInCenterPosition(
-				game.getGraphics(), TITLE, 
-				(game.getGraphics().getWidth() / 2), HEADER_MARGING, 
-				fontH1, Color.WHITE);
+		game.getGraphics().draw(grid, centerXScreen - (grid.getWidth() / 2), centerYScreen - (grid.getHeight() / 2));
 		
-		game.getGraphics().draw(grid, gridArea.left, gridArea.top, gridArea.right, gridArea.bottom);
+		Screens.drawStringInCenterPosition(game.getGraphics(), TITLE, centerXScreen, HEADER_MARGING, fontH1, Color.WHITE);
 		
 		Screens.drawStringInCenterPosition(game.getGraphics(), NEW_GAME, touchArea.centerX(), touchArea.centerY(), fontH3, Color.BLACK);		
+		
 		Screens.drawStringInCenterPosition(
 				game.getGraphics(), FOOTER, 
 				(game.getGraphics().getWidth() / 2),
