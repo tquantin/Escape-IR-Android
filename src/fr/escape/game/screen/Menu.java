@@ -76,6 +76,7 @@ public final class Menu implements Screen {
 			}
 			
 		};
+		
 	}
 	
 	@Override
@@ -97,7 +98,33 @@ public final class Menu implements Screen {
 
 	@Override
 	public void render(long delta) {
-		game.getGraphics().draw(background, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight());
+		
+		/**
+		 * Fetch Graphics Width and Height
+		 */
+		int width = game.getGraphics().getWidth();
+		int heigth = game.getGraphics().getHeight();
+		
+		/**
+		 * Compute Center for Graphics Screen and Background, once.
+		 */
+		int centerXScreen = width / 2;
+		int centerYScreen = heigth / 2;
+		int centerXBackground = background.getWidth() / 2;
+		int centerYBackground = background.getHeight() / 2;
+		
+		/**
+		 * Compute srcX, srcY, srcWidth and srcHeight to apply a center effect on Background.
+		 */
+		int srcX = Math.max(0, centerXBackground - centerXScreen);
+		int srcY = Math.max(0, centerYBackground - centerYScreen);
+		int srcWidth = Math.min(background.getWidth(), srcX + width);
+		int srcHeigth = Math.min(background.getHeight(), srcY + heigth);
+		
+		/**
+		 * Draw Background
+		 */
+		game.getGraphics().draw(background, 0, 0, width, heigth, srcX, srcY, srcWidth, srcHeigth);
 		
 		Screens.drawStringInCenterPosition(
 				game.getGraphics(), TITLE, 
@@ -120,7 +147,7 @@ public final class Menu implements Screen {
 	}
 
 	@Override
-	public void hide() { /**/ }
+	public void hide() { /* NOTHING TO DO */ }
 
 	/**
 	 * Create a Touch Components inside the Grid.
