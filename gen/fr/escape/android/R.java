@@ -68,8 +68,15 @@ public final class R {
         public static final int wuiactivated=0x7f020036;
         public static final int wuidisabled=0x7f020037;
     }
+    public static final class id {
+        public static final int builderlayout=0x7f050001;
+        public static final int builderscroll=0x7f050000;
+    }
+    public static final class layout {
+        public static final int activity_builder=0x7f030000;
+    }
     public static final class string {
-        public static final int app_name=0x7f030001;
-        public static final int font_visitor=0x7f030000;
+        public static final int app_name=0x7f040001;
+        public static final int font_visitor=0x7f040000;
     }
 }

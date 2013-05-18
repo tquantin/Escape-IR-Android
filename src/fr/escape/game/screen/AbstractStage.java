@@ -54,9 +54,6 @@ public abstract class AbstractStage implements Screen {
 	
 	private float distanceX;
 	private float distanceY;
-
-	private List<Input> activeEvents;
-	//private long activeEventTime;
 	
 	/**
 	 * Default Constructor
@@ -71,11 +68,9 @@ public abstract class AbstractStage implements Screen {
         
 	}
 	
-	//TODO : need to fix stage
 	@Override
 	public void render(long delta) {
 		time += delta;
-		//activeEventTime += delta;
 		
 		float percent = ((float) time) / (getStage().getEstimatedScenarioTime() * 1000);
 
@@ -99,20 +94,6 @@ public abstract class AbstractStage implements Screen {
 		getStage().update((int) (time / 1000));
 		
 		game.getEntityContainer().update(game.getGraphics(), delta);
-		
-		//TODO : remove ???
-		/*if(!events.isEmpty()) {
-			activeEvents = Screens.drawEventsOnScreen(game.getGraphics(), events, Color.WHITE);
-			activeEventTime = 0;
-		}
-		
-		if(events.isEmpty() && activeEvents != null) {
-			Screens.drawEventsOnScreen(game.getGraphics(), activeEvents, Color.GREEN);
-		}
-		
-		if(activeEventTime > MAX_ACTIVE_EVENT_TIME) {
-			activeEvents = null;
-		}*/
 		
 		game.getEntityContainer().flush();
 		game.getEngine().post(new Runnable() {
@@ -149,10 +130,6 @@ public abstract class AbstractStage implements Screen {
 		time = 0;
 		getStage().start();
 		
-		if(activeEvents != null) {
-			activeEvents.clear();
-		}
-		//activeEventTime = 0;
 		events.clear();
 		
 		float x = game.getEngine().getConverter().toMeterX(game.getGraphics().getWidth() / 2);
