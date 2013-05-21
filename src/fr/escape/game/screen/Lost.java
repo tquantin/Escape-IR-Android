@@ -65,7 +65,7 @@ public final class Lost implements Screen {
 	@Override
 	public boolean touch(Input i) {
 		Engine.debug(TAG, "User click: Go on Menu Screen");
-		game.setMenuScreen();
+		game.setScreenID(Escape.SCREEN_MENU);
 		return true;
 	}
 

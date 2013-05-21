@@ -105,7 +105,7 @@ public final class Victory implements Screen {
 	 */
 	public void next() {
 		game.getUser().setHighscore(0);
-		game.setMenuScreen();
+		game.setScreenID(Escape.SCREEN_MENU);
 	}
 	
 }

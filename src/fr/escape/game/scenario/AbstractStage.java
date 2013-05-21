@@ -24,6 +24,7 @@ import fr.escape.game.entity.ships.ShipFactory;
  * This class provide a skeletal implementation of any {@link Ship} in the game.
  */
 public abstract class AbstractStage implements Stage {
+	
 	private static final float BOSS_SPAWN_X = 5.0f;
 	private static final float BOSS_SPAWN_Y = 0.0f;
 	

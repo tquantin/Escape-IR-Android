@@ -1,6 +1,6 @@
 /*****************************************************************************
  * 
- * Copyright 2012 See AUTHORS file.
+ * Copyright 2012-2013 See AUTHORS file.
  * 
  * This file is part of Escape-IR.
  * 
@@ -35,9 +35,12 @@ import fr.escape.resources.TextureLoader;
  * Display a Screen which handle Game Stage.
  * 
  */
-public abstract class AbstractStage implements Screen {
+public final class Level implements Screen {
 	
-	private final static String TAG = AbstractStage.class.getSimpleName();
+	/**
+	 * Class TAG
+	 */
+	private final static String TAG = Level.class.getSimpleName();
 	
 	//private final static int MAX_ACTIVE_EVENT_TIME = 1337;
 	private final static long STAR_SPEED = 5000;
@@ -45,6 +48,24 @@ public abstract class AbstractStage implements Screen {
 	private final Escape game;
 	private final ScrollingTexture star;
 	private final ArrayList<Input> events;
+	
+	private final Stage stage;
+	private final ScrollingTexture background;
+	
+	/**
+	 * Check the end of the current Stage/Level
+	 */
+	private final Runnable finish;
+	
+	/**
+	 * Intro Screen ID
+	 */
+	private final int intro;
+	
+	/**
+	 * Next Screen ID
+	 */
+	private final int next;
 	
 	private long time;
 	private float[] velocity = {0, 0, 0, 0};
@@ -63,12 +84,25 @@ public abstract class AbstractStage implements Screen {
 	 * 
 	 * @param game Escape Game
 	 */
-	public AbstractStage(Escape game) {
+	public Level(Escape game, Stage stage, ScrollingTexture background, int intro, int next) {
 		
 		this.game = Objects.requireNonNull(game);
 		this.star = new RepeatableScrollingTexture(game.getResources().getTexture(TextureLoader.OVERLAY_STAR), true);
         this.events = new ArrayList<Input>();
-        
+        this.stage = Objects.requireNonNull(stage);
+        this.background = Objects.requireNonNull(background);
+        this.intro = intro;
+        this.next = next;
+        this.finish = new Runnable() {
+
+			@Override
+			public void run() {
+				if(getStage().hasFinished()) {
+					next();
+				}
+			}
+        	
+        };
 	}
 	
 	//TODO : need to fix stage
@@ -114,21 +148,22 @@ public abstract class AbstractStage implements Screen {
 			activeEvents = null;
 		}*/
 		
+		/**
+		 * Flush Entity Container
+		 */
 		game.getEntityContainer().flush();
-		game.getEngine().post(new Runnable() {
-			@Override
-			public void run() {
-				if(getStage().hasFinished()) {
-					next();
-				}
-			}
-		});
+		
+		/**
+		 * Does the game is finished ?
+		 */
+		game.getEngine().post(finish);
+		
 	}
 
 	/**
 	 * Get the Game used for this Abstract Stage
 	 * 
-	 * @return Game linked to the {@link AbstractStage}
+	 * @return Game linked to the {@link Level}
 	 */
 	protected Escape getGame() {
 		return game;
@@ -138,7 +173,9 @@ public abstract class AbstractStage implements Screen {
 	 * Triggered when we need to go on the next Screen 
 	 * in Game Lifecycle.
 	 */
-	protected abstract void next();
+	protected void next() {
+		game.setScreenID(getNextScreen());
+	}
 	
 	@Override
 	public void show() {
@@ -180,6 +217,7 @@ public abstract class AbstractStage implements Screen {
 
 	@Override
 	public boolean touch(Input i) {
+		
 		Objects.requireNonNull(i);
 		boolean fire = (Math.abs(i.getXVelocity()) > 3000 || Math.abs(i.getYVelocity()) > 3000);
 		
@@ -235,17 +273,39 @@ public abstract class AbstractStage implements Screen {
 	}
 
 	/**
-	 * Get the Stage used for this {@link AbstractStage}
+	 * Get the Stage used for this {@link Level}
 	 * 
 	 * @return Stage
 	 */
-	protected abstract Stage getStage();
-	
+	Stage getStage() {
+		return stage;
+	}
+
 	/**
-	 * Get the Scrolling Texture used for this {@link AbstractStage} 
+	 * Get the Scrolling Texture used for this {@link Level} 
 	 * 
 	 * @return Background used for this Screen
 	 */
-	protected abstract ScrollingTexture getBackground();
+	ScrollingTexture getBackground() {
+		return background;
+	}
+	
+	/**
+	 * Get the Intro Screen ID associated with this Level
+	 * 
+	 * @return Intro Screen ID
+	 */
+	public int getIntroScreen() {
+		return intro;
+	}
+	
+	/**
+	 * Get the Next Screen ID associated with this Level
+	 * 
+	 * @return Next Screen ID
+	 */
+	public int getNextScreen() {
+		return next;
+	}
 	
 }

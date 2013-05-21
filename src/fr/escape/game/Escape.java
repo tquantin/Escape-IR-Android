@@ -35,11 +35,10 @@ import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.entity.ships.ShipFactory;
 import fr.escape.game.entity.weapons.shot.ShotFactory;
 import fr.escape.game.scenario.GameStage;
-import fr.escape.game.scenario.Stage;
-import fr.escape.game.screen.AbstractIntro;
+import fr.escape.game.screen.Intro;
 import fr.escape.game.screen.Lost;
 import fr.escape.game.screen.Menu;
-import fr.escape.game.screen.AbstractStage;
+import fr.escape.game.screen.Level;
 import fr.escape.game.screen.Error;
 import fr.escape.game.screen.Victory;
 import fr.escape.game.ui.IngameUI;
@@ -71,6 +70,25 @@ import fr.escape.resources.scenario.ScenarioLoader;
  * 
  */
 public final class Escape implements LifeListener, RenderListener, EventListener {
+	
+	/**
+	 * Class TAG
+	 */
+	private static final String TAG = Escape.class.getSimpleName();
+	
+	/**
+	 * Screen ID
+	 */
+	public static final int SCREEN_NEW_GAME = 0;
+	public static final int SCREEN_VICTORY = 1;
+	public static final int SCREEN_LOST = 2;
+	public static final int SCREEN_EARTH = 3;
+	public static final int SCREEN_JUPITER = 4;
+	public static final int SCREEN_MOON = 5;
+	public static final int SCREEN_INTRO_EARTH = 6;
+	public static final int SCREEN_INTRO_JUPITER = 7;
+	public static final int SCREEN_INTRO_MOON = 8;
+	public static final int SCREEN_MENU = 9;
 	
 	/**
 	 * Player Model
@@ -142,7 +160,9 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	 */
 	public void create(Engine engine) {
 		try {
-			Engine.debug("ESCAPE", "CREATE ESCAPE");
+			
+			Engine.debug(TAG, "Creating Escape Environment");
+			
 			// Set Engine
 			setEngine(engine);
 			
@@ -151,15 +171,13 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 			world.setContactListener(new CollisionDetector(getUser()));
 			setWorld(world);
 			
-			// TODO Fix it
-			
-			//Top Wall
+			// Top Wall
 			createWall(world,engine.getConverter().toMeterX(getGraphics().getWidth() / 2),0.0f,false); 
-			//Bottom Wall
+			// Bottom Wall
 			createWall(world,engine.getConverter().toMeterX(getGraphics().getWidth() / 2),engine.getConverter().toMeterY(getGraphics().getHeight()) + 2.0f,false);
-			//Left Wall
+			// Left Wall
 			createWall(world,-1.0f,engine.getConverter().toMeterY(getGraphics().getHeight() / 2),true);
-			//Right Wall
+			// Right Wall
 			createWall(world,11.0f,engine.getConverter().toMeterY(getGraphics().getHeight() / 2),true);
 			
 			// Create Entity Container
@@ -183,14 +201,13 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 			createScreen();
 			
 			// Show Entry Screen
-			setMenuScreen();
+			setScreenID(SCREEN_MENU);
 			
 		} catch(Exception e) {
 			error = new Error(this);
-			Engine.error("Escape", "Exception raised during create()", e);
+			Engine.error(TAG, "An error has occurred during create()", e);
 			setScreen(error);
 		}
-		
 	}
 
 	/**
@@ -280,6 +297,61 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	}
 	
 	/**
+	 * Set a new active {@link Screen} by this ID.
+	 * 
+	 * @param id {@link Screen} ID to display.
+	 */
+	public void setScreenID(int id) {
+		switch (id) {
+			case SCREEN_NEW_GAME: {
+				setScreen(introJupiter);
+				break;
+			}
+			case SCREEN_VICTORY: {
+				setScreen(victory);
+				break;
+			}
+			case SCREEN_LOST: {
+				setScreen(lost);
+				break;
+			}
+			case SCREEN_EARTH: {
+				setScreen(earth);
+				break;
+			}
+			case SCREEN_JUPITER: {
+				setScreen(jupiter);
+				break;
+			}
+			case SCREEN_MOON: {
+				setScreen(moon);
+				break;
+			}
+			case SCREEN_INTRO_EARTH: {
+				setScreen(introEarth);
+				break;
+			}
+			case SCREEN_INTRO_JUPITER: {
+				setScreen(introJupiter);
+				break;
+			}
+			case SCREEN_INTRO_MOON: {
+				setScreen(introMoon);
+				break;
+			}
+			case SCREEN_MENU: {
+				setScreen(menu);
+				break;
+			}
+			default: {
+				Engine.error(TAG, "Unknown Screen ID: "+id);
+				break;	
+			}
+			
+		}
+	}
+	
+	/**
 	 * Set a new active {@link Screen}.
 	 * 
 	 * @param screen {@link Screen} to display.
@@ -364,20 +436,17 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 		Screen screen = getScreen();
 		
 		// Check if we should display Intro Screen
-		
-		if(screen == jupiter) {
-			screen = introJupiter;
+		if(screen == jupiter || screen == moon || screen == earth) {
+			
+			// Change the Screen by given ID
+			setScreenID(((Level) screen).getIntroScreen());
+			
+		} else {
+			
+			// Execute a Refresh with hide/show mechanism.
+			setScreen(screen);
+			
 		}
-		
-		if(screen == moon) {
-			screen = introMoon;
-		}
-		
-		if(screen == earth) {
-			screen = introEarth;
-		}
-		
-		setScreen(screen);
 	}
 
 	@Override
@@ -386,54 +455,9 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 		float x = engine.getConverter().toMeterX(getGraphics().getWidth() / 2);
 		float y = engine.getConverter().toMeterY(getGraphics().getHeight() - 100);
 		
-		getUser().reset(x,y);
+		getUser().reset(x, y);
 		setScreen(lost);
-	}
-	
-	/**
-	 * Update the current Screen by using Menu
-	 */
-	public void setMenuScreen() {
-		setScreen(menu);
-	}
-	
-	/**
-	 * Update the current Screen by starting a New Game
-	 */
-	public void setNewGameScreen() {
-		setIntroJupiterScreen();
-	}
-	
-	public void setVictoryScreen() {
-		setScreen(victory);
-	}
-	
-	public void setLostScreen() {
-		setScreen(lost);
-	}
-	
-	public void setEarthScreen() {
-		setScreen(earth);	
-	}
-	
-	public void setJupiterScreen() {
-		setScreen(jupiter);
-	}
-	
-	public void setMoonScreen() {
-		setScreen(moon);
-	}
-	
-	public void setIntroEarthScreen() {
-		setScreen(introEarth);
-	}
-	
-	public void setIntroJupiterScreen() {
-		setScreen(introJupiter);
-	}
-	
-	public void setIntroMoonScreen() {
-		setScreen(introMoon);
+		
 	}
 	
 	/**
@@ -467,7 +491,9 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	 * Create a Player Ship
 	 */
 	private void createPlayerShip() {
-		Engine.debug("ESCAPE", "CREATE PLAYER SHIP AT : " + engine.getConverter().toMeterX(getGraphics().getWidth() / 2) + "/" + engine.getConverter().toMeterY(getGraphics().getHeight() - 100));
+		
+		Engine.debug(TAG, "CREATE PLAYER SHIP AT : " + engine.getConverter().toMeterX(getGraphics().getWidth() / 2) + "/" + engine.getConverter().toMeterY(getGraphics().getHeight() - 100));
+		
 		Ship ship = getShipFactory().createPlayer(
 				engine.getConverter().toMeterX(getGraphics().getWidth() / 2), 
 				engine.getConverter().toMeterY(getGraphics().getHeight() - 100)
@@ -512,100 +538,36 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	 * Create Screen
 	 */
 	private void createScreen() {
-		final Engine engine = this.engine;
+		
+		/**
+		 * Common Screen
+		 */
 		lost = new Lost(this);
 		menu = new Menu(this);
 		victory = new Victory(this);
 		
-		jupiter = new AbstractStage(this) {
-			private final Stage stage = new GameStage(engine, getWorld(), getEntityContainer(), ScenarioLoader.JUPITER, getShipFactory(), 40, 0);
-			private final ScrollingTexture background = new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_JUPITER), true);
-			
-			@Override
-			protected void next() {
-				Escape.this.setIntroMoonScreen();
-			}
-
-			@Override
-			protected Stage getStage() {
-				return stage;
-			}
-
-			@Override
-			protected ScrollingTexture getBackground() {
-				return background;
-			}
-			
-		};
+		/**
+		 * Intro Screen
+		 */
+		introJupiter = new Intro(this, getResources().getTexture(TextureLoader.INTRO_JUPITER), SCREEN_JUPITER);
+		introMoon = new Intro(this, getResources().getTexture(TextureLoader.INTRO_MOON), SCREEN_MOON);
+		introEarth = new Intro(this, getResources().getTexture(TextureLoader.INTRO_EARTH), SCREEN_EARTH);
 		
-		moon = new AbstractStage(this) {
-			private final Stage stage = new GameStage(engine, getWorld(), getEntityContainer(), ScenarioLoader.MOON, getShipFactory(), 55, 1);
-			private final ScrollingTexture background = new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_MOON), true);
-			
-			@Override
-			protected void next() {
-				Escape.this.setIntroEarthScreen();
-			}
-			
-			@Override
-			protected Stage getStage() {
-				return stage;
-			}
-			
-			@Override
-			protected ScrollingTexture getBackground() {
-				return background;
-			}
-			
-		};
+		/**
+		 * Level Screen
+		 */
+		jupiter = new Level(this, new GameStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.JUPITER, getShipFactory(), 40, 0), 
+				new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_JUPITER), true), 
+				SCREEN_INTRO_JUPITER, SCREEN_INTRO_MOON);
 		
-		earth = new AbstractStage(this) {
-			private final Stage stage = new GameStage(engine, getWorld(), getEntityContainer(), ScenarioLoader.EARTH, getShipFactory(), 52, 2);
-			private final ScrollingTexture background = new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_EARTH), true);
-			
-			@Override
-			protected void next() {
-				Escape.this.setVictoryScreen();
-			}
-			
-			@Override
-			protected Stage getStage() {
-				return stage;
-			}
-			
-			@Override
-			protected ScrollingTexture getBackground() {
-				return background;
-			}
-			
-		};
+		moon = new Level(this, new GameStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.MOON, getShipFactory(), 55, 1),
+				new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_MOON), true),
+				SCREEN_INTRO_MOON, SCREEN_INTRO_EARTH);
 		
-		introJupiter = new AbstractIntro(this, getResources().getTexture(TextureLoader.INTRO_JUPITER)) {
-
-			@Override
-			public void next() {
-				setJupiterScreen();
-			}
-			
-		};
+		earth = new Level(this, new GameStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.EARTH, getShipFactory(), 52, 2),
+				new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_EARTH), true),
+				SCREEN_INTRO_EARTH, SCREEN_VICTORY);
 		
-		introMoon = new AbstractIntro(this, getResources().getTexture(TextureLoader.INTRO_MOON)) {
-
-			@Override
-			public void next() {
-				setMoonScreen();
-			}
-			
-		};
-		
-		introEarth = new AbstractIntro(this, getResources().getTexture(TextureLoader.INTRO_EARTH)) {
-
-			@Override
-			public void next() {
-				setEarthScreen();
-			}
-			
-		};
 	}
 	
 }

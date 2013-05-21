@@ -169,7 +169,7 @@ public final class Menu implements Screen {
 	 * @see Escape#setNewGameScreen()
 	 */
 	public void next() {
-		game.setNewGameScreen();
+		game.setScreenID(Escape.SCREEN_NEW_GAME);
 	}
 	
 }

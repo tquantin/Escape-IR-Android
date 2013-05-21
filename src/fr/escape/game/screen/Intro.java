@@ -20,15 +20,15 @@ import fr.escape.resources.TextureLoader;
 
 /**
  * <p>
- * An abstract Class for Intro Screen.
+ * A Class for Intro Screen.
  * 
  */
-public abstract class AbstractIntro implements Screen {
+public final class Intro implements Screen {
 	
 	private final static long WAIT = 3000;
 	
 	private final Escape game;
-	private final Runnable next;
+	private final int next;
 	private final Texture drawable;
 	private final Texture background;
 	
@@ -39,20 +39,15 @@ public abstract class AbstractIntro implements Screen {
 	 * 
 	 * @param game Escape Game
 	 * @param drawable Drawable Icon for Intro
+	 * @param next Action to execute after end of this Screen
 	 */
-	public AbstractIntro(Escape game, Texture drawable) {
+	public Intro(Escape game, Texture drawable, int next) {
 		
 		this.game = Objects.requireNonNull(game);
 		this.drawable = Objects.requireNonNull(drawable);
 		this.background = game.getResources().getTexture(TextureLoader.BACKGROUND_INTRO);
-		this.next = new Runnable() {
-			
-			@Override
-			public void run() {
-				next();
-			}
-			
-		};
+		this.next = next;
+		
 	}
 	
 	@Override
@@ -68,7 +63,7 @@ public abstract class AbstractIntro implements Screen {
 		game.getGraphics().draw(drawable, x, y);
 		
 		if(time > WAIT) {
-			game.getEngine().post(next);
+			game.setScreenID(next);
 		}
 		
 	}
@@ -93,7 +88,5 @@ public abstract class AbstractIntro implements Screen {
 	public boolean move(Input i) {
 		return false;
 	}
-
-	public abstract void next();
 	
 }
