@@ -33,7 +33,6 @@ public class Weapons {
 	public static final int SHIBOLEET_ID = FIREBALL_ID + 1;
 	public static final int BLACKHOLE_ID = SHIBOLEET_ID + 1;
 	
-	//TODO : pose probleme la valeur doit être a 52 sur l'emulateur et 60 sur mon telephone
 	private static final int WIDTH = 40;
 	private static final int HEIGHT = 40;
 	

@@ -164,8 +164,11 @@ public final class ScenarioParser {
 			
 			int shipID = Integer.parseInt(inputConfig[SECTION_2_SHIP_ID]);
 			int shipType = Integer.parseInt(inputConfig[SECTION_2_SHIP_TYPE]);
-			float shipX = Float.parseFloat(inputConfig[SECTION_2_SHIP_X]);
-			float shipY = Float.parseFloat(inputConfig[SECTION_2_SHIP_Y]);
+			
+			String[] tmp = inputConfig[SECTION_2_SHIP_X].split("/");
+			float shipX = Float.parseFloat(tmp[0]);
+			tmp = inputConfig[SECTION_2_SHIP_Y].split("/");
+			float shipY = Float.parseFloat(tmp[0]);
 			
 			Ship ship = factory.createShipForScenario(shipType, shipX, shipY);
 			
