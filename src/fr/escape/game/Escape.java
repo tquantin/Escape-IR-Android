@@ -556,15 +556,15 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 		/**
 		 * Level Screen
 		 */
-		jupiter = new Level(this, new GameStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.JUPITER, getShipFactory(), 40, 0), 
+		jupiter = new Level(this, new GameStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.JUPITER, getShipFactory(), 40, 0, true), 
 				new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_JUPITER), true), 
 				SCREEN_INTRO_JUPITER, SCREEN_INTRO_MOON);
 		
-		moon = new Level(this, new GameStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.MOON, getShipFactory(), 55, 1),
+		moon = new Level(this, new GameStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.MOON, getShipFactory(), 55, 1, true),
 				new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_MOON), true),
 				SCREEN_INTRO_MOON, SCREEN_INTRO_EARTH);
 		
-		earth = new Level(this, new GameStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.EARTH, getShipFactory(), 52, 2),
+		earth = new Level(this, new GameStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.EARTH, getShipFactory(), 52, 2, true),
 				new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_EARTH), true),
 				SCREEN_INTRO_EARTH, SCREEN_VICTORY);
 		
