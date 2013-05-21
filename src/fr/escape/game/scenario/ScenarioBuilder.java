@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import android.graphics.Rect;
 import android.os.Environment;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.widget.ImageView;
 
 public class ScenarioBuilder {
 	public ArrayList<ShipInformations> ships;
@@ -19,27 +19,23 @@ public class ScenarioBuilder {
 	
 	public class ShipInformations {
 		public Rect area;
-		public float x;
-		public float y;
-		public int spawnTime;
-		public int type;
-		public ArrayList<MotionEvent> movements;
+		public float x, worldX;
+		public float y, worldY;
+		public int spawnTime, type;
+		public ArrayList<String> movements;
+		public ImageView image = null;
 		
-		public ShipInformations(float x, float y, int type, int spawnTime, int midWidth, int midHeight) {
-			this.x = x;
-			this.y = y;
+		public ShipInformations(float x, float worldX, float y, float worldY, int type, int spawnTime, int midWidth, int midHeight) {
+			this.x = x; this.worldX = worldX;
+			this.y = y; this.worldY = worldY;
 			this.type = type;
 			this.spawnTime = spawnTime;
-			this.movements = new ArrayList<MotionEvent>();
+			this.movements = new ArrayList<String>();
 			this.area = new Rect((int) x - midWidth, (int) y - midHeight, (int) x + midWidth, (int) y + midHeight);
 		}
 		
-		public void setArea(int midWidth, int midHeight) {
-			this.area.left = (int) x - midWidth;
-			this.area.top = (int) y -  midHeight;
-			this.area.right = (int) x + midWidth;
-			this.area.bottom = (int) y + midHeight;
-			Log.i("AREA", area.left + "/" + area.top + "/" + area.right + "/" + area.bottom);
+		public boolean contains(int x, int y) {
+			return area.contains(x, y);
 		}
 	}
 	
@@ -49,8 +45,8 @@ public class ScenarioBuilder {
 		this.ships = new ArrayList<ShipInformations>();
 	}
 	
-	public ShipInformations createShip(float x, float y, int type, int spawnTime, int midWidth, int midHeight) {
-		ShipInformations infos = new ShipInformations(x, y, type, spawnTime, midWidth, midHeight);
+	public ShipInformations createShip(float x, float worldX, float y, float worldY, int type, int spawnTime, int midWidth, int midHeight) {
+		ShipInformations infos = new ShipInformations(x, worldX, y, worldY, type, spawnTime, midWidth, midHeight);
 		ships.add(infos);
 		return infos;
 	}
@@ -70,8 +66,8 @@ public class ScenarioBuilder {
 		for(int i = 0; i < ships.size(); i++) {
 			ShipInformations infos = ships.get(i);
 			content.append(i + " " + infos.type);
-			content.append(" " + ((infos.x < 10.0f) ? f1.format(infos.x) : f2.format(infos.x)));
-			content.append(" " + ((infos.y < 10.0f) ? f1.format(infos.y) : f2.format(infos.y)) + "\n");
+			content.append(" " + ((infos.worldX < 10.0f) ? f1.format(infos.worldX) : f2.format(infos.worldX)) + "/" + infos.x);
+			content.append(" " + ((infos.worldY < 10.0f) ? f1.format(infos.worldY) : f2.format(infos.worldY)) + "/" + infos.y + "\n");
 		}
 		
 		content.append("%%\n");
@@ -81,10 +77,9 @@ public class ScenarioBuilder {
 			int time = infos.spawnTime;
 			content.append(time + " spawn " + i + "\n");
 			for(int j = 0; j < infos.movements.size(); j++) {
-				MotionEvent event = infos.movements.get(j);
+				String position = infos.movements.get(j);
 				content.append(++time + " move " + i);
-				content.append(" " + event.getX());
-				content.append(" " + event.getY() + "\n");
+				content.append(" " + position + "\n");
 			}
 		}
 		
@@ -98,7 +93,7 @@ public class ScenarioBuilder {
 			out.write(content.toString().getBytes());
 			out.close();
 		} catch (IOException e) { Log.e("SAVEDATA", e.getMessage()); } finally {
-			try { if(out != null) out.close(); } catch (IOException ioe) { /*TODO : log*/ }
+			try { if(out != null) out.close(); } catch (IOException ioe) { /*TODO ; log*/ }
 		}
 	}
 	
@@ -115,7 +110,20 @@ public class ScenarioBuilder {
 			in.read(buffer);
 			String content = new String(buffer);
 			Log.i("LOADDATA", content);
-		} catch (IOException e) { /*TODO : log*/ }
+		} catch (IOException e) { /*TODO ; log*/ }
+	}
+	
+	public ShipInformations selectShip(float x, float y) {
+		ShipInformations ship = null;
+		
+		for(int i = 0; i < ships.size(); i++) {
+			ShipInformations infos = ships.get(i);
+			if(infos.area.contains((int) x, (int) y)) {
+				ship = infos;
+			}
+		}
+		
+		return ship;
 	}
 	
 }

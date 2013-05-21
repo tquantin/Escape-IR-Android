@@ -11,12 +11,15 @@
 
 package fr.escape.resources;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.NoSuchElementException;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Environment;
 import android.util.SparseArray;
 
 import fr.escape.Objects;
@@ -215,13 +218,13 @@ public final class Resources {
 	 * @return Scenario
 	 * @throws NoSuchElementException
 	 */
-	public Scenario getScenario(String name, ShipFactory factory) {
+	public Scenario getScenario(String name, ShipFactory factory, boolean history) {
 		Objects.requireNonNull(name);
 		Objects.requireNonNull(factory);
 		checkIfLoaded();
 		try {
 			
-			ScenarioLoader loader = createScenarioLoader(name);//scenarioLoader.get(name);
+			ScenarioLoader loader = createScenarioLoader(name, history);
 			loader.addShipCreator(factory);
 			return loader.load();
 			
@@ -239,8 +242,7 @@ public final class Resources {
 	 * @param scenarioID Scenario name
 	 * @return ScenarioLoader which will load the Scenario
 	 */
-	private ScenarioLoader createScenarioLoader(final String scenarioID) {
-		// TODO Handle it !
+	private ScenarioLoader createScenarioLoader(final String scenarioID, final boolean history) {
 		return new ScenarioLoader() {
 			
 			private Scenario scenario = null;
@@ -251,7 +253,14 @@ public final class Resources {
 					
 					Engine.debug(TAG, "Load Scenario: "+scenarioID);
 					
-					InputStream stream = getContext().getAssets().open("level/"+scenarioID);//getInputStream(getPath()+"/"+scenarioID);
+					InputStream stream = null;
+					if(history) {
+						stream = getContext().getAssets().open("level/"+scenarioID);
+					} else {
+						File path = Environment.getExternalStoragePublicDirectory("EscapeIR/Scenario");
+						stream = new FileInputStream(new File(path,scenarioID));
+					}
+					
 					try {
 						scenario = ScenarioParser.parse(getShipCreator(), stream);
 					} finally {
