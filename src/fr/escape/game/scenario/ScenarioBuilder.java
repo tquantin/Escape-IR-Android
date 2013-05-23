@@ -14,8 +14,11 @@ import android.widget.ImageView;
 
 public class ScenarioBuilder {
 	public ArrayList<ShipInformations> ships;
+	public ShipInformations currentShip = null;
+	
 	public String name;
 	public int time;
+	public String background;
 	
 	public class ShipInformations {
 		public Rect area;
@@ -39,9 +42,7 @@ public class ScenarioBuilder {
 		}
 	}
 	
-	public ScenarioBuilder(String name, int time) {
-		this.name = name;
-		this.time = time;
+	public ScenarioBuilder() {
 		this.ships = new ArrayList<ShipInformations>();
 	}
 	
@@ -58,16 +59,13 @@ public class ScenarioBuilder {
 		DecimalFormat f1 = new DecimalFormat("0.0");
 		DecimalFormat f2 = new DecimalFormat("00.0");
 		
-		Log.i("SAVEDATE", "Path : " + path.getAbsolutePath());
-		Log.i("SAVEDATE", "File : " + scFile.getAbsolutePath());
-		
-		StringBuilder content = new StringBuilder("%%\n1\n%%\n1\n%%\n");
+		StringBuilder content = new StringBuilder("%%\n1 " + time + " " + background + "\n%%\n1\n%%\n");
 		
 		for(int i = 0; i < ships.size(); i++) {
 			ShipInformations infos = ships.get(i);
 			content.append(i + " " + infos.type);
-			content.append(" " + ((infos.worldX < 10.0f) ? f1.format(infos.worldX) : f2.format(infos.worldX)) + "/" + infos.x);
-			content.append(" " + ((infos.worldY < 10.0f) ? f1.format(infos.worldY) : f2.format(infos.worldY)) + "/" + infos.y + "\n");
+			content.append(" " + ((infos.worldX < 10.0f) ? f1.format(infos.worldX).replaceAll(",", ".") : f2.format(infos.worldX)).replaceAll(",", ".") + "/" + infos.x);
+			content.append(" " + ((infos.worldY < 10.0f) ? f1.format(infos.worldY).replaceAll(",", ".") : f2.format(infos.worldY)).replaceAll(",", ".") + "/" + infos.y + "\n");
 		}
 		
 		content.append("%%\n");
@@ -79,7 +77,7 @@ public class ScenarioBuilder {
 			for(int j = 0; j < infos.movements.size(); j++) {
 				String position = infos.movements.get(j);
 				content.append(++time + " move " + i);
-				content.append(" " + position + "\n");
+				content.append(" " + position.replaceAll(",", ".") + "\n");
 			}
 		}
 		
@@ -93,11 +91,11 @@ public class ScenarioBuilder {
 			out.write(content.toString().getBytes());
 			out.close();
 		} catch (IOException e) { Log.e("SAVEDATA", e.getMessage()); } finally {
-			try { if(out != null) out.close(); } catch (IOException ioe) { /*TODO ; log*/ }
+			try { if(out != null) out.close(); } catch (IOException ioe) { Log.e("ScenarioBuilder", "Erreur lors de la sauvegarde du fichier."); }
 		}
 	}
 	
-	public void loadData() {
+	public String loadData() {
 		File path = Environment.getExternalStoragePublicDirectory("EscapeIR/Scenario");
 		File scFile = new File(path,name + ".scn");
 		
@@ -108,9 +106,15 @@ public class ScenarioBuilder {
 			
 			in = new FileInputStream(scFile);
 			in.read(buffer);
-			String content = new String(buffer);
-			Log.i("LOADDATA", content);
-		} catch (IOException e) { /*TODO ; log*/ }
+			
+			return new String(buffer);
+		} catch (IOException e) {
+			Log.e("ScenarioBuilder", "Erreur lors du chargement du fichier.");
+		} finally {
+			try { if(in != null) in.close(); } catch (IOException e) { /*Nothing*/ }
+		}
+		
+		return "";
 	}
 	
 	public ShipInformations selectShip(float x, float y) {
@@ -118,7 +122,7 @@ public class ScenarioBuilder {
 		
 		for(int i = 0; i < ships.size(); i++) {
 			ShipInformations infos = ships.get(i);
-			if(infos.area.contains((int) x, (int) y)) {
+			if(infos.contains((int) x, (int) y)) {
 				ship = infos;
 			}
 		}
