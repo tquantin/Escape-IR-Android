@@ -118,6 +118,7 @@ public final class Level implements Screen {
 		game.getGraphics().draw(star, 0, 0, game.getGraphics().getWidth(), game.getGraphics().getHeight());
 		
 		game.getUser().getShip().update(game.getGraphics(), delta);
+		
 		if(accepted) {
 			if(stop) accepted = false;
 			if(velocity[0] <= 0) stop = true;

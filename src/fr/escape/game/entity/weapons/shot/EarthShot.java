@@ -57,17 +57,19 @@ public class EarthShot extends AbstractShot {
 				break;
 			}
 			case Shot.MESSAGE_CRUISE: {
+				Engine.log("EarthShot", "Cruise Message");
 				isVisible = true;
 				break;
 			}
 			case Shot.MESSAGE_HIT: {
 				isVisible = false;
+				Engine.log("EarthShot", "Hit Message");
 				break;
 			}
 			case Shot.MESSAGE_DESTROY: {
 				
 				isVisible = false;
-				
+				Engine.log("EarthShot", "Destroy Message");
 				getEngine().post(new Runnable() {
 					
 					@Override
@@ -91,8 +93,9 @@ public class EarthShot extends AbstractShot {
 		
 		if(isVisible) {
 			Rect area = getEdge();
-			graphics.draw(coreEarthShot, area.left, area.top, area.right, area.bottom);
+			graphics.draw(coreEarthShot, area.left, area.top, area.right, graphics.getHeight());
 		}
+		
 	}
 
 	@Override
@@ -107,10 +110,11 @@ public class EarthShot extends AbstractShot {
 
 	@Override
 	protected Rect getEdge() {
+		
 		int x = getEngine().getConverter().toPixelX(getX());
 		int y = getEngine().getConverter().toPixelY(getY());
 		
-		return new Rect(x - (coreEarthShot.getWidth() / 2), y - (coreEarthShot.getHeight() / 2),x + (coreEarthShot.getWidth() / 2), y + (coreEarthShot.getHeight() / 2));
+		return new Rect(x - (coreEarthShot.getWidth() / 2), y - (coreEarthShot.getHeight() / 2), x + (coreEarthShot.getWidth() / 2), y + (coreEarthShot.getHeight() / 2));
 	}
 	
 	
