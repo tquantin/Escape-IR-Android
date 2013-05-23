@@ -27,6 +27,10 @@ final class ScenarioConfiguration {
 	
 	private int id;
 	private int time;
+	private int duration;
+	private int bossID;
+	private String backgroundID;
+	
 	private HashMap<Integer, Ship> ships;
 	private List<String> script;
 	
@@ -36,6 +40,7 @@ final class ScenarioConfiguration {
 	ScenarioConfiguration() {
 		id = 0;
 		time = 0;
+		duration = 0;
 		ships = new HashMap<Integer, Ship>();
 		script = new ArrayList<String>();
 	}
@@ -59,6 +64,28 @@ final class ScenarioConfiguration {
 	}
 	
 	/**
+	 * Get Stage Duration
+	 * 
+	 * @return Stage Duration
+	 */
+	public int getDuration() {
+		return duration;
+	}
+	
+	/**
+	 * Get Scenario Boss ID
+	 * 
+	 * @return Boss ID
+	 */
+	public int getBossID() {
+		return bossID;
+	}
+	
+	public String getBackgroundID() {
+		return backgroundID;
+	}
+	
+	/**
 	 * Set the Scenario Time
 	 * 
 	 * @param time Scenario Time
@@ -74,6 +101,33 @@ final class ScenarioConfiguration {
 	 */
 	public void setID(int id) {
 		this.id = id;
+	}
+	
+	/**
+	 * Set the Stage Duration
+	 * 
+	 * @param duration Stage Duration
+	 */
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+	
+	/**
+	 * Set Scenario Boss ID
+	 * 
+	 * @param bossID : Boss ID
+	 * <p>
+	 * 0 : Jupiter Boss<br />
+	 * 1 : Moon Boss<br />
+	 * 2 : Jupiter Boss
+	 * </p>
+	 */
+	public void setBossID(int bossID) {
+		this.bossID = bossID;
+	}
+	
+	public void setBackgroundID(String backgroundID) {
+		this.backgroundID = backgroundID;
 	}
 	
 	/**

@@ -43,6 +43,7 @@ public class BuilderActivity extends Activity {
 	int scenarioId = -1;
 	int previous = 0;
 	int itemId = 0;
+	int bossId = 0;
 	int type = 0;
 	
 	@Override
@@ -50,38 +51,9 @@ public class BuilderActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_builder_options);
 		
-		final ListView imgList = (ListView) findViewById(R.id.images_list);
-		final ListView scnList = (ListView) findViewById(R.id.scenario_list);
-		imgList.setSelector(R.drawable.blist);
-		scnList.setSelector(R.drawable.blist);
-				
-		File[] files = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).listFiles();
-		ArrayList<String> images = new ArrayList<String>();
-		
-		File[] scnPath = Environment.getExternalStoragePublicDirectory("EscapeIR/Scenario").listFiles();
-		ArrayList<String> scenarios = new ArrayList<String>();
-		
-		images.add("Jupiter Background");
-		images.add("Moon Background");
-		images.add("Earth Background");
-		
-		for(int i = 0; i < files.length; i++) {
-			if(!files[i].isDirectory()) {
-				images.add(files[i].getName());
-			}
-		}
-		
-		for(int i = 0; i < scnPath.length; i++) {
-			if(!scnPath[i].isDirectory()) {
-				scenarios.add(scnPath[i].getName().replaceAll(".scn", ""));
-			}
-		}
-		
-		ListAdapter imgAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, images);
-		ListAdapter scnAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, scenarios);
-		
-		imgList.setAdapter(imgAdapter);
-		scnList.setAdapter(scnAdapter);
+		final ListView imgList = createList(R.id.images_list, Environment.DIRECTORY_PICTURES, "Jupiter Background", "Moon Background", "Earth Background");
+		final ListView scnList = createList(R.id.scenario_list, "EscapeIR/Scenario");
+		final ListView bossList= createList(R.id.boss_list, null, "Jupiter Boss", "Moon Boss", "Earth Boss");
 		
 		OnItemClickListener imgListener = new OnItemClickListener() {
 			@Override
@@ -99,8 +71,41 @@ public class BuilderActivity extends Activity {
 			}
 		};
 		
+		OnItemClickListener bossListener = new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				scnList.setSelected(true);
+				bossId = position;
+			}
+		};
+		
 		imgList.setOnItemClickListener(imgListener);
 		scnList.setOnItemClickListener(scnListener);
+		bossList.setOnItemClickListener(bossListener);
+	}
+	
+	private ListView createList(int listID, String directory, String... others) {
+		ListView list = (ListView) findViewById(listID);
+		list.setSelector(R.drawable.blist);
+		ArrayList<String> elements = new ArrayList<String>();
+		
+		for(int i = 0; i < others.length; i++) {
+			elements.add(others[i]);
+		}
+		
+		if(directory != null) {
+			File[] files = Environment.getExternalStoragePublicDirectory(directory).listFiles();
+			for(int i = 0; i < files.length; i++) {
+				if(!files[i].isDirectory()) {
+					elements.add(files[i].getName());
+				}
+			}
+		}
+		
+		ListAdapter adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, elements);
+		list.setAdapter(adapter);
+		
+		return list;
 	}
 	
 	@Override
@@ -129,12 +134,11 @@ public class BuilderActivity extends Activity {
 		return true;
 	}
 	
-	public void next() {
+	public void next(View view) {
 		EditText scenarioName = (EditText) findViewById(R.id.scenario_name);
 		EditText scenarioTime = (EditText) findViewById(R.id.scenario_time);
 		
 		ListView imgList = (ListView) findViewById(R.id.images_list);
-		ListView scnList = (ListView) findViewById(R.id.scenario_list);
 		
 		String name = scenarioName.getText().toString();
 		String time = scenarioTime.getText().toString();
@@ -147,16 +151,18 @@ public class BuilderActivity extends Activity {
 			saveButton.setEnabled(true);
 			
 			RelativeLayout bLayout = (RelativeLayout) findViewById(R.id.builderlayout);
+			bLayout.setOnTouchListener(getOnTouchListener());
 			
 			if(scenarioId != -1) {
+				ListView scnList = (ListView) findViewById(R.id.scenario_list);
 				loadData((String) scnList.getItemAtPosition(scenarioId));
-				bLayout.setOnTouchListener(getOnTouchListener(bLayout.getHeight()));
 				return;
 			}
 			
 			builder.name = name;
 			builder.time = Integer.parseInt(time);
-
+			builder.bossId = bossId;
+			
 			int backgroundId = -1;
 			switch(itemId) {
 				case 0 : backgroundId = R.drawable.bjupiter; break;
@@ -166,7 +172,6 @@ public class BuilderActivity extends Activity {
 			}
 			
 			setBackground(backgroundId, backgroundName);
-			bLayout.setOnTouchListener(getOnTouchListener(bLayout.getHeight()));
 		}
 	}
 	
@@ -176,8 +181,9 @@ public class BuilderActivity extends Activity {
 		
 		String[] generalInfos = content[1].split(" ");
 		builder.time = Integer.parseInt(generalInfos[1]);
+		builder.bossId = Integer.parseInt(generalInfos[2]);
 		
-		int backgroundId = (generalInfos[2].matches("(\\+|-)?[0-9]+")) ? Integer.parseInt(generalInfos[2]) : -1;
+		int backgroundId = (generalInfos[2].matches("(\\+|-)?[0-9]+")) ? Integer.parseInt(generalInfos[3]) : -1;
 		setBackground(backgroundId, generalInfos[2]);
 		
 		for(int i = 5; !content[i].equals("%%"); i++) {
@@ -298,7 +304,7 @@ public class BuilderActivity extends Activity {
 		}
 	}
 	
-	private OnTouchListener getOnTouchListener(final int height) {
+	private OnTouchListener getOnTouchListener() {
 		return new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -316,6 +322,7 @@ public class BuilderActivity extends Activity {
 					registerMovement(event);
 					return true;
 				} else if(event.getAction() == MotionEvent.ACTION_UP && previous < 10) {
+					int height = findViewById(R.id.builderlayout).getHeight();
 					int realTime = (int) Math.floor((builder.time - (event.getY() / (height / builder.time))));
 					addShip(realTime, event.getX(), event.getY(), type);
 					Toast.makeText(getBaseContext(), "Vaisseau ajouté : vous pouvez tracer ces déplacements.", Toast.LENGTH_SHORT).show();

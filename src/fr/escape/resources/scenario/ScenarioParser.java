@@ -128,7 +128,11 @@ public final class ScenarioParser {
 	 */
 	private static void section1(String line, ScenarioConfiguration configuration) throws IOException {
 		try {
-			configuration.setID(Integer.parseInt(line));
+			String[] elements = line.split(" ");
+			configuration.setID(Integer.parseInt(elements[0]));
+			configuration.setDuration(Integer.parseInt(elements[1]));
+			configuration.setBossID(Integer.parseInt(elements[2]));
+			if(elements.length == 4) configuration.setBackgroundID(elements[3]);
 		} catch(Exception e) {
 			throw new IOException(EXCEPTION_MESSAGE);
 		}

@@ -8,6 +8,7 @@
     <string name="scenario_name">Nom du scénario</string>
     <string name="scenario_time">Durée du scénario</string>
     <string name="builder_background">Choisissez le fond du scénario : </string>
+    <string name="boss_list">Choisissez le boss du scénario : </string>
     
     <string name="button_next">Suivant</string>
 	

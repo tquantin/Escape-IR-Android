@@ -18,6 +18,7 @@ public class ScenarioBuilder {
 	
 	public String name;
 	public int time;
+	public int bossId;
 	public String background;
 	
 	public class ShipInformations {
@@ -59,7 +60,7 @@ public class ScenarioBuilder {
 		DecimalFormat f1 = new DecimalFormat("0.0");
 		DecimalFormat f2 = new DecimalFormat("00.0");
 		
-		StringBuilder content = new StringBuilder("%%\n1 " + time + " " + background + "\n%%\n1\n%%\n");
+		StringBuilder content = new StringBuilder("%%\n1 " + time + " " + bossId + " " + background + "\n%%\n1\n%%\n");
 		
 		for(int i = 0; i < ships.size(); i++) {
 			ShipInformations infos = ships.get(i);

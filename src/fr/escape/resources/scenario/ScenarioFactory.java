@@ -53,6 +53,10 @@ final class ScenarioFactory {
 			
 			private final int id = scenario.getID();
 			private final int start = scenario.getTime();
+			private final int duration = scenario.getDuration();
+			private final int bossID = scenario.getBossID();
+			private final String backgroundID = scenario.getBackgroundID();
+			
 			private final HashMap<Integer, Ship> ships = scenario.getShip();
 			private final HashSet<Integer> spawns = new HashSet<Integer>();
 			private final String[] script = scenario.getScript();
@@ -259,6 +263,21 @@ final class ScenarioFactory {
 			@Override
 			public String toString() {
 				return tag;
+			}
+
+			@Override
+			public int getDuration() {
+				return duration;
+			}
+
+			@Override
+			public int getBossID() {
+				return bossID;
+			}
+			
+			@Override
+			public String getBackgroundID() {
+				return backgroundID;
 			}
 
 		};
