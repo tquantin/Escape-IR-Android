@@ -159,21 +159,19 @@ public final class ScenarioParser {
 	 */
 	private static void section3(String line, ScenarioConfiguration configuration, ShipFactory factory) throws IOException {
 		try {
-			
 			String[] inputConfig = line.split("\\s+");
 			
 			int shipID = Integer.parseInt(inputConfig[SECTION_2_SHIP_ID]);
 			int shipType = Integer.parseInt(inputConfig[SECTION_2_SHIP_TYPE]);
 			
 			String[] tmp = inputConfig[SECTION_2_SHIP_X].split("/");
-			float shipX = Float.parseFloat(tmp[0]);
+			float shipX = Float.parseFloat(tmp[0].replaceAll(",","."));
 			tmp = inputConfig[SECTION_2_SHIP_Y].split("/");
-			float shipY = Float.parseFloat(tmp[0]);
+			float shipY = Float.parseFloat(tmp[0].replaceAll(",","."));
 			
 			Ship ship = factory.createShipForScenario(shipType, shipX, shipY);
 			
 			configuration.addShip(shipID, ship);
-			
 		} catch(Exception e) {
 			throw new IOException(EXCEPTION_MESSAGE);
 		}

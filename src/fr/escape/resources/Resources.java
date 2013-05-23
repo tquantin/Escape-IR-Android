@@ -96,20 +96,7 @@ public final class Resources {
 			
 			// Load Font
 			fontLoader(R.string.font_visitor);
-			
-			// Load Scenario
-			/*postScenarioLoader(ScenarioLoader.JUPITER_1);
-			postScenarioLoader(ScenarioLoader.JUPITER_2);
-			postScenarioLoader(ScenarioLoader.JUPITER_3);
-			postScenarioLoader(ScenarioLoader.JUPITER_4);
-			postScenarioLoader(ScenarioLoader.MOON_1);
-			postScenarioLoader(ScenarioLoader.MOON_2);
-			postScenarioLoader(ScenarioLoader.MOON_3);
-			postScenarioLoader(ScenarioLoader.EARTH_1);
-			postScenarioLoader(ScenarioLoader.EARTH_2);
-			postScenarioLoader(ScenarioLoader.EARTH_3);
-			postScenarioLoader(ScenarioLoader.EARTH_4);*/
-			
+						
 			// Load Texture
 			textureLoader(TextureLoader.BACKGROUND_ERROR);
 			textureLoader(TextureLoader.BACKGROUND_LOST);
@@ -233,7 +220,6 @@ public final class Resources {
 			exception.initCause(e);
 			throw exception;
 		}
-		//return null;
 	}
 	
 	/**
@@ -250,15 +236,14 @@ public final class Resources {
 			@Override
 			public Scenario load() throws Exception {
 				if(scenario == null) {
-					
-					Engine.debug(TAG, "Load Scenario: "+scenarioID);
+					Engine.debug(TAG, "Load Scenario : "+scenarioID);
 					
 					InputStream stream = null;
 					if(history) {
 						stream = getContext().getAssets().open("level/"+scenarioID);
 					} else {
 						File path = Environment.getExternalStoragePublicDirectory("EscapeIR/Scenario");
-						stream = new FileInputStream(new File(path,scenarioID));
+						stream = new FileInputStream(new File(path,"test.scn"));
 					}
 					
 					try {
@@ -266,13 +251,11 @@ public final class Resources {
 					} finally {
 						stream.close();
 					}
-					
 				}
 				return scenario;
 			}
 			
 		};
-		//return null;
 	}
 	
 	/**
