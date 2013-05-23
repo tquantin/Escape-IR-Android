@@ -2,5 +2,17 @@
 <resources>
 
     <string name="app_name">Escape</string>
+    
+    <string name="scenario_list">Vos scénario : </string>
+    <string name="scenario_new">Nouveau scénario</string>
+    <string name="scenario_name">Nom du scénario</string>
+    <string name="scenario_time">Durée du scénario</string>
+    <string name="builder_background">Choisissez le fond du scénario : </string>
+    
+    <string name="button_next">Suivant</string>
+	
+    <string name="change_type">Changer le type</string>
+    <string name="remove_ship">Supprimer</string>
+    <string name="save">Sauvegarder</string>
 
 </resources>
