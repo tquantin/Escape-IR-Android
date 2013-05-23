@@ -60,13 +60,15 @@ public class ScenarioBuilder {
 		DecimalFormat f1 = new DecimalFormat("0.0");
 		DecimalFormat f2 = new DecimalFormat("00.0");
 		
-		StringBuilder content = new StringBuilder("%%\n1 " + time + " " + bossId + " " + background + "\n%%\n1\n%%\n");
+		StringBuilder content = new StringBuilder("%%\n1 ");
+		content.append(time); content.append(" "); content.append(bossId); content.append(" "); content.append(background); content.append("\n%%\n1\n%%\n");
 		
 		for(int i = 0; i < ships.size(); i++) {
 			ShipInformations infos = ships.get(i);
-			content.append(i + " " + infos.type);
-			content.append(" " + ((infos.worldX < 10.0f) ? f1.format(infos.worldX).replaceAll(",", ".") : f2.format(infos.worldX)).replaceAll(",", ".") + "/" + infos.x);
-			content.append(" " + ((infos.worldY < 10.0f) ? f1.format(infos.worldY).replaceAll(",", ".") : f2.format(infos.worldY)).replaceAll(",", ".") + "/" + infos.y + "\n");
+			content.append(i); content.append(" "); content.append(infos.type);
+			content.append(" "); content.append(((infos.worldX < 10.0f) ? f1.format(infos.worldX).replaceAll(",", ".") : f2.format(infos.worldX)).replaceAll(",", ".")); content.append("/"); content.append(infos.x);
+			content.append(" "); content.append(((infos.worldY < 10.0f) ? f1.format(infos.worldY).replaceAll(",", ".") : f2.format(infos.worldY)).replaceAll(",", ".")); content.append("/"); content.append(infos.y);
+			content.append("\n");
 		}
 		
 		content.append("%%\n");
@@ -77,8 +79,8 @@ public class ScenarioBuilder {
 			content.append(time + " spawn " + i + "\n");
 			for(int j = 0; j < infos.movements.size(); j++) {
 				String position = infos.movements.get(j);
-				content.append(++time + " move " + i);
-				content.append(" " + position.replaceAll(",", ".") + "\n");
+				content.append(++time); content.append(" move "); content.append(i);
+				content.append(" "); content.append(position.replaceAll(",", ".")); content.append("\n");
 			}
 		}
 		
@@ -91,8 +93,10 @@ public class ScenarioBuilder {
 			out = new FileOutputStream(scFile);
 			out.write(content.toString().getBytes());
 			out.close();
-		} catch (IOException e) { Log.e("SAVEDATA", e.getMessage()); } finally {
-			try { if(out != null) out.close(); } catch (IOException ioe) { Log.e("ScenarioBuilder", "Erreur lors de la sauvegarde du fichier."); }
+		} catch (IOException e) {
+			Log.e("ScenarioBuilder", "Erreur lors de la sauvegarde du fichier.");
+		} finally {
+			try { if(out != null) out.close(); } catch (IOException ioe) { /*Nothing*/ }
 		}
 	}
 	
@@ -107,8 +111,9 @@ public class ScenarioBuilder {
 			
 			in = new FileInputStream(scFile);
 			in.read(buffer);
+			String content = new String(buffer);
 			
-			return new String(buffer);
+			return content;
 		} catch (IOException e) {
 			Log.e("ScenarioBuilder", "Erreur lors du chargement du fichier.");
 		} finally {

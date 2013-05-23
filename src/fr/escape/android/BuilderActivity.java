@@ -2,7 +2,6 @@ package fr.escape.android;
 
 import java.io.File;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 import fr.escape.android.R;
 import fr.escape.game.entity.CoordinateConverter;
@@ -21,19 +20,18 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class BuilderActivity extends Activity {
 	final ScenarioBuilder builder = new ScenarioBuilder();
+	
+	private FileAsyncTask fAsyncTask;
+	
 	private MenuItem changeButton;
 	private MenuItem removeButton;
 	private MenuItem saveButton;
@@ -42,8 +40,8 @@ public class BuilderActivity extends Activity {
 	
 	int scenarioId = -1;
 	int previous = 0;
-	int itemId = 0;
 	int bossId = 0;
+	int imgId = 0;
 	int type = 0;
 	
 	@Override
@@ -51,61 +49,10 @@ public class BuilderActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_builder_options);
 		
-		final ListView imgList = createList(R.id.images_list, Environment.DIRECTORY_PICTURES, "Jupiter Background", "Moon Background", "Earth Background");
-		final ListView scnList = createList(R.id.scenario_list, "EscapeIR/Scenario");
-		final ListView bossList= createList(R.id.boss_list, null, "Jupiter Boss", "Moon Boss", "Earth Boss");
+		fAsyncTask = new FileAsyncTask(this);
 		
-		OnItemClickListener imgListener = new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				imgList.setSelected(true);
-				itemId = position;
-			}
-		};
-		
-		OnItemClickListener scnListener = new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				scnList.setSelected(true);
-				scenarioId = position;
-			}
-		};
-		
-		OnItemClickListener bossListener = new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				scnList.setSelected(true);
-				bossId = position;
-			}
-		};
-		
-		imgList.setOnItemClickListener(imgListener);
-		scnList.setOnItemClickListener(scnListener);
-		bossList.setOnItemClickListener(bossListener);
-	}
-	
-	private ListView createList(int listID, String directory, String... others) {
-		ListView list = (ListView) findViewById(listID);
-		list.setSelector(R.drawable.blist);
-		ArrayList<String> elements = new ArrayList<String>();
-		
-		for(int i = 0; i < others.length; i++) {
-			elements.add(others[i]);
-		}
-		
-		if(directory != null) {
-			File[] files = Environment.getExternalStoragePublicDirectory(directory).listFiles();
-			for(int i = 0; i < files.length; i++) {
-				if(!files[i].isDirectory()) {
-					elements.add(files[i].getName());
-				}
-			}
-		}
-		
-		ListAdapter adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, elements);
-		list.setAdapter(adapter);
-		
-		return list;
+		ListAsyncTask async = new ListAsyncTask(this, new int[] {R.id.images_list,R.id.scenario_list,R.id.boss_list});
+		async.execute(new String[][] { {Environment.DIRECTORY_PICTURES, "Jupiter Background", "Moon Background", "Earth Background"}, {"EscapeIR/Scenario"}, {null, "Jupiter Boss", "Moon Boss", "Earth Boss"} });
 	}
 	
 	@Override
@@ -126,7 +73,7 @@ public class BuilderActivity extends Activity {
 		switch(item.getItemId()) {
 			case R.id.change_type : switchType(); break;
 			case R.id.remove_ship : removeShip(); break;
-			case R.id.save_button : builder.saveData();
+			case R.id.save_button : fAsyncTask.execute();
 				Toast.makeText(getBaseContext(), "Scénario sauvegardé.", Toast.LENGTH_SHORT).show();
 				break;
 			default : break;
@@ -139,10 +86,11 @@ public class BuilderActivity extends Activity {
 		EditText scenarioTime = (EditText) findViewById(R.id.scenario_time);
 		
 		ListView imgList = (ListView) findViewById(R.id.images_list);
+		ListView scnList = (ListView) findViewById(R.id.scenario_list);
 		
 		String name = scenarioName.getText().toString();
 		String time = scenarioTime.getText().toString();
-		String backgroundName = (String) imgList.getItemAtPosition(itemId);
+		String backgroundName = (String) imgList.getItemAtPosition(imgId);
 		
 		if((name.equals("")  || time.equals("")) && scenarioId == -1) {
 			Toast.makeText(getBaseContext(), "Saisissez un nom de scénario, ainsi que sa durée.", Toast.LENGTH_LONG).show();
@@ -154,8 +102,7 @@ public class BuilderActivity extends Activity {
 			bLayout.setOnTouchListener(getOnTouchListener());
 			
 			if(scenarioId != -1) {
-				ListView scnList = (ListView) findViewById(R.id.scenario_list);
-				loadData((String) scnList.getItemAtPosition(scenarioId));
+				fAsyncTask.execute((String) scnList.getItemAtPosition(scenarioId));
 				return;
 			}
 			
@@ -164,7 +111,7 @@ public class BuilderActivity extends Activity {
 			builder.bossId = bossId;
 			
 			int backgroundId = -1;
-			switch(itemId) {
+			switch(imgId) {
 				case 0 : backgroundId = R.drawable.bjupiter; break;
 				case 1 : backgroundId = R.drawable.bmoon; break;
 				case 2 : backgroundId = R.drawable.bearth; break;
@@ -175,31 +122,6 @@ public class BuilderActivity extends Activity {
 		}
 	}
 	
-	private void loadData(String scenarioName) {
-		builder.name = scenarioName;
-		String[] content = builder.loadData().split("\n");
-		
-		String[] generalInfos = content[1].split(" ");
-		builder.time = Integer.parseInt(generalInfos[1]);
-		builder.bossId = Integer.parseInt(generalInfos[2]);
-		
-		int backgroundId = (generalInfos[2].matches("(\\+|-)?[0-9]+")) ? Integer.parseInt(generalInfos[3]) : -1;
-		setBackground(backgroundId, generalInfos[2]);
-		
-		for(int i = 5; !content[i].equals("%%"); i++) {
-			String[] shipData = content[i].split(" ");
-			
-			String[] xData = shipData[2].split("/");
-			String[] yData = shipData[3].split("/");
-			
-			addShip(Integer.parseInt(shipData[0]), Float.parseFloat(xData[1]), Float.parseFloat(yData[1]), Integer.parseInt(shipData[1]));
-		}
-		
-		builder.currentShip = null;
-		registerMovement = false;
-		hideShipMenu();
-	}
-
 	@SuppressWarnings("deprecation")
 	public void addShip(int time, float x, float y, int type) {
 		RelativeLayout bLayout = (RelativeLayout) findViewById(R.id.builderlayout);
@@ -283,7 +205,7 @@ public class BuilderActivity extends Activity {
 	
 	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	private void setBackground(int backgroundId, String backgroundName) {
+	public void setBackground(int backgroundId, String backgroundName) {
 		RelativeLayout bLayout = (RelativeLayout) findViewById(R.id.builderlayout);
 		
 		if(backgroundId != -1) {
@@ -339,14 +261,23 @@ public class BuilderActivity extends Activity {
 		};
 	}
 	
-	void showShipMenu() {
+	public void showShipMenu() {
 		changeButton.setEnabled(true);
 		removeButton.setEnabled(true);
 	}
 	
-	void hideShipMenu() {
+	public void hideShipMenu() {
 		changeButton.setEnabled(false);
 		removeButton.setEnabled(false);
+	}
+	
+	public void setListId(int id, int position) {
+		switch(id) {
+			case 0 : imgId = position; break;
+			case 1 : scenarioId = position; break;
+			case 2 : bossId = position; break;
+			default: break;
+		}
 	}
 	
 }
