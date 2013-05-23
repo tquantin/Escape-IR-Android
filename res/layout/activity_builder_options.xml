@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/builderoptions"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	android:scrollbars="vertical" >
 	
@@ -11,10 +11,11 @@
         android:text="@string/scenario_list" />
     
     <LinearLayout android:layout_width="fill_parent"
-	    android:layout_height="wrap_content">
+        android:layout_height="0dp"
+	    android:layout_weight="1" >
         <ListView android:id="@+id/scenario_list" 
             android:layout_width="fill_parent"
-	        android:layout_height="wrap_content" />
+	        android:layout_height="fill_parent" />
     </LinearLayout>
     
     <TextView android:layout_width="fill_parent"
@@ -38,17 +39,28 @@
         android:text="@string/builder_background" />
     
     <LinearLayout android:layout_width="fill_parent"
-	    android:layout_height="wrap_content">
+	    android:layout_height="0dp"
+	    android:layout_weight="1" >
         <ListView android:id="@+id/images_list" 
             android:layout_width="fill_parent"
-	        android:layout_height="wrap_content" />
+	        android:layout_height="fill_parent" />
     </LinearLayout>
     
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/boss_list" />
+    
+    <LinearLayout android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1" >
+        <ListView android:id="@+id/boss_list" 
+            android:layout_width="fill_parent"
+	        android:layout_height="fill_parent" />
+    </LinearLayout>
     
     <Button android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 	    android:text="@string/button_next"
-	    android:onClick="next"
-	    android:layout_gravity="bottom" />
+	    android:onClick="next" />
     
 </LinearLayout>

@@ -20,8 +20,8 @@ public class GameStage extends AbstractStage {
 	 * @param duration : Duration in seconds of the {@link Stage}.
 	 * @param bossType : Boss to use for this {@link Stage}
 	 */
-	public GameStage(Engine engine, World world, EntityContainer container, String scenario, ShipFactory factory, int duration, int bossType, boolean history) {
-		super(engine, world, container, scenario, factory, duration, bossType, history);
+	public GameStage(Engine engine, World world, EntityContainer container, String scenario, ShipFactory factory, boolean history) {
+		super(engine, world, container, scenario, factory, history);
 	}
 
 }

@@ -73,13 +73,14 @@ public final class R {
         public static final int wuidisabled=0x7f02003b;
     }
     public static final class id {
+        public static final int boss_list=0x7f060007;
         public static final int builderlayout=0x7f060001;
         public static final int builderoptions=0x7f060002;
         public static final int builderscroll=0x7f060000;
-        public static final int change_type=0x7f060007;
+        public static final int change_type=0x7f060008;
         public static final int images_list=0x7f060006;
-        public static final int remove_ship=0x7f060008;
-        public static final int save_button=0x7f060009;
+        public static final int remove_ship=0x7f060009;
+        public static final int save_button=0x7f06000a;
         public static final int scenario_list=0x7f060003;
         public static final int scenario_name=0x7f060004;
         public static final int scenario_time=0x7f060005;
@@ -93,12 +94,13 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f040001;
+        public static final int boss_list=0x7f040007;
         public static final int builder_background=0x7f040006;
-        public static final int button_next=0x7f040007;
-        public static final int change_type=0x7f040008;
+        public static final int button_next=0x7f040008;
+        public static final int change_type=0x7f040009;
         public static final int font_visitor=0x7f040000;
-        public static final int remove_ship=0x7f040009;
-        public static final int save=0x7f04000a;
+        public static final int remove_ship=0x7f04000a;
+        public static final int save=0x7f04000b;
         public static final int scenario_list=0x7f040002;
         public static final int scenario_name=0x7f040004;
         public static final int scenario_new=0x7f040003;

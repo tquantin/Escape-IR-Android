@@ -2,7 +2,6 @@ package fr.escape.android;
 
 import java.io.File;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 import fr.escape.android.R;
 import fr.escape.game.entity.CoordinateConverter;
@@ -21,20 +20,18 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class BuilderActivity extends Activity {
 	
 	final ScenarioBuilder builder = new ScenarioBuilder();
+	
+	private FileAsyncTask fAsyncTask;
 	
 	private MenuItem changeButton;
 	private MenuItem removeButton;
@@ -44,7 +41,8 @@ public class BuilderActivity extends Activity {
 	
 	int scenarioId = -1;
 	int previous = 0;
-	int itemId = 0;
+	int bossId = 0;
+	int imgId = 0;
 	int type = 0;
 	
 	@Override
@@ -52,57 +50,10 @@ public class BuilderActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_builder_options);
 		
-		final ListView imgList = (ListView) findViewById(R.id.images_list);
-		final ListView scnList = (ListView) findViewById(R.id.scenario_list);
-		imgList.setSelector(R.drawable.blist);
-		scnList.setSelector(R.drawable.blist);
-				
-		File[] files = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).listFiles();
-		ArrayList<String> images = new ArrayList<String>();
+		fAsyncTask = new FileAsyncTask(this);
 		
-		File[] scnPath = Environment.getExternalStoragePublicDirectory("EscapeIR/Scenario").listFiles();
-		ArrayList<String> scenarios = new ArrayList<String>();
-		
-		images.add("Jupiter Background");
-		images.add("Moon Background");
-		images.add("Earth Background");
-		
-		for(int i = 0; i < files.length; i++) {
-			if(!files[i].isDirectory()) {
-				images.add(files[i].getName());
-			}
-		}
-		
-		for(int i = 0; i < scnPath.length; i++) {
-			if(!scnPath[i].isDirectory()) {
-				scenarios.add(scnPath[i].getName().replaceAll(".scn", ""));
-			}
-		}
-		
-		ListAdapter imgAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, images);
-		ListAdapter scnAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, scenarios);
-		
-		imgList.setAdapter(imgAdapter);
-		scnList.setAdapter(scnAdapter);
-		
-		OnItemClickListener imgListener = new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				imgList.setSelected(true);
-				itemId = position;
-			}
-		};
-		
-		OnItemClickListener scnListener = new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				scnList.setSelected(true);
-				scenarioId = position;
-			}
-		};
-		
-		imgList.setOnItemClickListener(imgListener);
-		scnList.setOnItemClickListener(scnListener);
+		ListAsyncTask async = new ListAsyncTask(this, new int[] {R.id.images_list,R.id.scenario_list,R.id.boss_list});
+		async.execute(new String[][] { {Environment.DIRECTORY_PICTURES, "Jupiter Background", "Moon Background", "Earth Background"}, {"EscapeIR/Scenario"}, {null, "Jupiter Boss", "Moon Boss", "Earth Boss"} });
 	}
 	
 	@Override
@@ -123,7 +74,7 @@ public class BuilderActivity extends Activity {
 		switch(item.getItemId()) {
 			case R.id.change_type : switchType(); break;
 			case R.id.remove_ship : removeShip(); break;
-			case R.id.save_button : builder.saveData();
+			case R.id.save_button : fAsyncTask.execute();
 				Toast.makeText(getBaseContext(), "Scénario sauvegardé.", Toast.LENGTH_SHORT).show();
 				break;
 			default : break;
@@ -131,7 +82,7 @@ public class BuilderActivity extends Activity {
 		return true;
 	}
 	
-	public void next() {
+	public void next(View view) {
 		EditText scenarioName = (EditText) findViewById(R.id.scenario_name);
 		EditText scenarioTime = (EditText) findViewById(R.id.scenario_time);
 		
@@ -140,7 +91,7 @@ public class BuilderActivity extends Activity {
 		
 		String name = scenarioName.getText().toString();
 		String time = scenarioTime.getText().toString();
-		String backgroundName = (String) imgList.getItemAtPosition(itemId);
+		String backgroundName = (String) imgList.getItemAtPosition(imgId);
 		
 		if((name.equals("")  || time.equals("")) && scenarioId == -1) {
 			Toast.makeText(getBaseContext(), "Saisissez un nom de scénario, ainsi que sa durée.", Toast.LENGTH_LONG).show();
@@ -149,18 +100,19 @@ public class BuilderActivity extends Activity {
 			saveButton.setEnabled(true);
 			
 			RelativeLayout bLayout = (RelativeLayout) findViewById(R.id.builderlayout);
+			bLayout.setOnTouchListener(getOnTouchListener());
 			
 			if(scenarioId != -1) {
-				loadData((String) scnList.getItemAtPosition(scenarioId));
-				bLayout.setOnTouchListener(getOnTouchListener(bLayout.getHeight()));
+				fAsyncTask.execute((String) scnList.getItemAtPosition(scenarioId));
 				return;
 			}
 			
 			builder.name = name;
 			builder.time = Integer.parseInt(time);
-
+			builder.bossId = bossId;
+			
 			int backgroundId = -1;
-			switch(itemId) {
+			switch(imgId) {
 				case 0 : backgroundId = R.drawable.bjupiter; break;
 				case 1 : backgroundId = R.drawable.bmoon; break;
 				case 2 : backgroundId = R.drawable.bearth; break;
@@ -168,34 +120,9 @@ public class BuilderActivity extends Activity {
 			}
 			
 			setBackground(backgroundId, backgroundName);
-			bLayout.setOnTouchListener(getOnTouchListener(bLayout.getHeight()));
 		}
 	}
 	
-	private void loadData(String scenarioName) {
-		builder.name = scenarioName;
-		String[] content = builder.loadData().split("\n");
-		
-		String[] generalInfos = content[1].split(" ");
-		builder.time = Integer.parseInt(generalInfos[1]);
-		
-		int backgroundId = (generalInfos[2].matches("(\\+|-)?[0-9]+")) ? Integer.parseInt(generalInfos[2]) : -1;
-		setBackground(backgroundId, generalInfos[2]);
-		
-		for(int i = 5; !content[i].equals("%%"); i++) {
-			String[] shipData = content[i].split(" ");
-			
-			String[] xData = shipData[2].split("/");
-			String[] yData = shipData[3].split("/");
-			
-			addShip(Integer.parseInt(shipData[0]), Float.parseFloat(xData[1]), Float.parseFloat(yData[1]), Integer.parseInt(shipData[1]));
-		}
-		
-		builder.currentShip = null;
-		registerMovement = false;
-		hideShipMenu();
-	}
-
 	@SuppressWarnings("deprecation")
 	public void addShip(int time, float x, float y, int type) {
 		RelativeLayout bLayout = (RelativeLayout) findViewById(R.id.builderlayout);
@@ -279,7 +206,7 @@ public class BuilderActivity extends Activity {
 	
 	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	private void setBackground(int backgroundId, String backgroundName) {
+	public void setBackground(int backgroundId, String backgroundName) {
 		RelativeLayout bLayout = (RelativeLayout) findViewById(R.id.builderlayout);
 		
 		if(backgroundId != -1) {
@@ -300,7 +227,7 @@ public class BuilderActivity extends Activity {
 		}
 	}
 	
-	private OnTouchListener getOnTouchListener(final int height) {
+	private OnTouchListener getOnTouchListener() {
 		return new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -318,6 +245,7 @@ public class BuilderActivity extends Activity {
 					registerMovement(event);
 					return true;
 				} else if(event.getAction() == MotionEvent.ACTION_UP && previous < 10) {
+					int height = findViewById(R.id.builderlayout).getHeight();
 					int realTime = (int) Math.floor((builder.time - (event.getY() / (height / builder.time))));
 					addShip(realTime, event.getX(), event.getY(), type);
 					Toast.makeText(getBaseContext(), "Vaisseau ajouté : vous pouvez tracer ces déplacements.", Toast.LENGTH_SHORT).show();
@@ -334,14 +262,23 @@ public class BuilderActivity extends Activity {
 		};
 	}
 	
-	void showShipMenu() {
+	public void showShipMenu() {
 		changeButton.setEnabled(true);
 		removeButton.setEnabled(true);
 	}
 	
-	void hideShipMenu() {
+	public void hideShipMenu() {
 		changeButton.setEnabled(false);
 		removeButton.setEnabled(false);
+	}
+	
+	public void setListId(int id, int position) {
+		switch(id) {
+			case 0 : imgId = position; break;
+			case 1 : scenarioId = position; break;
+			case 2 : bossId = position; break;
+			default: break;
+		}
 	}
 	
 }

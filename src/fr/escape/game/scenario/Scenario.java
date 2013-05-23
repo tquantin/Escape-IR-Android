@@ -24,6 +24,12 @@ public interface Scenario {
 	
 	public int getStart();
 	
+	public int getDuration();
+	
+	public int getBossID();
+	
+	public String getBackgroundID();
+	
 	public boolean setContainer(EntityContainer container);
 	
 	public boolean hasFinished();
