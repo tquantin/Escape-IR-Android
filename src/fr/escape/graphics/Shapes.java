@@ -41,7 +41,7 @@ public final class Shapes {
 	}
 	
 	/**
-	 * Create a Rectangle Shape
+	 * Create a Rectangle Shape starting at 0,0
 	 * 
 	 * @param x Bottom Right Corner in X Axis for Rectangle
 	 * @param y Bottom Right Corner in Y Axis for Rectangle
@@ -85,7 +85,7 @@ public final class Shapes {
 			
 			@Override
 			public void draw(Canvas canvas, Paint paint) {
-				canvas.drawLine(x1, x2, y1, y2, paint);
+				canvas.drawLine(x1, y1, x2, y2, paint);
 			}
 			
 		};
