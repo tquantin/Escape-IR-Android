@@ -150,6 +150,7 @@ public final class Resources {
 			textureLoader(TextureLoader.MENU_UI_BUTTON_HISTORY);
 			textureLoader(TextureLoader.MENU_UI_BUTTON_CUSTOM);
 			textureLoader(TextureLoader.MENU_UI_BUTTON_BUILDER);
+			textureLoader(TextureLoader.MENU_UI_LIST_ITEM);
 			textureLoader(TextureLoader.OVERLAY_STAR);
 			
 			textureLoader(TextureLoader.INTRO_JUPITER);

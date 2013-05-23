@@ -36,6 +36,7 @@ import fr.escape.game.entity.ships.ShipFactory;
 import fr.escape.game.entity.weapons.shot.ShotFactory;
 import fr.escape.game.scenario.GameStage;
 import fr.escape.game.screen.Intro;
+import fr.escape.game.screen.LevelLoader;
 import fr.escape.game.screen.Lost;
 import fr.escape.game.screen.Menu;
 import fr.escape.game.screen.Level;
@@ -89,6 +90,7 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	public static final int SCREEN_INTRO_JUPITER = 7;
 	public static final int SCREEN_INTRO_MOON = 8;
 	public static final int SCREEN_MENU = 9;
+	public static final int SCREEN_LEVEL_LOADER = 10;
 	
 	/**
 	 * Player Model
@@ -117,6 +119,7 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	private Lost lost;
 	private Menu menu;
 	private Error error;
+	private LevelLoader loader;
 	
 	/**
 	 * StageScreen
@@ -327,7 +330,7 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	public void setScreenID(int id) {
 		switch (id) {
 			case SCREEN_NEW_GAME: {
-				setScreen(earth);
+				setScreen(introJupiter);
 				break;
 			}
 			case SCREEN_VICTORY: {
@@ -366,11 +369,14 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 				setScreen(menu);
 				break;
 			}
+			case SCREEN_LEVEL_LOADER: {
+				setScreen(loader);
+				break;
+			}
 			default: {
 				Engine.error(TAG, "Unknown Screen ID: "+id);
 				break;	
 			}
-			
 		}
 	}
 	
@@ -565,6 +571,7 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 		 */
 		lost = new Lost(this);
 		menu = new Menu(this);
+		loader = new LevelLoader(this);
 		victory = new Victory(this);
 		
 		/**

@@ -27,17 +27,12 @@ public final class Splash {
 
 	public void render(Canvas canvas, int width, int height) {
 		
-		Engine.log(TAG, "Render");
+		Engine.log(TAG, "Render Splash");
 		
-		//int srcX = (int) ((width / 2.0f) - (background.getWidth() / 2.0f));
-		//int srcY = (int) ((height / 2.0f) - (background.getHeight() / 2.0f));
 		int srcX = 0;
 		int srcY = 0;
 		int srcWidth = srcX + background.getWidth();
 		int srcHeight = srcY + background.getHeight();
-		
-		Engine.error(TAG, 0+" "+0+" "+width+" "+height);
-		Engine.error(TAG, srcX+" "+srcY+" "+srcWidth+" "+srcHeight);
 		
 		background.draw(canvas, new Paint(Paint.ANTI_ALIAS_FLAG), 0, 0, width, height, srcX, srcY, srcWidth, srcHeight);
 		

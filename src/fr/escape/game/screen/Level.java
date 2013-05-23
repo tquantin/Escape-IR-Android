@@ -220,8 +220,7 @@ public final class Level implements Screen {
 					}
 					
 					ship.fireWeapon(weaponVelocity);
-					
-					
+
 				}
 				
 				events.clear();

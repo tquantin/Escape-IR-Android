@@ -186,8 +186,7 @@ public final class Menu implements Screen {
 	 * Launch a new Custom Game
 	 */
 	public void custom() {
-		//game.setScreenID(id)
-		Engine.error(TAG, "Cannot load Custom Game");
+		game.setScreenID(Escape.SCREEN_LEVEL_LOADER);
 	}
 	
 	/**

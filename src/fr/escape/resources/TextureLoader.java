@@ -78,6 +78,7 @@ public abstract class TextureLoader {
 	public static final int MENU_UI_BUTTON_HISTORY = R.drawable.muibhistory;
 	public static final int MENU_UI_BUTTON_CUSTOM = R.drawable.muibcustom;
 	public static final int MENU_UI_BUTTON_BUILDER = R.drawable.muibbuilder;
+	public static final int MENU_UI_LIST_ITEM = R.drawable.muilitem;
 	public static final int OVERLAY_STAR = R.drawable.ostar;
 	
 	public static final int INTRO_JUPITER = R.drawable.ijupiter;

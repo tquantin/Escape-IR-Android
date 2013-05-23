@@ -33,7 +33,9 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class BuilderActivity extends Activity {
+	
 	final ScenarioBuilder builder = new ScenarioBuilder();
+	
 	private MenuItem changeButton;
 	private MenuItem removeButton;
 	private MenuItem saveButton;

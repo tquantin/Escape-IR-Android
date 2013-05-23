@@ -1,5 +1,6 @@
 package fr.escape.app;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -11,6 +12,7 @@ import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.input.EventListener;
 import fr.escape.resources.Resources;
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 public final class Engine implements Runnable {
@@ -153,7 +155,7 @@ public final class Engine implements Runnable {
 			
 			debug(TAG, "Application started");
 			
-			Engine.debug(TAG, "WIDTH & HEIGHT FOR CONVERTER : " + graphics.getWidth() + "/" + graphics.getHeight());
+			Engine.debug(TAG, "Converter Configuration: { width:" + graphics.getWidth() + " , height:" + graphics.getHeight()+" }");
 			this.converter = new CoordinateConverter(graphics.getWidth(), graphics.getHeight(), 10);
 
 			debug(TAG, "Create Game");
@@ -305,5 +307,14 @@ public final class Engine implements Runnable {
 		}
 		
 	}
-
+	
+	/**
+	 * Get the File for Scenario Storage directory
+	 * 
+	 * @return File which contains the directory for Scenario Storage
+	 */
+	public static File getScenarioStorage() {
+		return Environment.getExternalStoragePublicDirectory("EscapeIR/Scenario");
+	}
+	
 }
