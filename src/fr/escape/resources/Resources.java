@@ -238,19 +238,14 @@ public final class Resources {
 			@Override
 			public Scenario load() throws Exception {
 				if(scenario == null) {
-					
-					Engine.debug(TAG, "Load Scenario: "+scenarioID);
+					Engine.debug(TAG, "Load Scenario : "+scenarioID);
 					
 					InputStream stream = null;
 					if(history) {
-						
 						stream = getContext().getAssets().open("level/"+scenarioID);
-						
 					} else {
-						
 						File path = Environment.getExternalStoragePublicDirectory("EscapeIR/Scenario");
 						stream = new FileInputStream(new File(path,scenarioID));
-						
 					}
 					
 					try {
