@@ -75,7 +75,9 @@ public abstract class TextureLoader {
 	public static final int MOON_SPECIAL = R.drawable.bssmoon;
 	public static final int EARTH_SPECIAL = R.drawable.bssearth;
 	
-	public static final int MENU_UI_GRID = R.drawable.muigrid;
+	public static final int MENU_UI_BUTTON_HISTORY = R.drawable.muibhistory;
+	public static final int MENU_UI_BUTTON_CUSTOM = R.drawable.muibcustom;
+	public static final int MENU_UI_BUTTON_BUILDER = R.drawable.muibbuilder;
 	public static final int OVERLAY_STAR = R.drawable.ostar;
 	
 	public static final int INTRO_JUPITER = R.drawable.ijupiter;

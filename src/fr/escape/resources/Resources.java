@@ -96,7 +96,7 @@ public final class Resources {
 			
 			// Load Font
 			fontLoader(R.string.font_visitor);
-						
+			
 			// Load Texture
 			textureLoader(TextureLoader.BACKGROUND_ERROR);
 			textureLoader(TextureLoader.BACKGROUND_LOST);
@@ -147,7 +147,9 @@ public final class Resources {
 			textureLoader(TextureLoader.MOON_SPECIAL);
 			textureLoader(TextureLoader.EARTH_SPECIAL);
 			
-			textureLoader(TextureLoader.MENU_UI_GRID);
+			textureLoader(TextureLoader.MENU_UI_BUTTON_HISTORY);
+			textureLoader(TextureLoader.MENU_UI_BUTTON_CUSTOM);
+			textureLoader(TextureLoader.MENU_UI_BUTTON_BUILDER);
 			textureLoader(TextureLoader.OVERLAY_STAR);
 			
 			textureLoader(TextureLoader.INTRO_JUPITER);
@@ -243,7 +245,7 @@ public final class Resources {
 						stream = getContext().getAssets().open("level/"+scenarioID);
 					} else {
 						File path = Environment.getExternalStoragePublicDirectory("EscapeIR/Scenario");
-						stream = new FileInputStream(new File(path,"test.scn"));
+						stream = new FileInputStream(new File(path,scenarioID));
 					}
 					
 					try {
@@ -252,6 +254,7 @@ public final class Resources {
 						stream.close();
 					}
 				}
+				
 				return scenario;
 			}
 			
@@ -279,15 +282,6 @@ public final class Resources {
 		Engine.debug(TAG, "Load Font ID: "+fontID);
 		font.put(fontID, Typeface.createFromAsset(getContext().getAssets(), getContext().getString(fontID)));
 	}
-	
-	/**
-	 * Create a ScenarioLoader and add it for a given Scenario name.
-	 * 
-	 * @param scenarioID Scenario name
-	 */
-	/*private void postScenarioLoader(String scenarioID) {
-		scenarioLoader.put(scenarioID, createScenarioLoader(scenarioID));
-	}*/
 	
 	/**
 	 * <p>

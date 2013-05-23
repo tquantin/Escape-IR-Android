@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="font_visitor">visitor.ttf</string>
+    <string name="font_visitor">font/visitor.ttf</string>
 </resources>

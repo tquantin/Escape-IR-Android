@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import fr.escape.Objects;
 import fr.escape.app.Engine;
-import fr.escape.app.Graphics;
 import fr.escape.app.Input;
 import fr.escape.app.Screen;
 import fr.escape.game.Escape;
@@ -23,29 +22,26 @@ public final class Menu implements Screen {
 	private static final String TAG = Menu.class.getSimpleName();
 	private static final String TITLE = "Escape";
 	private static final String FOOTER = "Insert Coin";
-	private static final String NEW_GAME = "New Game";
 	
 	private static final int HEADER_MARGING = 100;
 	private static final int FOOTER_MARGING = 30;
-	private static final int SIDE_PADDING = 50;
-	private static final int GRID_PADDING = 20;
-	private static final int GRID_COMPONENTS_SIZE = 75;
 	
-	private static final float FSIZE_H1 = 22.0f;
-	private static final float FSIZE_H2 = 18.0f; 
-	private static final float FSIZE_H3 = 16.0f;
+	private static final float FSIZE_HEADER = 22.0f;
+	private static final float FSIZE_FOOTER = 18.0f;
 	
-	private final Font fontH1;
-	private final Font fontH2;
-	private final Font fontH3;
+	private final Font header;
+	private final Font footer;
 	
 	private final Escape game;
 	
 	private final Texture background;
-	private final Texture grid;
+	private final Texture history;
+	private final Texture custom;
+	private final Texture builder;
 	
-	private final Rect gridArea;
-	private final Rect touchArea;
+	private final Rect touchHistory;
+	private final Rect touchCustom;
+	private final Rect touchBuilder;
 	
 	/**
 	 * Default Constructor
@@ -56,28 +52,50 @@ public final class Menu implements Screen {
 		
 		this.game = Objects.requireNonNull(game);
 		
-		this.fontH1 = new Font(game.getResources().getFont(FontLoader.VISITOR_ID), FSIZE_H1);
-		this.fontH2 = new Font(game.getResources().getFont(FontLoader.VISITOR_ID), FSIZE_H2);
-		this.fontH3 = new Font(game.getResources().getFont(FontLoader.VISITOR_ID), FSIZE_H3);
+		this.header = new Font(game.getResources().getFont(FontLoader.VISITOR_ID), FSIZE_HEADER);
+		this.footer = new Font(game.getResources().getFont(FontLoader.VISITOR_ID), FSIZE_FOOTER);
 		
 		this.background = game.getResources().getTexture(TextureLoader.BACKGROUND_MENU);
-		this.grid = game.getResources().getTexture(TextureLoader.MENU_UI_GRID);
 		
-		this.gridArea = createGrid(game.getGraphics());
-		this.touchArea = createTouch(gridArea);
+		this.history = game.getResources().getTexture(TextureLoader.MENU_UI_BUTTON_HISTORY);
+		this.custom = game.getResources().getTexture(TextureLoader.MENU_UI_BUTTON_CUSTOM);
+		this.builder = game.getResources().getTexture(TextureLoader.MENU_UI_BUTTON_BUILDER);
+		
+		int gridWidth = Math.max(Math.max(history.getWidth(), custom.getWidth()), builder.getWidth());
+		int gridHeight = history.getHeight() + custom.getHeight() + builder.getHeight();
+		
+		int gridX = (game.getGraphics().getWidth() / 2) - (gridWidth / 2);
+		int gridY = (game.getGraphics().getHeight() / 2) - (gridHeight / 2);
+		
+		this.touchHistory = createTouch(0, gridY, gridX, gridX + history.getWidth(), history.getHeight());
+		this.touchCustom = createTouch(1, gridY, gridX, gridX + custom.getWidth(), custom.getHeight());
+		this.touchBuilder = createTouch(2, gridY, gridX, gridX + builder.getWidth(), builder.getHeight());
 		
 	}
 	
 	@Override
 	public boolean touch(Input i) {
-		//TODO : Fix touchArea.contains
-		//if(touchArea.contains(i.getX(), i.getY())) {
-			Engine.log(TAG, "User Launch: NEW_GAME");
-			next();
-			return true;
-		//}
 		
-		//return false;
+		if(touchHistory.contains(i.getX(), i.getY())) {
+			
+			Engine.log(TAG, "User Launch: History");
+			history();
+			return true;
+			
+		} else if(touchCustom.contains(i.getX(), i.getY())) {
+			
+			Engine.log(TAG, "User Launch: Custom Game");
+			custom();
+			return true;
+			
+		} else if(touchBuilder.contains(i.getX(), i.getY())) {
+			
+			Engine.log(TAG, "User Launch: Builder");
+			builder();
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override
@@ -115,17 +133,20 @@ public final class Menu implements Screen {
 		 */
 		game.getGraphics().draw(background, 0, 0, width, heigth, srcX, srcY, srcWidth, srcHeigth);
 		
-		game.getGraphics().draw(grid, centerXScreen - (grid.getWidth() / 2), centerYScreen - (grid.getHeight() / 2));
+		/**
+		 * Draw Menu Components
+		 */
+		game.getGraphics().draw(history, touchHistory.left, touchHistory.top);
+		game.getGraphics().draw(custom, touchCustom.left, touchCustom.top);
+		game.getGraphics().draw(builder, touchBuilder.left, touchBuilder.top);
 		
-		Screens.drawStringInCenterPosition(game.getGraphics(), TITLE, centerXScreen, HEADER_MARGING, fontH1, Color.WHITE);
-		
-		Screens.drawStringInCenterPosition(game.getGraphics(), NEW_GAME, touchArea.centerX(), touchArea.centerY(), fontH3, Color.BLACK);		
+		Screens.drawStringInCenterPosition(game.getGraphics(), TITLE, centerXScreen, HEADER_MARGING, header, Color.WHITE);		
 		
 		Screens.drawStringInCenterPosition(
 				game.getGraphics(), FOOTER, 
 				(game.getGraphics().getWidth() / 2),
 				game.getGraphics().getHeight() - FOOTER_MARGING, 
-				fontH2, Color.WHITE);
+				footer, Color.WHITE);
 	}
 
 	@Override
@@ -135,41 +156,46 @@ public final class Menu implements Screen {
 
 	@Override
 	public void hide() { /* NOTHING TO DO */ }
-
+	
 	/**
-	 * Create a Touch Components inside the Grid.
+	 * Create a Touch Components inside the Screen for the Menu.
 	 * 
-	 * @param grid Grid to use
-	 * @return Touch Area
+	 * @param position Position of this Components
+	 * @param y Starting Position Y in Screen for Components 
+	 * @param x1 Starting Position X in Screen for Components 
+	 * @param x2 Ending Position X in Screen for Components
+	 * @param height Components Height
+	 * @return
 	 */
-	private static Rect createTouch(Rect grid) {
-		return new Rect(grid.left + GRID_PADDING, grid.centerY() - (GRID_COMPONENTS_SIZE/2),
-						grid.right - (GRID_PADDING * 2), GRID_COMPONENTS_SIZE);
+	private static Rect createTouch(int position, int y, int x1, int x2, int height) {
+	
+		int y1 = y + (position * height);
+		int y2 = y1 + height;
+		
+		return new Rect(x1, y1, x2, y2);
 	}
 	
 	/**
-	 * Create a Grid Components inside the Screen.
-	 * 
-	 * @param graphics Screen property.
-	 * @return Grid Area
+	 * Launch a new History Game
 	 */
-	private static Rect createGrid(Graphics graphics) {
-		
-		int x = SIDE_PADDING;
-		int y = HEADER_MARGING * 2;
-		
-		return new Rect(x, y, 
-				(graphics.getWidth() - (x * 2)), 
-				(graphics.getHeight() - (FOOTER_MARGING * 3)) - y);
-	}
-	
-	/**
-	 * Launch a New Game
-	 * 
-	 * @see Escape#setNewGameScreen()
-	 */
-	public void next() {
+	public void history() {
 		game.setScreenID(Escape.SCREEN_NEW_GAME);
+	}
+	
+	/**
+	 * Launch a new Custom Game
+	 */
+	public void custom() {
+		//game.setScreenID(id)
+		Engine.error(TAG, "Cannot load Custom Game");
+	}
+	
+	/**
+	 * Launch Builder Activity
+	 */
+	public void builder() {
+		//game.setScreenID(id)
+		Engine.error(TAG, "Cannot load Builder Activity");
 	}
 	
 }
