@@ -189,6 +189,7 @@ public class ShipFactory {
 			
 			@Override
 			public void update(Graphics graphics, long delta) {
+				
 				Objects.requireNonNull(graphics);
 				
 				if(executeRightLoop || executeLeftLoop) {
@@ -209,6 +210,12 @@ public class ShipFactory {
 				}
 				
 				super.update(graphics, delta);
+				
+				Shot shot = getActiveWeapon().getShot();
+				
+				if(shot != null) {
+					shot.setPosition(getX(), getY() + engine.getConverter().toMeterY(getEdge().height()));
+				}
 			}
 			
 			@Override
@@ -227,12 +234,6 @@ public class ShipFactory {
 						getBody().setLinearVelocity(new Vec2(0, 0));
 						velocity[1] = 0.0f;
 						velocity[2] = 0.0f;
-					}
-					
-					Shot shot = getActiveWeapon().getShot();
-					
-					if(shot != null) {
-						shot.setPosition(getX(), getY() - engine.getConverter().toMeterY(getEdge().height()));
 					}
 
 				}

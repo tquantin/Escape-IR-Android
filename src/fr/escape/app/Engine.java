@@ -132,7 +132,7 @@ public final class Engine implements Runnable {
 	public void event(final Input event) {
 
 		Objects.requireNonNull(event);
-		getGame().getScreen().touch(event);
+		getGame().touch(event);
 		
 	}
 

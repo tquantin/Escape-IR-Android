@@ -38,7 +38,6 @@ import fr.escape.graphics.Texture;
  */
 public abstract class AbstractShip implements Ship {
 	
-	//private static final String TAG = AbstractShip.class.getSimpleName();
 	private final Engine engine;
 	
 	private final BodyDef bodyDef;
@@ -94,7 +93,6 @@ public abstract class AbstractShip implements Ship {
 		life -= value;
 		
 		if(life <= 0) {
-			//Foundation.ACTIVITY.debug(TAG, "A Ship has been destroy.");
 			return true;
 		}
 		
@@ -122,6 +120,13 @@ public abstract class AbstractShip implements Ship {
 		
 		this.isWeaponLoaded = false;
 		this.activeWeapon = which;
+		
+		if(isPlayer() && getActiveWeapon().isAutoLoading() && !isWeaponLoaded()) {
+			if(!loadWeapon()) {
+				Engine.error(toString(), "Cannot auto load the weapons");
+			}
+		}
+		
 	}
 	
 	@Override
@@ -232,7 +237,15 @@ public abstract class AbstractShip implements Ship {
 		Weapon activeWeapon = getActiveWeapon();
 		
 		if(activeWeapon.fire(velocity, new ShotContext(isPlayer(), shipDrawable.getWidth(), shipDrawable.getHeight()))) {
-			isWeaponLoaded = false;
+			
+			if(isPlayer() && getActiveWeapon().isAutoLoading()) {
+				if(!loadWeapon()) {
+					Engine.error(toString(), "Cannot auto load the weapons");
+				}
+			} else {
+				isWeaponLoaded = false;
+			}
+			
 			return true;
 		}
 		
@@ -241,6 +254,7 @@ public abstract class AbstractShip implements Ship {
 	
 	@Override
 	public void moveTo(float x, float y) {
+		
 		float distanceX = x - getX();
 		float distanceY = y - getY();
 		
@@ -249,6 +263,7 @@ public abstract class AbstractShip implements Ship {
 				
 		getBody().setLinearDamping((coeff));
 		getBody().setLinearVelocity(new Vec2(distanceX * coeff, distanceY * coeff));
+		
 	}
 	
 	@Override

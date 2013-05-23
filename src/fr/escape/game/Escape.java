@@ -149,10 +149,16 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	private EntityContainer entityContainer;
 	
 	/**
+	 * Game Flags
+	 */
+	private boolean ready;
+	
+	/**
 	 * Default Constructor for the Game.
 	 */
 	public Escape() {
 		this.user = new User(this);
+		this.ready = false;
 	}
 
 	/**
@@ -202,6 +208,8 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 			
 			// Show Entry Screen
 			setScreenID(SCREEN_MENU);
+			
+			ready = true;
 			
 		} catch(Exception e) {
 			error = new Error(this);
@@ -260,10 +268,13 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	 */
 	@Override
 	public boolean touch(Input i) {
-		if(getOverlay().touch(i)) {
-			return true;
+		if(isReady()) {
+			if(getOverlay().touch(i)) {
+				return true;
+			}
+			return getScreen().touch(i);
 		}
-		return getScreen().touch(i);
+		return false;
 	}
 	
 	/**
@@ -271,10 +282,13 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	 */
 	@Override
 	public boolean move(Input i) {
-		if(getOverlay().move(i)) {
-			return true;
+		if(isReady()) {
+			if(getOverlay().move(i)) {
+				return true;
+			}
+			return getScreen().move(i);
 		}
-		return getScreen().move(i);
+		return false;
 	}
 
 	/**
@@ -294,6 +308,15 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	 */
 	public User getUser() {
 		return user;
+	}
+	
+	/**
+	 * Check if the Game is ready.
+	 * 
+	 * @return True if the game is ready.
+	 */
+	public boolean isReady() {
+		return ready;
 	}
 	
 	/**
