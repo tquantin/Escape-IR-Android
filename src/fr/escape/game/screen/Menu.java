@@ -3,6 +3,7 @@ package fr.escape.game.screen;
 import android.graphics.Color;
 import android.graphics.Rect;
 import fr.escape.Objects;
+import fr.escape.android.EscapeApplication;
 import fr.escape.app.Engine;
 import fr.escape.app.Input;
 import fr.escape.app.Screen;
@@ -194,8 +195,8 @@ public final class Menu implements Screen {
 	 * Launch Builder Activity
 	 */
 	public void builder() {
-		//game.setScreenID(id)
-		Engine.error(TAG, "Cannot load Builder Activity");
+		EscapeApplication app = (EscapeApplication) game.getEngine().getResources().getContext();
+		app.startBuilderActivity();
 	}
 	
 }

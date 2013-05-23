@@ -35,6 +35,11 @@
             </intent-filter>
             
         </activity>
+        
+        <activity
+            android:name="fr.escape.android.BuilderActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

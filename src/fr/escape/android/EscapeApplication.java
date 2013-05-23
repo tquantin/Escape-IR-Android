@@ -16,6 +16,7 @@ import fr.escape.app.Input;
 import fr.escape.game.Escape;
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 
@@ -65,6 +66,12 @@ public final class EscapeApplication extends Application {
 	
 	public Engine getEngine() {
 		return engine;
+	}
+	
+	public void startBuilderActivity() {
+		Intent intent = new Intent(this,BuilderActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		this.startActivity(intent);
 	}
 		
 	public boolean onTouchEvent(MotionEvent event) {
