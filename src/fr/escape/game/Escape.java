@@ -327,7 +327,7 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	public void setScreenID(int id) {
 		switch (id) {
 			case SCREEN_NEW_GAME: {
-				setScreen(introJupiter);
+				setScreen(earth);
 				break;
 			}
 			case SCREEN_VICTORY: {
@@ -514,8 +514,6 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 	 * Create a Player Ship
 	 */
 	private void createPlayerShip() {
-		
-		Engine.debug(TAG, "CREATE PLAYER SHIP AT : " + engine.getConverter().toMeterX(getGraphics().getWidth() / 2) + "/" + engine.getConverter().toMeterY(getGraphics().getHeight() - 100));
 		
 		Ship ship = getShipFactory().createPlayer(
 				engine.getConverter().toMeterX(getGraphics().getWidth() / 2), 
