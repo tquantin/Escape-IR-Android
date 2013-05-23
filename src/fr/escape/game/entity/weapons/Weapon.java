@@ -61,6 +61,13 @@ public interface Weapon extends Updateable {
 	public boolean load(float x, float y, ShotContext context);
 	
 	/**
+	 * Check if the {@link Weapon} should auto load the {@link Shot}
+	 * 
+	 * @return Return true if the {@link Shot} should be automatically loaded, false otherwise.
+	 */
+	public boolean isAutoLoading();
+	
+	/**
 	 * Reload the {@link Weapon}.
 	 * 
 	 * @param number : Number of ammunitions to add.

@@ -42,7 +42,6 @@ public final class Level implements Screen {
 	 */
 	private final static String TAG = Level.class.getSimpleName();
 	
-	//private final static int MAX_ACTIVE_EVENT_TIME = 1337;
 	private final static long STAR_SPEED = 5000;
 	
 	private final Escape game;
@@ -205,25 +204,38 @@ public final class Level implements Screen {
 		
 		if(fire) {
 			if(action.equals(Input.Action.ACTION_UP)) {
+				
 				WeaponGesture wg = new WeaponGesture(game.getEngine());
 				
 				float[] weaponVelocity = new float[3];
 				
 				if(wg.accept(events.get(0), events, i, weaponVelocity)) {
+					
 					Engine.debug(TAG, "Weapon Gesture Accept : Fire");
-					ship.loadWeapon();
+					
+					if(!ship.isWeaponLoaded()) {
+						Engine.debug(TAG, "Weapon is not loaded");
+						ship.loadWeapon();
+					}
+					
 					ship.fireWeapon(weaponVelocity);
+					
+					
 				}
 				
 				events.clear();
 			}
 		} else {
 			if(action.equals(Input.Action.ACTION_DOWN)) {
+				
 				distanceX = x - ship.getX();
 	        	distanceY = y - ship.getY();
 	        	Arrays.fill(velocity, 0);
+	        	
 			} else if(action.equals(Input.Action.ACTION_UP)) {
+				
 				List<Gesture> gestures = game.getUser().getGestures();
+				
 				for(int j = 0; j < gestures.size(); j++) {
 					if(gestures.get(j).accept(events.get(0), events, i, velocity)) {
 						accepted = true;

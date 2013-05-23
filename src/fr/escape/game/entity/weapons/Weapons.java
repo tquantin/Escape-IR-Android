@@ -64,6 +64,11 @@ public class Weapons {
 			protected Shot createShot(float x, float y) {
 				return getFactory().createBlackholeShot(x, y);
 			}
+
+			@Override
+			public boolean isAutoLoading() {
+				return false;
+			}
 			
 		};
 		Weapons.validate(wB);
@@ -75,6 +80,11 @@ public class Weapons {
 			@Override
 			protected Shot createShot(float x, float y) {
 				return getFactory().createFireBallShot(x, y);
+			}
+			
+			@Override
+			public boolean isAutoLoading() {
+				return true;
 			}
 			
 		};
@@ -89,6 +99,11 @@ public class Weapons {
 				return getFactory().createShiboleetShot(x, y, false);
 			}
 			
+			@Override
+			public boolean isAutoLoading() {
+				return true;
+			}
+			
 		};
 		Weapons.validate(wS);
 		
@@ -99,6 +114,11 @@ public class Weapons {
 			@Override
 			protected Shot createShot(float x, float y) {
 				return getFactory().createMissileShot(x, y);
+			}
+			
+			@Override
+			public boolean isAutoLoading() {
+				return false;
 			}
 			
 		};
@@ -182,6 +202,11 @@ public class Weapons {
 			public int getAmmunition() {
 				return 1;
 			}
+
+			@Override
+			public boolean isAutoLoading() {
+				return false;
+			}
 			
 		};
 		Weapons.validate(wF);
@@ -200,6 +225,11 @@ public class Weapons {
 				return 1;
 			}
 			
+			@Override
+			public boolean isAutoLoading() {
+				return false;
+			}
+			
 		};
 		Weapons.validate(wS);
 		
@@ -215,6 +245,11 @@ public class Weapons {
 			@Override
 			public int getAmmunition() {
 				return 1;
+			}
+			
+			@Override
+			public boolean isAutoLoading() {
+				return false;
 			}
 			
 		};

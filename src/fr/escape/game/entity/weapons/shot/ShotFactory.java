@@ -79,7 +79,8 @@ public final class ShotFactory {
 		fixture.filter.categoryBits = 0x0008;
 		fixture.filter.maskBits = MASK;
 		
-		Body body = world.createBody(bodyDef);
+		Body body;
+		while((body = world.createBody(bodyDef)) == null);
 		body.createFixture(fixture);
 		
 		Shot shot = new BlackHoleShot(engine, body, entityContainer, COLLISION_BEHAVIOR);
@@ -117,7 +118,8 @@ public final class ShotFactory {
 		fixture.filter.categoryBits = 0x0008;
 		fixture.filter.maskBits = MASK;
 		
-		Body body = world.createBody(bodyDef);
+		Body body;
+		while((body = world.createBody(bodyDef)) == null);
 		body.createFixture(fixture);
 
 		Shot shot = new FireBallShot(engine, body, entityContainer, COLLISION_BEHAVIOR);
@@ -155,9 +157,8 @@ public final class ShotFactory {
 		fixture.filter.categoryBits = 0x0008;
 		fixture.filter.maskBits = MASK;
 		
-		Body body = null;
-		//TODO : voir comment corriger ça autrement - createBody retourne null si le world.step est en cours.
-		while(body == null) body = world.createBody(bodyDef);
+		Body body;
+		while((body = world.createBody(bodyDef)) == null);
 		body.createFixture(fixture);
 
 		Shot shot = new MissileShot(engine, body, entityContainer, COLLISION_BEHAVIOR);
@@ -203,7 +204,8 @@ public final class ShotFactory {
 		fixture.filter.categoryBits = 0x0008;
 		fixture.filter.maskBits = MASK;
 		
-		Body body = world.createBody(bodyDef);
+		Body body;
+		while((body = world.createBody(bodyDef)) == null);
 		body.createFixture(fixture);
 
 		Shot shot = new ShiboleetShot(engine, body, isChild, entityContainer, COLLISION_BEHAVIOR, this);
@@ -240,7 +242,8 @@ public final class ShotFactory {
 		fixture.filter.categoryBits = 0x0008;
 		fixture.filter.maskBits = MASK;
 		
-		Body body = world.createBody(bodyDef);
+		Body body;
+		while((body = world.createBody(bodyDef)) == null);
 		body.createFixture(fixture);
 
 		Shot shot = new JupiterShot(engine, body, entityContainer, COLLISION_BEHAVIOR);
@@ -277,7 +280,8 @@ public final class ShotFactory {
 		fixture.filter.categoryBits = 0x0008;
 		fixture.filter.maskBits = MASK;
 		
-		Body body = world.createBody(bodyDef);
+		Body body;
+		while((body = world.createBody(bodyDef)) == null);
 		body.createFixture(fixture);
 
 		Shot shot = new MoonShot(engine, body, entityContainer, COLLISION_BEHAVIOR);
@@ -314,7 +318,8 @@ public final class ShotFactory {
 		fixture.filter.categoryBits = 0x0008;
 		fixture.filter.maskBits = MASK;
 		
-		Body body = world.createBody(bodyDef);
+		Body body;
+		while((body = world.createBody(bodyDef)) == null);
 		body.createFixture(fixture);
 
 		Shot shot = new EarthShot(engine, body, entityContainer, COLLISION_BEHAVIOR);

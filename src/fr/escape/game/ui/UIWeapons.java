@@ -96,16 +96,18 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 		this.touchArea = new ArrayList<Rect>();
 		
 		int offset = this.y;
+		int gridWidth = Weapons.getDrawableWidth() + ITEM_RIGHT_MARGING;
+		int gridHeight = Weapons.getDrawableHeight() + ITEM_BOTTOM_MARGING;
+		
 		for(int i = 0; i < weapons.size(); i++) {
 			
-			Rect rectangle = new Rect(
-					this.x + ITEM_LEFT_MARGING, 
-					offset + ITEM_TOP_MARGING,
-					Weapons.getDrawableWidth() + ITEM_RIGHT_MARGING,
-					Weapons.getDrawableHeight() + ITEM_BOTTOM_MARGING
-			);
+			int gridX = this.x + ITEM_LEFT_MARGING;
+			int gridY = offset + ITEM_TOP_MARGING;
 			
-			offset += ITEM_TOP_MARGING + Weapons.getDrawableHeight() + ITEM_BOTTOM_MARGING;
+			offset = gridY + gridHeight;
+			
+			Rect rectangle = new Rect(gridX, gridY, gridX + gridWidth, offset);
+			
 			touchArea.add(rectangle);
 			
 		}
@@ -117,6 +119,7 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 
 		int offset = this.y;
 		for(int i = 0; i < weapons.size(); i++) {
+			
 			Weapon w = weapons.get(i);
 			
 			offset += ITEM_TOP_MARGING;
@@ -126,7 +129,9 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 			renderWeaponOverlay(this.x + ITEM_LEFT_MARGING, offset, w.equals(activeWeapon), w.isEmpty());
 			
 			offset += (Weapons.getDrawableHeight() + ITEM_BOTTOM_MARGING);
+			
 		}
+		
 	}
 
 	/**
@@ -144,13 +149,18 @@ public final class UIWeapons extends AbstractOverlay implements Sender {
 	public boolean touch(Input touch) {
 		
 		for(int i = 0; i < touchArea.size(); i++) {
+			
 			Rect rectangle = touchArea.get(i);
+			
 			if(rectangle.contains(touch.getX(), touch.getY())) {
+				
 				Weapon w = weapons.get(i);
+				
 				if(!w.isEmpty()) {
 					activeWeapon = w;
 					send(i);
 				}
+				
 				return true;
 			}
 		}
