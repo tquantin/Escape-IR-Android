@@ -19,7 +19,6 @@ import java.util.NoSuchElementException;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Environment;
 import android.util.SparseArray;
 
 import fr.escape.Objects;
@@ -245,7 +244,7 @@ public final class Resources {
 					if(history) {
 						stream = getContext().getAssets().open("level/"+scenarioID);
 					} else {
-						File path = Environment.getExternalStoragePublicDirectory("EscapeIR/Scenario");
+						File path = Engine.getScenarioStorage();
 						stream = new FileInputStream(new File(path,scenarioID));
 					}
 					

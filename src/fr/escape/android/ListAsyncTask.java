@@ -36,9 +36,11 @@ public class ListAsyncTask extends AsyncTask<String[], Void, Object[]> {
 			
 			if(directory != null) {
 				File[] files = Environment.getExternalStoragePublicDirectory(directory).listFiles();
-				for(int j = 0; j < files.length; j++) {
-					if(!files[j].isDirectory()) {
-						list.add(files[j].getName().replaceAll(".scn", ""));
+				if(files != null) {
+					for(int j = 0; j < files.length; j++) {
+						if(!files[j].isDirectory()) {
+							list.add(files[j].getName().replaceAll(".scn", ""));
+						}
 					}
 				}
 			}

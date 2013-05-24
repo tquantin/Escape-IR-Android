@@ -7,8 +7,9 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import fr.escape.app.Engine;
+
 import android.graphics.Rect;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -54,7 +55,7 @@ public class ScenarioBuilder {
 	}
 	
 	public void saveData() {
-		File path = Environment.getExternalStoragePublicDirectory("EscapeIR/Scenario");
+		File path = Engine.getScenarioStorage();
 		File scFile = new File(path,name + ".scn");
 		
 		DecimalFormat f1 = new DecimalFormat("0.0");
@@ -102,7 +103,7 @@ public class ScenarioBuilder {
 	}
 	
 	public String loadData() {
-		File path = Environment.getExternalStoragePublicDirectory("EscapeIR/Scenario");
+		File path = Engine.getScenarioStorage();
 		File scFile = new File(path,name + ".scn");
 		
 		FileInputStream in = null;

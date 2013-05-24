@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.DecimalFormat;
 
 import fr.escape.android.R;
+import fr.escape.app.Engine;
 import fr.escape.game.entity.CoordinateConverter;
 import fr.escape.game.scenario.ScenarioBuilder;
 
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,6 +50,7 @@ public class BuilderActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_builder_options);
 		
 		fAsyncTask = new FileAsyncTask(this);
@@ -207,7 +210,7 @@ public class BuilderActivity extends Activity {
 			bLayout.setBackgroundResource(backgroundId);
 			builder.background = Integer.toString(backgroundId);
 		} else {
-			File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+			File directory = Engine.getImageStorage();
 			File image = new File(directory, backgroundName);
 			
 			BitmapDrawable background = new BitmapDrawable(getResources(), BitmapFactory.decodeFile(image.getAbsolutePath()));
