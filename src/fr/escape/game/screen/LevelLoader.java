@@ -97,26 +97,36 @@ public final class LevelLoader implements Screen {
 					
 					Engine.error(TAG, "Launch Custom Game: "+item.getFile());
 					
-					CustomStage stage = new CustomStage(
-						game.getEngine(), 
-						game.getWorld(), 
-						game.getEntityContainer(), 
-						item.getFile().getName(), 
-						game.getShipFactory()
-					);
-					
-					Texture texture = stage.getCustomBackground();
-					
-					if(texture == null) {
+					try {
+						
+						CustomStage stage = new CustomStage(
+							game.getEngine(), 
+							game.getWorld(), 
+							game.getEntityContainer(), 
+							item.getFile().getName(), 
+							game.getShipFactory()
+						);
+						
+						Texture texture = stage.getCustomBackground();
+						
+						if(texture == null) {
+							game.getEngine().toast("Cannot load the Scenario's Background");
+							return false;
+						}
+						
+						game.getUser().setOneLife();
+						
+						Level level = new Level(game, stage, new ScrollingTexture(texture, true), Escape.SCREEN_LEVEL_LOADER, Escape.SCREEN_VICTORY);
+						game.setScreen(level);
+						return true;
+						
+					} catch (Throwable t) {
+						
+						Engine.error(TAG, "An error has occured", t);
 						game.getEngine().toast("Cannot load the given Scenario");
 						return false;
+						
 					}
-					
-					game.getUser().setOneLife();
-					
-					Level level = new Level(game, stage, new ScrollingTexture(texture, true), Escape.SCREEN_LEVEL_LOADER, Escape.SCREEN_VICTORY);
-					game.setScreen(level);
-					return true;
 					
 				}
 			}
