@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -40,6 +41,8 @@ public class BuilderActivity extends Activity {
 	private MenuItem saveButton;
 	
 	boolean registerMovement = false;
+	private String backgroundName = "";
+	private int step = 1;
 	
 	int scenarioId = -1;
 	int previous = 0;
@@ -51,12 +54,10 @@ public class BuilderActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.activity_builder_options);
+		setContentView(R.layout.activity_builder_options_1);
 		
+		new ListAsyncTask(this, new int[] {R.id.scenario_list,1}).execute(new String[] {"EscapeIR/Scenario"});
 		fAsyncTask = new FileAsyncTask(this);
-		
-		ListAsyncTask async = new ListAsyncTask(this, new int[] {R.id.images_list,R.id.scenario_list,R.id.boss_list});
-		async.execute(new String[][] { {Environment.DIRECTORY_PICTURES, "Jupiter Background", "Moon Background", "Earth Background"}, {"EscapeIR/Scenario"}, {null, "Jupiter Boss", "Moon Boss", "Earth Boss"} });
 	}
 	
 	@Override
@@ -86,43 +87,61 @@ public class BuilderActivity extends Activity {
 	}
 	
 	public void next(View view) {
-		EditText scenarioName = (EditText) findViewById(R.id.scenario_name);
-		EditText scenarioTime = (EditText) findViewById(R.id.scenario_time);
-		
-		ListView imgList = (ListView) findViewById(R.id.images_list);
-		ListView scnList = (ListView) findViewById(R.id.scenario_list);
-		
-		String name = scenarioName.getText().toString();
-		String time = scenarioTime.getText().toString();
-		String backgroundName = (String) imgList.getItemAtPosition(imgId);
-		
-		if((name.equals("")  || time.equals("")) && scenarioId == -1) {
-			Toast.makeText(getBaseContext(), "Saisissez un nom de scénario, ainsi que sa durée.", Toast.LENGTH_LONG).show();
-		} else {
-			setContentView(R.layout.activity_builder);
-			saveButton.setEnabled(true);
-			
-			RelativeLayout bLayout = (RelativeLayout) findViewById(R.id.builderlayout);
-			bLayout.setOnTouchListener(getOnTouchListener());
-			
-			if(scenarioId != -1) {
-				fAsyncTask.execute((String) scnList.getItemAtPosition(scenarioId));
-				return;
-			}
-			
-			builder.name = name;
-			builder.time = Integer.parseInt(time);
-			builder.bossId = bossId;
-			
-			int backgroundId = -1;
-			switch(imgId) {
-				case 0 : backgroundId = R.drawable.bjupiter; break;
-				case 1 : backgroundId = R.drawable.bmoon; break;
-				case 2 : backgroundId = R.drawable.bearth; break;
-				default: break;
-			}
-			
-			setBackground(backgroundId, backgroundName);
+		switch(step) {
+			case 1 : ListView scnList = (ListView) findViewById(R.id.scenario_list);
+				String scenarioName = ((EditText) findViewById(R.id.scenario_name)).getText().toString();
+				String scenarioTime = ((EditText) findViewById(R.id.scenario_time)).getText().toString();
+				Log.i("NEXT","Scenario ID : " + scenarioId);
+				if((scenarioName.equals("")  || scenarioTime.equals("")) && scenarioId == -1) {
+					Toast.makeText(getBaseContext(), "Remplissez les champs ou sélectionnez un scénario.", Toast.LENGTH_LONG).show();
+				} else {
+					if(scenarioId != -1) {
+						setContentView(R.layout.activity_builder);
+						saveButton.setEnabled(true);
+						
+						RelativeLayout bLayout = (RelativeLayout) findViewById(R.id.builderlayout);
+						bLayout.setOnTouchListener(getOnTouchListener());
+						
+						fAsyncTask.execute((String) scnList.getItemAtPosition(scenarioId));
+						return;
+					}
+					
+					builder.name = scenarioName;
+					builder.time = Integer.parseInt(scenarioTime);
+					
+					setContentView(R.layout.activity_builder_options_2);
+					new ListAsyncTask(this, new int[] {R.id.images_list,0}).execute(new String[] {Environment.DIRECTORY_PICTURES, "Jupiter Background", "Moon Background", "Earth Background"});
+					++step;
+				}
+				
+				break;
+			case 2 : ListView imgList = (ListView) findViewById(R.id.images_list);
+				setContentView(R.layout.activity_builder_options_3);
+				new ListAsyncTask(this, new int[] {R.id.boss_list,2}).execute(new String[] {null, "Jupiter Boss", "Moon Boss", "Earth Boss"});
+				
+				backgroundName = (String) imgList.getItemAtPosition(imgId);
+				++step;
+				break;
+			case 3 : setContentView(R.layout.activity_builder);
+				saveButton.setEnabled(true);
+				
+				builder.bossId = bossId;
+				
+				RelativeLayout bLayout = (RelativeLayout) findViewById(R.id.builderlayout);
+				bLayout.setOnTouchListener(getOnTouchListener());
+				
+				int backgroundId = -1;
+				switch(imgId) {
+					case 0 : backgroundId = R.drawable.bjupiter; break;
+					case 1 : backgroundId = R.drawable.bmoon; break;
+					case 2 : backgroundId = R.drawable.bearth; break;
+					default: break;
+				}
+				setBackground(backgroundId, backgroundName);
+				
+				++step;
+				break;
+			default: step = 1;
 		}
 	}
 	

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/builderoptions"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:scrollbars="vertical" >
+	
+    <Button android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+	    android:text="@string/button_next"
+	    android:onClick="next" />
+    
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/scenario_new" />
+    
+    <EditText android:id="@+id/scenario_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/scenario_name" />
+    
+    <EditText android:id="@+id/scenario_time"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="@string/scenario_time"/>
+    
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/scenario_list" />
+    
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        <ListView android:id="@+id/scenario_list" 
+            android:layout_width="fill_parent"
+	        android:layout_height="fill_parent" />
+    </LinearLayout>
+    
+</LinearLayout>

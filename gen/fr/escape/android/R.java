@@ -81,13 +81,15 @@ public final class R {
         public static final int images_list=0x7f060006;
         public static final int remove_ship=0x7f060009;
         public static final int save_button=0x7f06000a;
-        public static final int scenario_list=0x7f060003;
-        public static final int scenario_name=0x7f060004;
-        public static final int scenario_time=0x7f060005;
+        public static final int scenario_list=0x7f060005;
+        public static final int scenario_name=0x7f060003;
+        public static final int scenario_time=0x7f060004;
     }
     public static final class layout {
         public static final int activity_builder=0x7f030000;
-        public static final int activity_builder_options=0x7f030001;
+        public static final int activity_builder_options_1=0x7f030001;
+        public static final int activity_builder_options_2=0x7f030002;
+        public static final int activity_builder_options_3=0x7f030003;
     }
     public static final class menu {
         public static final int builder=0x7f050000;

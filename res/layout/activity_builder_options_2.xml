@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/builderoptions"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:scrollbars="vertical" >
+	
+    <Button android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+	    android:text="@string/button_next"
+	    android:onClick="next" />
+    
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/builder_background" />
+    
+    <LinearLayout android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1" >
+        <ListView android:id="@+id/images_list" 
+            android:layout_width="fill_parent"
+	        android:layout_height="fill_parent" />
+    </LinearLayout>
+	    
+</LinearLayout>

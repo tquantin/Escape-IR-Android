@@ -28,8 +28,8 @@ public class FileAsyncTask extends AsyncTask<String, Void, String[]> {
 		builder.time = Integer.parseInt(generalInfos[1]);
 		builder.bossId = Integer.parseInt(generalInfos[2]);
 		
-		int backgroundId = (generalInfos[2].matches("(\\+|-)?[0-9]+")) ? Integer.parseInt(generalInfos[3]) : -1;
-		activity.setBackground(backgroundId, generalInfos[2]);
+		int backgroundId = (generalInfos[3].matches("(\\+|-)?[0-9]+")) ? Integer.parseInt(generalInfos[3]) : -1;
+		activity.setBackground(backgroundId, generalInfos[3]);
 		
 		for(int i = 5; !result[i].equals("%%"); i++) {
 			String[] shipData = result[i].split(" ");
