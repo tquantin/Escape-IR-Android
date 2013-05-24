@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import fr.escape.app.Engine;
 
@@ -74,15 +75,37 @@ public class ScenarioBuilder {
 		
 		content.append("%%\n");
 		
+		StringBuilder[] strings = new StringBuilder[time];
+		Arrays.fill(strings, null);
+		
 		for(int i = 0; i < ships.size(); i++) {
 			ShipInformations infos = ships.get(i);
 			int time = infos.spawnTime;
-			content.append(time + " spawn " + i + "\n");
+			
+			if(strings[time] == null) strings[time] = new StringBuilder();
+			strings[time].append(time); strings[time].append(" spawn ");
+			strings[time].append(i); strings[time].append("\n");
+			
 			for(int j = 0; j < infos.movements.size(); j++) {
-				String position = infos.movements.get(j);
-				content.append(++time); content.append(" move "); content.append(i);
-				content.append(" "); content.append(position.replaceAll(",", ".")); content.append("\n");
-				content.append(time); content.append(" fire "); content.append(i); content.append("\n");
+				String position = infos.movements.get(j); ++time;
+				
+				if(strings[time] == null) strings[time] = new StringBuilder();
+				
+				strings[time].append(time); strings[time].append(" move "); strings[time].append(i);
+				strings[time].append(" "); strings[time].append(position.replaceAll(",", ".")); strings[time].append("\n");
+				strings[time].append(time); strings[time].append(" fire "); strings[time].append(i); strings[time].append("\n");
+			}
+			
+			++time;
+			if(strings[time] == null) strings[time] = new StringBuilder();
+			
+			strings[time].append(time); strings[time].append(" move "); strings[time].append(i); strings[time].append(" 5.0 13.0\n");
+			strings[time].append(time); strings[time].append(" fire "); strings[time].append(i); strings[time].append("\n");
+		}
+		
+		for(int i = 0; i < time; i++) {
+			if(strings[i] != null) {
+				content.append(strings[i].toString());
 			}
 		}
 		
@@ -132,6 +155,8 @@ public class ScenarioBuilder {
 			ShipInformations infos = ships.get(i);
 			if(infos.contains((int) x, (int) y)) {
 				ship = infos;
+				ship.movements.clear();
+				break;
 			}
 		}
 		

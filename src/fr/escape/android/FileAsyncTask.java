@@ -13,14 +13,9 @@ public class FileAsyncTask extends AsyncTask<String, Void, String[]> {
 	@Override
 	protected String[] doInBackground(String... params) {
 		ScenarioBuilder builder = activity.builder;
-		String[] result = null;
 		
-		if(params.length == 1) {
-			builder.name = params[0];
-			result = builder.loadData().split("\n");
-		} else {
-			builder.saveData();
-		}
+		builder.name = params[0];
+		String[] result = builder.loadData().split("\n");
 		
 		return result;
 	}
@@ -29,27 +24,25 @@ public class FileAsyncTask extends AsyncTask<String, Void, String[]> {
 	protected void onPostExecute(String[] result) {
 		ScenarioBuilder builder = activity.builder;
 		
-		if(result != null) {
-			String[] generalInfos = result[1].split(" ");
-			builder.time = Integer.parseInt(generalInfos[1]);
-			builder.bossId = Integer.parseInt(generalInfos[2]);
+		String[] generalInfos = result[1].split(" ");
+		builder.time = Integer.parseInt(generalInfos[1]);
+		builder.bossId = Integer.parseInt(generalInfos[2]);
+		
+		int backgroundId = (generalInfos[2].matches("(\\+|-)?[0-9]+")) ? Integer.parseInt(generalInfos[3]) : -1;
+		activity.setBackground(backgroundId, generalInfos[2]);
+		
+		for(int i = 5; !result[i].equals("%%"); i++) {
+			String[] shipData = result[i].split(" ");
 			
-			int backgroundId = (generalInfos[2].matches("(\\+|-)?[0-9]+")) ? Integer.parseInt(generalInfos[3]) : -1;
-			activity.setBackground(backgroundId, generalInfos[2]);
+			String[] xData = shipData[2].split("/");
+			String[] yData = shipData[3].split("/");
 			
-			for(int i = 5; !result[i].equals("%%"); i++) {
-				String[] shipData = result[i].split(" ");
-				
-				String[] xData = shipData[2].split("/");
-				String[] yData = shipData[3].split("/");
-				
-				activity.addShip(Integer.parseInt(shipData[0]), Float.parseFloat(xData[1]), Float.parseFloat(yData[1]), Integer.parseInt(shipData[1]));
-			}
-			
-			builder.currentShip = null;
-			activity.registerMovement = false;
-			activity.hideShipMenu();
+			activity.addShip(Integer.parseInt(shipData[0]), Float.parseFloat(xData[1]), Float.parseFloat(yData[1]), Integer.parseInt(shipData[1]));
 		}
+		
+		builder.currentShip = null;
+		activity.registerMovement = false;
+		activity.hideShipMenu();
 	}
 
 }

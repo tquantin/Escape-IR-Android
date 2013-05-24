@@ -77,7 +77,7 @@ public class BuilderActivity extends Activity {
 		switch(item.getItemId()) {
 			case R.id.change_type : switchType(); break;
 			case R.id.remove_ship : removeShip(); break;
-			case R.id.save_button : fAsyncTask.execute();
+			case R.id.save_button : builder.saveData();
 				Toast.makeText(getBaseContext(), "Scénario sauvegardé.", Toast.LENGTH_SHORT).show();
 				break;
 			default : break;
@@ -141,7 +141,8 @@ public class BuilderActivity extends Activity {
 		
 		registerMovement = true;
 		showShipMenu();
-		this.type = 0;
+		this.type = (type == 0) ? 2 : type - 1;
+		switchType();
 	}
 	
 	public void removeShip() {
@@ -179,7 +180,7 @@ public class BuilderActivity extends Activity {
 			distanceY = builder.currentShip.y - event.getY();
 		}
 		
-		if(nbMovement % 10 == 0 || event.getAction() == MotionEvent.ACTION_UP) {
+		if(nbMovement % 20 == 0 || event.getAction() == MotionEvent.ACTION_UP) {
 			DecimalFormat f1 = new DecimalFormat("0.0");
 			DecimalFormat f2 = new DecimalFormat("00.0");
 			
