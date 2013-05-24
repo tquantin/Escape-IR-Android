@@ -47,8 +47,9 @@ public final class WeaponGesture implements Gesture {
 		
 		double cd = (double) (end.getY() - y) / (end.getX() - start.getX());
 		float angle = - (float) (180 * (Math.atan(cd) - Math.atan(0)) / Math.PI);
+		int reverse = (start.getY() < end.getY()) ? 180 : 0;
 		
-		velocity[0] = (angle < 0)?270-angle:90-angle;
+		velocity[0] = ((angle < 0) ? (270 - angle) : (90 - angle)) + reverse;
 		float max = Math.max(Math.abs(distanceX), Math.abs(distanceY));
 		float coeff = coefficient / max;
 		
