@@ -127,7 +127,7 @@ public class BuilderActivity extends Activity {
 	public void addShip(int time, float x, float y, int type) {
 		RelativeLayout bLayout = (RelativeLayout) findViewById(R.id.builderlayout);
 		
-		Bitmap bImage = BitmapFactory.decodeResource(getResources(), R.drawable.sfalcon);
+		Bitmap bImage = BitmapFactory.decodeResource(getResources(), R.drawable.sraptor);
 		CoordinateConverter converter = new CoordinateConverter(bLayout.getWidth(), getWindowManager().getDefaultDisplay().getHeight(), 10);
 		builder.currentShip = builder.createShip(x,converter.toMeterX((int) x),y,0.0f,type,time,bImage.getWidth() / 2,bImage.getHeight() / 2);
 		
@@ -154,18 +154,12 @@ public class BuilderActivity extends Activity {
 	
 	public void switchType() {
 		Bitmap bImage = null;
+		type = (type + 1) % 3;
 		switch(type) {
-			case 0 : bImage = BitmapFactory.decodeResource(getResources(), R.drawable.sraptor);
-				type = 1;
-				break;
-			case 1 : bImage = BitmapFactory.decodeResource(getResources(), R.drawable.sfalcon);
-				type = 2;
-				break;
-			case 2 : bImage = BitmapFactory.decodeResource(getResources(), R.drawable.sviper);
-				type = 0;
-				break;
-			default : bImage = BitmapFactory.decodeResource(getResources(), R.drawable.sraptor);
-				break;
+			case 0 : bImage = BitmapFactory.decodeResource(getResources(), R.drawable.sraptor); break;
+			case 1 : bImage = BitmapFactory.decodeResource(getResources(), R.drawable.sfalcon); break;
+			case 2 : bImage = BitmapFactory.decodeResource(getResources(), R.drawable.sviper); break;
+			default : bImage = BitmapFactory.decodeResource(getResources(), R.drawable.sraptor); break;
 		}
 		builder.currentShip.image.setImageBitmap(bImage);
 		builder.currentShip.type = type;

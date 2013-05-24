@@ -81,6 +81,7 @@ public class ScenarioBuilder {
 				String position = infos.movements.get(j);
 				content.append(++time); content.append(" move "); content.append(i);
 				content.append(" "); content.append(position.replaceAll(",", ".")); content.append("\n");
+				content.append(time); content.append(" fire "); content.append(i); content.append("\n");
 			}
 		}
 		
