@@ -32,6 +32,7 @@ public abstract class AbstractStage implements Stage {
 	
 	private final Scenario scenario;
 	
+	private final Engine engine;
 	private final EntityContainer container;
 	private final World world;
 	
@@ -40,10 +41,12 @@ public abstract class AbstractStage implements Stage {
 	private boolean spawn;
 	
 	public AbstractStage(Engine engine, World world, EntityContainer container, String scenario, ShipFactory factory, boolean history) {
+		this.engine = Objects.requireNonNull(engine);
 		this.world = Objects.requireNonNull(world);
 		this.container = Objects.requireNonNull(container);
 		this.scenario = engine.getResources().getScenario(scenario, factory, history);
 		this.boss = Objects.requireNonNull(factory.createBoss(BOSS_SPAWN_X, BOSS_SPAWN_Y, this.scenario.getBossID()));
+		this.scenario.getBackgroundID();
 		this.duration = this.scenario.getDuration();
 		this.lastTime = -1;
 		this.spawn = false;
@@ -138,4 +141,21 @@ public abstract class AbstractStage implements Stage {
 		return boss;
 	}
 	
+	/**
+	 * Get the {@link Scenario} of the Stage
+	 * 
+	 * @return Scenario of the Stage
+	 */
+	protected Scenario getScenario() {
+		return scenario;
+	}
+	
+	/**
+	 * Get the {@link Engine} of the {@link Stage}
+	 * 
+	 * @return Engine of the Stage
+	 */
+	protected Engine getEngine() {
+		return engine;
+	}
 }

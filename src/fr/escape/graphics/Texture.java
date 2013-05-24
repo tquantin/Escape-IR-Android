@@ -49,6 +49,15 @@ public final class Texture {
 	}
 	
 	/**
+	 * Constructor for a Texture with a {@link Bitmap}
+	 *  
+	 * @param texture The {@link Bitmap} Texture
+	 */
+	public Texture(Bitmap texture) {
+		this.texture = Objects.requireNonNull(texture);
+	}
+	
+	/**
 	 * Get Texture Width
 	 * 
 	 * @return Texture Width

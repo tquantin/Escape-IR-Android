@@ -11,14 +11,16 @@ import fr.escape.app.Engine;
 import fr.escape.app.Input;
 import fr.escape.app.Screen;
 import fr.escape.game.Escape;
+import fr.escape.game.scenario.CustomStage;
 import fr.escape.graphics.Font;
+import fr.escape.graphics.ScrollingTexture;
 import fr.escape.graphics.Texture;
 import fr.escape.resources.FontLoader;
 import fr.escape.resources.TextureLoader;
 
 public final class LevelLoader implements Screen {
 
-	private static final String TAG = Menu.class.getSimpleName();
+	private static final String TAG = LevelLoader.class.getSimpleName();
 	private static final float SIZE = 18.0f;
 	
 	private static final String BACK = "Cancel";
@@ -27,6 +29,8 @@ public final class LevelLoader implements Screen {
 	private static final int HEADER_MARGING = 60;
 	private static final int FOOTER_MARGING = 80;
 	private static final int ITEMS_MARGING = 30;
+	
+	private static final int IGNORE_TOUCH_EVENT = 100;
 	
 	private final Font font;
 	
@@ -39,6 +43,8 @@ public final class LevelLoader implements Screen {
 	private final Rect display;
 	
 	private final List<Item> items;
+	
+	private long alive;
 	
 	/**
 	 * Default Constructor
@@ -60,10 +66,18 @@ public final class LevelLoader implements Screen {
 		
 		this.items = new LinkedList<Item>();
 		
+		this.alive = 0;
 	}
 	
 	@Override
 	public boolean touch(Input i) {
+		
+		/**
+		 * Ignore "Dead" Input Event
+		 */
+		if(alive < IGNORE_TOUCH_EVENT) {
+			return false;
+		} 
 		
 		if(back.contains(i.getX(), i.getY())) {
 			
@@ -71,16 +85,40 @@ public final class LevelLoader implements Screen {
 			game.setScreenID(Escape.SCREEN_MENU);
 			return true;
 			
-		} else if(display.contains(i.getX(), i.getY())) {
+		}
+		
+		if(display.contains(i.getX(), i.getY())) {
 			
 			for(Item item : items) {
 				
 				Rect area = item.getArea();
 				
 				if(area.contains(i.getX(), i.getY())) {
-					Engine.error(TAG, "Cannot launch Custom Game: "+item.getFile());
+					
+					Engine.error(TAG, "Launch Custom Game: "+item.getFile());
+					
+					CustomStage stage = new CustomStage(
+						game.getEngine(), 
+						game.getWorld(), 
+						game.getEntityContainer(), 
+						item.getFile().getName(), 
+						game.getShipFactory()
+					);
+					
+					Texture texture = stage.getCustomBackground();
+					
+					if(texture == null) {
+						game.getEngine().toast("Cannot load the given Scenario");
+						return false;
+					}
+					
+					game.getUser().setOneLife();
+					
+					Level level = new Level(game, stage, new ScrollingTexture(texture, true), Escape.SCREEN_LEVEL_LOADER, Escape.SCREEN_VICTORY);
+					game.setScreen(level);
+					return true;
+					
 				}
-				
 			}
 			
 		}
@@ -95,6 +133,10 @@ public final class LevelLoader implements Screen {
 
 	@Override
 	public void render(long delta) {
+		
+		if(alive < IGNORE_TOUCH_EVENT) {
+			alive += delta;
+		}
 		
 		/**
 		 * Fetch Graphics Width and Height
@@ -156,6 +198,7 @@ public final class LevelLoader implements Screen {
 	@Override
 	public void hide() {
 		items.clear();
+		alive = 0;
 	}
 
 	private void fetchListOfScenario() {

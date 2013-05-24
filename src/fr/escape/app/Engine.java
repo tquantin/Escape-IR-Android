@@ -14,6 +14,7 @@ import fr.escape.resources.Resources;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 public final class Engine implements Runnable {
 
@@ -39,6 +40,7 @@ public final class Engine implements Runnable {
 	final Resources resources;
 	final Queue<Runnable> runnables;
 	CoordinateConverter converter;
+	final Context context;
 
 	/**
 	 * Engine World State
@@ -67,7 +69,8 @@ public final class Engine implements Runnable {
 		this.graphics = new Graphics(Objects.requireNonNull(game), Objects.requireNonNull(configuration));
 		this.game = game;
 		this.thread = new Thread(this);
-		this.resources = new Resources(Objects.requireNonNull(context));
+		this.context = Objects.requireNonNull(context);
+		this.resources = new Resources(context);
 		this.runnables = new LinkedList<Runnable>();
 		
 		this.worldUpdateLeft = 0;
@@ -315,6 +318,24 @@ public final class Engine implements Runnable {
 	 */
 	public static File getScenarioStorage() {
 		return Environment.getExternalStoragePublicDirectory("EscapeIR/Scenario");
+	}
+	
+	/**
+	 * Get the File for Image Storage directory
+	 * 
+	 * @return File which contains the directory for Image Storage
+	 */
+	public static File getImageStorage() {
+		return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+	}
+
+	/**
+	 * Display a Message by Android native Toast
+	 * 
+	 * @param message Message to display
+	 */
+	public void toast(String message) {
+		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 	}
 	
 }

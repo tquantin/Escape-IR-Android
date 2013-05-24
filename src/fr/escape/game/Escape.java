@@ -34,7 +34,7 @@ import fr.escape.game.entity.EntityContainer;
 import fr.escape.game.entity.ships.Ship;
 import fr.escape.game.entity.ships.ShipFactory;
 import fr.escape.game.entity.weapons.shot.ShotFactory;
-import fr.escape.game.scenario.GameStage;
+import fr.escape.game.scenario.HistoryStage;
 import fr.escape.game.screen.Intro;
 import fr.escape.game.screen.LevelLoader;
 import fr.escape.game.screen.Lost;
@@ -584,15 +584,15 @@ public final class Escape implements LifeListener, RenderListener, EventListener
 		/**
 		 * Level Screen
 		 */
-		jupiter = new Level(this, new GameStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.JUPITER, getShipFactory(), true), 
+		jupiter = new Level(this, new HistoryStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.JUPITER, getShipFactory()), 
 				new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_JUPITER), true), 
 				SCREEN_INTRO_JUPITER, SCREEN_INTRO_MOON);
 		
-		moon = new Level(this, new GameStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.MOON, getShipFactory(), true),
+		moon = new Level(this, new HistoryStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.MOON, getShipFactory()),
 				new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_MOON), true),
 				SCREEN_INTRO_MOON, SCREEN_INTRO_EARTH);
 		
-		earth = new Level(this, new GameStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.EARTH, getShipFactory(), true),
+		earth = new Level(this, new HistoryStage(getEngine(), getWorld(), getEntityContainer(), ScenarioLoader.EARTH, getShipFactory()),
 				new ScrollingTexture(getResources().getTexture(TextureLoader.BACKGROUND_EARTH), true),
 				SCREEN_INTRO_EARTH, SCREEN_VICTORY);
 		

@@ -213,6 +213,13 @@ public final class User implements Receiver, Sender {
 	}
 	
 	/**
+	 * Set Only One Life to the User
+	 */
+	public void setOneLife() {
+		this.life = 1;
+	}
+	
+	/**
 	 * Remove One Life to the User
 	 */
 	public void removeOneLife() {
