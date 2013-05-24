@@ -146,12 +146,14 @@ public class BuilderActivity extends Activity {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void addShip(int time, float x, float y, int type) {
+	public void addShip(int time, float x, float y, int type, float xWorld) {
 		RelativeLayout bLayout = (RelativeLayout) findViewById(R.id.builderlayout);
 		
 		Bitmap bImage = BitmapFactory.decodeResource(getResources(), R.drawable.sraptor);
 		CoordinateConverter converter = new CoordinateConverter(bLayout.getWidth(), getWindowManager().getDefaultDisplay().getHeight(), 10);
-		builder.currentShip = builder.createShip(x,converter.toMeterX((int) x),y,0.0f,type,time,bImage.getWidth() / 2,bImage.getHeight() / 2);
+		
+		float wx = (xWorld == -15) ? converter.toMeterX((int) x) : xWorld;
+		builder.currentShip = builder.createShip(x,wx,y,0.0f,type,time,bImage.getWidth() / 2,bImage.getHeight() / 2);
 		
 		builder.currentShip.image = new ImageView(getBaseContext());
 		builder.currentShip.image.setImageBitmap(bImage);
@@ -264,7 +266,7 @@ public class BuilderActivity extends Activity {
 				} else if(event.getAction() == MotionEvent.ACTION_UP && previous < 10) {
 					int height = findViewById(R.id.builderlayout).getHeight();
 					int realTime = (int) Math.floor((builder.time - (event.getY() / (height / builder.time))));
-					addShip(realTime, event.getX(), event.getY(), type);
+					addShip(realTime, event.getX(), event.getY(), type, -15);
 					Toast.makeText(getBaseContext(), "Vaisseau ajouté : vous pouvez tracer ces déplacements.", Toast.LENGTH_SHORT).show();
 				}
 				

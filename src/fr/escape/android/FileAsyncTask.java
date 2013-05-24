@@ -37,7 +37,7 @@ public class FileAsyncTask extends AsyncTask<String, Void, String[]> {
 			String[] xData = shipData[2].split("/");
 			String[] yData = shipData[3].split("/");
 			
-			activity.addShip(Integer.parseInt(shipData[0]), Float.parseFloat(xData[1]), Float.parseFloat(yData[1]), Integer.parseInt(shipData[1]));
+			activity.addShip(Integer.parseInt(shipData[0]), Float.parseFloat(xData[1]), Float.parseFloat(yData[1]), Integer.parseInt(shipData[1]), Float.parseFloat(xData[0]));
 		}
 		
 		builder.currentShip = null;
